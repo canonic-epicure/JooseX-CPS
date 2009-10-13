@@ -22,6 +22,8 @@ StartTest(function(t) {
             
             continued : {
                 
+                cpsMeta : JooseX.CPS.Continuation,
+                
                 methods : {
                     
                     async1 : function (CPS, param1, param2) {
@@ -51,7 +53,6 @@ StartTest(function(t) {
                             
                         }).CATCH(function (exception) {
                             
-                            this.
                         })
                         
                         
@@ -100,6 +101,13 @@ StartTest(function(t) {
         }).CATCH(function(error) {
             
         }).TRY()
+        
+        
+        cps.async1(param1, param2).then(function (result) {
+            
+        }).except(function(error) {
+            
+        }).now()
         
         
         t.endAsync(async1)
