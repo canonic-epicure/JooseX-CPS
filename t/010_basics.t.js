@@ -38,7 +38,8 @@ StartTest(function(t) {
                         
                         CPS.TRY(function () {
                             
-                            me.async2(CPS, param1 + param2).then(function (result) {
+                            //this will be stored in CPS instance
+                            this.async2(CPS, param1 + param2).then(function (result) {
                                 CPS.RETURN(result)
                             })/*.but(function () {
                                 CPS.THROW(error)
@@ -50,7 +51,7 @@ StartTest(function(t) {
                             
                         }).CATCH(function (exception) {
                             
-                            
+                            this.
                         })
                         
                         
@@ -68,6 +69,7 @@ StartTest(function(t) {
                 
                 after : {
                     async1 : function (CPS, param1, param2) {
+                        CPS.RETURN()
                     }
                 }
             }
@@ -90,7 +92,14 @@ StartTest(function(t) {
         }).but(function(error) {
             
         }).go()
+
         
+        
+        cps.async1(param1, param2).THEN(function (result) {
+            
+        }).CATCH(function(error) {
+            
+        }).TRY()
         
         
         t.endAsync(async1)
