@@ -1,0 +1,63 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+	<head>
+        <script type="text/javascript" src="/inc/Task/Joose/Stable.js"></script>
+    
+        <!-- Ext bridge  -->
+        
+        <link rel="stylesheet" type="text/css" href="/inc/Task/ExtJS/static/css/ext-all.css">
+        <script type="text/javascript" src="/inc/Task/ExtJS/Adapter/Ext.js"></script>
+
+        <script type="text/javascript" src="/inc/JooseX/Meta/Lazy.js"></script>
+        <script type="text/javascript" src="/inc/JooseX/Bridge/Ext.js"></script>
+        <script type="text/javascript">
+            JooseX.Bridge.Ext.meta.extend({ does : JooseX.Meta.Lazy })
+            Ext.extend = JooseX.Bridge.Ext.my.extend 
+        </script>
+        
+        <script type="text/javascript" src="/inc/Task/ExtJS/Debug/All.js"></script>
+        
+        <!-- eof Ext bridge  -->
+        
+        
+        <script type="text/javascript" src="/inc/ExtX/Reference/Slot.js"></script>
+        
+        <link rel="stylesheet" type="text/css" href="/inc/Test/Run/static/css/all.css">
+        <script type="text/javascript" src="/inc/Task/Test/Run/ExtJS.js"></script>
+        
+        <script type="text/javascript" src="/inc/Test/Run/Harness/Browser/Joose.js"></script>
+        <script type="text/javascript" src="/inc/JooseX/SimpleRequest.js"></script>
+
+
+	</head>
+	
+	<body>
+		<script type="text/javascript">
+            var INC = []
+            Joose.A.each([ 'lib', '../lib', '/jsan' ], function (path) {
+                INC.push(Test.Run.Harness.Browser.Multi.my.resolveUrl(path, true))
+            }) 
+		
+		
+			Test.Run.Harness.Browser.Multi.my.configure({
+				title : 'Ensovis Application Test Suite',
+				
+				passThroughEx : true,
+				
+				preload : [
+				    '/jsan/Task/Joose/Core.js',
+                    "/jsan/JooseX/SimpleRequest.js",
+                    '/jsan/Task/JooseX/Namespace/Depended/Web.js',
+                    {
+                        text : "JooseX.Namespace.Depended.Manager.my.INC = " + Ext.encode(INC)
+                    }
+			    ]
+			})
+			
+			
+			Test.Run.Harness.Browser.Multi.my.start(
+				'010_basics.t.js'
+			)
+		</script>
+	</body>
+</html>
