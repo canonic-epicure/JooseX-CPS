@@ -1,110 +1,124 @@
 StartTest(function(t) {
     
-	t.plan(1)
+	t.plan(11)
     
     var async1 = t.beginAsync()
+    var async2 = t.beginAsync()
 	
-    use('JooseX.CPS', function () {
+    use('JooseX.CPS.Continuation', function () {
         
         //======================================================================================================================================================================================================================================================
         t.diag('Sanity')
         
-        t.ok(JooseX.CPS, "JooseX.CPS is here")
+        t.ok(JooseX.CPS.Continuation, "JooseX.CPS.Continuation is here")
         
 
         //======================================================================================================================================================================================================================================================
         t.diag('Creation')
         
-        Class('CPSEnabled', {
-            
-            trait : JooseX.CPS,
-            
-            
-            continued : {
-                
-                cpsMeta : JooseX.CPS.Continuation,
-                
-                methods : {
-                    
-                    async1 : function (CPS, param1, param2) {
-                        var me  = this
-                        
-                        var callback = function () {
-                            CPS.RETURN(result)
-                        }
-                        
-                        var errback = function () {
-                            CPS.THROW(error)
-                        }
-                        
-                        
-                        CPS.TRY(function () {
-                            
-                            //this will be stored in CPS instance
-                            this.async2(CPS, param1 + param2).then(function (result) {
-                                CPS.RETURN(result)
-                            })/*.but(function () {
-                                CPS.THROW(error)
-                                
-                                assumes commented code
-                            })*/.now()
-                            
-                            //XHRRequest(callback, errback)
-                            
-                        }).CATCH(function (exception) {
-                            
-                            this.
-                        })
-                        
-                        
-                    },
-                    
-                    
-                    async2 : function () {
-                    },
-                    
-                    
-                    async3 : function () {
-                    }
-                },
-                
-                
-                after : {
-                    async1 : function (CPS, param1, param2) {
-                        CPS.RETURN()
-                    }
-                }
-            }
+        var cont = new JooseX.CPS.Continuation()
         
-        })
-        
-        t.ok(CPSEnabled, 'CPSEnabled class was created')
-        
-        
-        var cps = new CPSEnabled()
-        
-        t.ok(cps, 'CPSEnabled class was instantiated')
+        t.ok(cont, "'JooseX.CPS.Continuation' was instantiated")
         
 
         //======================================================================================================================================================================================================================================================
-        t.diag('Async calls')
+        t.diag('CPS calls, desugared')
         
-        cps.async1().then(function (result) {
-            
-        }).but(function(error) {
-            
-        }).go()
+        //======================================================================================================================================================================================================================================================            
+        //t.diag('Simple successfull call')
 
+        var scope = {
+            name : 'value'
+        }
         
+        cont.setScope(scope)
         
-        cps.async1(param1, param2).THEN(function (result) {
+        cont.THEN(function (value) {
+            //======================================================================================================================================================================================================================================================            
+            t.diag('Simple successfull call')
             
-        }).CATCH(function(error) {
+            t.ok(this == scope, "'returnTo' was executed in the correct scope")
             
-        }).TRY()
+            t.ok(value == 'returnTo', 'ReturnTo was reached')
+            
+            t.endAsync(async1)
+        })
+        
+        cont.TRY(function () {
+            
+            t.ok(this == scope, "'task' was executed in the correct scope")
+            
+            setTimeout(function () {
+                cont.RETURN('returnTo')
+            }, 10)
+            
+        }).CATCH()
         
         
-        t.endAsync(async1)
+        
+        //======================================================================================================================================================================================================================================================            
+        //t.diag('Simple failing call')
+
+        var scope2 = {
+            name : 'value'
+        }
+        
+        var cont2 = new JooseX.CPS.Continuation()
+        
+        cont2.setScope(scope2)
+        
+        cont2.THEN(function (value) {
+        })
+        
+        cont2.TRY(function () {
+            
+            t.ok(this == scope2, "'task' was executed in the correct scope")
+            
+            setTimeout(function () {
+                cont2.THROW('error')
+            }, 10)
+            
+        }).CATCH(function (exception) {
+            //======================================================================================================================================================================================================================================================            
+            t.diag('Simple failing call')
+            
+            t.ok(this == scope2, "'catchTo' was executed in the correct scope")
+            
+            t.ok(exception == 'error', 'Correct exception was thrown')
+        })
+        
+        
+        
+        //======================================================================================================================================================================================================================================================            
+        //t.diag('Early failing call')
+
+        var scope3 = {
+            name : 'value'
+        }
+        
+        var cont3 = new JooseX.CPS.Continuation()
+        
+        cont3.setScope(scope3)
+        
+        cont3.THEN(function (value) {
+        })
+        
+        cont3.TRY(function () {
+            
+            t.ok(this == scope3, "'task' was executed in the correct scope")
+            
+            throw 'error3'
+            
+        }).CATCH(function (exception) {
+            //======================================================================================================================================================================================================================================================            
+            t.diag('Simple failing call')
+            
+            t.ok(this == scope3, "'catchTo' was executed in the correct scope")
+            
+            t.ok(exception == 'error3', 'Correct exception was thrown')
+        })
+        
+        
     })
     
 })    

@@ -40,7 +40,7 @@ StartTest(function(t) {
                         
                         CPS.TRY(function () {
                             
-                            //this will be stored in CPS instance
+                            //'this' will be stored in CPS instance
                             this.async2(CPS, param1 + param2).then(function (result) {
                                 CPS.RETURN(result)
                             })/*.but(function () {
@@ -51,11 +51,32 @@ StartTest(function(t) {
                             
                             //XHRRequest(callback, errback)
                             
+                            
+                            //the same, but will not catch "exceptions" from async2
+                            this.async2(param1 + param2).then(function (result) {
+                                CPS.RETURN(result)
+                            })/*.but(function () {
+                                CPS.THROW(error)
+                                
+                                assumes commented code
+                            })*/.now()
+                            
+                            
                         }).CATCH(function (exception) {
                             
                         })
                         
                         
+                        this.async2(CPS, param1 + param2).then(function (result) {
+                            CPS.RETURN(result)
+                        }).CATCH(function (exception) {
+                            
+                        }).now()
+
+                        
+                        this.async2(CPS, param1 + param2).then(function (result) {
+                            CPS.RETURN(result)
+                        }).now()
                     },
                     
                     
@@ -98,9 +119,13 @@ StartTest(function(t) {
         
         cps.async1(param1, param2).THEN(function (result) {
             
+            //this is tied to cps
+            
         }).CATCH(function(error) {
             
-        }).TRY()
+            //this is tied to cps            
+            
+        })
         
         
         cps.async1(param1, param2).then(function (result) {
@@ -108,6 +133,46 @@ StartTest(function(t) {
         }).except(function(error) {
             
         }).now()
+        
+        
+        
+        cps.async1(param1, param2).TRY()
+        
+        
+        cps.async1(param1, param2).THEN(function (result) {
+            
+            //this is tied to cps
+            
+        }).TRY()
+        
+        
+        
+        
+        
+        
+        cps.async1(param1, param2).THEN(function (result) {
+            
+            //this is tied to cps
+            
+        }).CATCH(function(error) {
+            
+            //this is tied to cps            
+            
+        }).TRY()
+        
+        
+        -eq-
+        
+        var cn = new Continuation
+        
+        cn.TRY(function () {
+            
+            cps.async1(cn, param1, param2).THEN(function (result) {
+            })
+            
+        }).CATCH(function(error) {
+        })
+        
         
         
         t.endAsync(async1)
