@@ -167,34 +167,34 @@ StartTest(function(t) {
         
         -eq-
         
-        var cn = new Continuation()
+        var sc = new JooseX.CPS.Scope()
         
-        cn.TRY(function (cn, param1, param2) {
+        sc.TRY(function (sc, param1, param2) {
             
-            cn.RETURN(value)  // to THEN
+            sc.RETURN(value)  // to THEN
             
-            cn.THROW(error) //to CATCH -> FINALLY
+            sc.THROW(error) //to CATCH -> FINALLY
             
             //
-            this.anotherContinuedMethod(cn, arg1, arg2).THEN(function (cn, result) {
+            this.anotherContinuedMethod(sc, arg1, arg2).THEN(function (sc, result) {
                 
-                if (c == d) cn.THROW(error1)
+                if (c == d) sc.THROW(error1)
                 
                 if (a == b) 
-                    cn.RETURN()
+                    sc.RETURN()
                 else //!!
-                    this.yetAnotherContinuedMethod(cn, s1, s2).THEN(function (cn, result) {
-                        cn.RETURN(123)
+                    this.yetAnotherContinuedMethod(sc, s1, s2).THEN(function (sc, result) {
+                        sc.RETURN(123)
                     })
-            })
+            }, thenScope)
             
-        }, scope, [ args ] ).CATCH(function(cn, error) {
-            
-            
-        }).FINALLY(function (cn) {
+        }, scope, [ args ] ).CATCH(function(sc, error) {
             
             
-        }).THEN(function (cn, result) {
+        }).FINALLY(function (sc) {
+            
+            
+        }).THEN(function (sc, result) {
         })
         
         -or-
