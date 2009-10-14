@@ -150,30 +150,56 @@ StartTest(function(t) {
         
         
         
-        cps.async1(param1, param2).THEN(function (result) {
-            
-            //this is tied to cps
-            
-        }).CATCH(function(error) {
+        cps.async1(param1, param2).CATCH(function(error) {
             
             //this is tied to cps            
             
-        }).TRY()
+        }).FINALLY(function(){
+            
+            //this is tied to cps
+            
+        }).THEN(function (result) {
+            
+            //this is tied to cps
+            
+        })
         
         
         -eq-
         
-        var cn = new Continuation
+        var cn = new Continuation()
         
-        cn.TRY(function () {
+        cn.TRY(function (cn, param1, param2) {
             
-            cps.async1(cn, param1, param2).THEN(function (result) {
+            cn.RETURN(value)  // to THEN
+            
+            cn.THROW(error) //to CATCH -> FINALLY
+            
+            //
+            this.anotherContinuedMethod(cn, arg1, arg2).THEN(function (cn, result) {
+                
+                if (c == d) cn.THROW(error1)
+                
+                if (a == b) 
+                    cn.RETURN()
+                else //!!
+                    this.yetAnotherContinuedMethod(cn, s1, s2).THEN(function (cn, result) {
+                        cn.RETURN(123)
+                    })
             })
             
-        }).CATCH(function(error) {
+        }, scope, [ args ] ).CATCH(function(cn, error) {
+            
+            
+        }).FINALLY(function (cn) {
+            
+            
+        }).THEN(function (cn, result) {
         })
         
+        -or-
         
+        *.NOW()
         
         t.endAsync(async1)
     })
