@@ -179,7 +179,7 @@ StartTest(function(t) {
             
         }).THEN(function (cont, result) {
             //======================================================================================================================================================================================================================================================            
-            t.diag('Try/Then nesting')
+            t.diag('More Try/Then nesting')
             
             t.ok(result == 'result4', 'Outer THEN was reached from the nested TRY/THEN/THEN with the correct result')
             

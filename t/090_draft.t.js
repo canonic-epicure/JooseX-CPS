@@ -51,69 +51,42 @@ StartTest(function(t) {
         t.ok(CPSEnabled, 'CPSEnabled class was created')
         
         
-        var cps = new CPSEnabled()
-        
-        t.ok(cps, 'CPSEnabled class was instantiated')
-        
+        var cps = new Class.With.CPS.Enabled()
         
         cps.async1(p1, p2).THEN(
-            cps.async2(p3, p4)
-        ).THEN(
-            cps.async3(p4, p5)
-        )
-
         
-        //===================================================        
-        g00.TRY(function (g10, arg1, arg2) {
+            this.async2(p3, p4)
             
-            p1 = 1
-            p2 = p1 * 10
+        ).THEN(
+        
+            this.async3(p4, p5)
             
-            this.continuedMethod1(g10, p1, p2).THEN(function (g10next, result1) {
-                
-                
-                this.anotherContinuedMethod(g10next, par1, par2).THEN(function (g10nextnext, result2) {
-                    
-                    g10nextnext.RETURN(result+1)
-                })
-                
-            })
+        ).THEN(function (ct, result) {
             
-            this.continuedMethod2(g10, p1, p2).THEN(function (scL1Next, result1) {
-                
-                
-                this.anotherContinuedMethod(scL1, par1, par2).THEN(function (scL1, result2) {
-                    
-                    scL1.RETURN(result+1)
-                })
-                
-            })
-            
-            
-        }).THEN(function (globalNext1, result) {
+            if (..) 
+                this.async4().NOW()
+            else
+                ct.RETURN()
         })
         
-        
-        
-        g00.TRY(function (g1){
-            
-            g1.RETURN()
-            
-        }).[TRY()].[THEN()]
-        
 
         
+        var cps = new Class.With.CPS.Enabled()
         
-        g00.TRY(function (g10){
+        cps.async1(p1, p2).OR(
+        
+            this.async2(p3, p4)
             
-            g10.RETURN()
+        ).AND(
+        
+            this.async3(p4, p5)
             
-        }).TRY(function (g11){
+        ).THEN(function () {
             
-            g11.RETURN()
-            
-        }).THEN(function (g01) {
-            
+            if (..) 
+                this.async4().NOW()
+            else 
+                if () this.CONT.RETURN()
         })
         
         
