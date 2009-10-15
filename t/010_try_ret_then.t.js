@@ -1,6 +1,6 @@
 StartTest(function(t) {
     
-	t.plan(10)
+	t.plan(24)
     
     var async0 = t.beginAsync()
     
@@ -29,34 +29,49 @@ StartTest(function(t) {
 
         var async1 = t.beginAsync()
         
-        cont.TRY(function (cont) {
+        cont.TRY(function (p1, p2) {
             
             t.pass('TRY was reached')
+            
+            t.ok(this.parent == cont, 'Scope was defaulted to nested continuation instance')
+            t.ok(p1 == 1 && p2 == 10, 'Correct parameters were passed')
+            
+            this.RETURN()
+            
             t.endAsync(async1)
             
-            cont.RETURN()
-        }).NOW()
+        }, null, [ 1, 10 ]).NOW()
         
         
         
         //======================================================================================================================================================================================================================================================            
         //t.diag('Simple successfull call')
         
-        var async2 = t.beginAsync()
-        var cont2 = new JooseX.CPS.Continuation.TryRetThen()
+        var async2  = t.beginAsync()
+        var cont2   = new JooseX.CPS.Continuation.TryRetThen()
+        var scope2  = {}
 
-        cont2.TRY(function (cont) {
+        
+        cont2.TRY(function () {
+            //======================================================================================================================================================================================================================================================            
+            t.diag('Simple call - TRY')
+            
+            t.ok(this == scope2, "Scope was correctly passed into 'TRY'")
+            
+            var RETURN = this.RETURN
             
             setTimeout(function () {
-                cont.RETURN('returnTo')
+                RETURN('returnTo')
             }, 10)
 
             
-        }).THEN(function (cont, result) {
+        }, scope2).THEN(function () {
             //======================================================================================================================================================================================================================================================            
-            t.diag('Simple successfull call')
+            t.diag('Simple call - THEN')
             
-            t.ok(result == 'returnTo', 'THEN was reached with the correct result')
+            t.ok(this == scope2, "Scope was correctly propagated to 'THEN'")
+            
+            t.ok(this.RESULT == 'returnTo', 'THEN was reached with the correct RESULT')
             
             t.endAsync(async2)
         })
@@ -66,14 +81,14 @@ StartTest(function(t) {
         //======================================================================================================================================================================================================================================================            
         //t.diag('Call without RETURN')
         
-        var async3 = t.beginAsync()
-        var cont3 = new JooseX.CPS.Continuation.TryRetThen()
+        var async3  = t.beginAsync()
+        var cont3   = new JooseX.CPS.Continuation.TryRetThen()
         
         var thenReached = false
         
-        cont3.TRY(function (cont) {
+        cont3.TRY(function () {
             
-        }).THEN(function (cont, result) {
+        }, {}).THEN(function () {
             
             thenReached = true
         })
@@ -90,58 +105,86 @@ StartTest(function(t) {
         
         
         //======================================================================================================================================================================================================================================================            
-        //t.diag('Try nesting')
+        //t.diag("'TRY' nesting")
         
-        var async4 = t.beginAsync()
-        var cont4 = new JooseX.CPS.Continuation.TryRetThen()
+        var async4      = t.beginAsync()
+        var cont4       = new JooseX.CPS.Continuation.TryRetThen()
+        var scope4      = {}
+        var scope4Then  = {}
 
-        cont4.TRY(function (cont) {
+        cont4.TRY(function () {
+            //======================================================================================================================================================================================================================================================            
+            t.diag("'TRY' nesting - TRY")
+            
+            t.ok(this == scope4, "Scope was correctly passed into 'TRY' #2")
+            
+            var CONT = this.CONT
+            
             
             setTimeout(function () {
                 
-                cont.TRY(function (cont) {
-                    cont.RETURN('returnTo')
+                CONT.TRY(function () {
+                    
+                    t.ok(this == scope4, "Scope was correctly passed into nested 'TRY'")
+                    
+                    this.RETURN('returnTo')
                 }).NOW()
                 
             }, 10)
             
-        }).THEN(function (cont, result) {
+        }, scope4).THEN(function () {
             //======================================================================================================================================================================================================================================================            
-            t.diag('Try nesting')
+            t.diag("'TRY' nesting - THEN")
             
-            t.ok(result == 'returnTo', 'THEN was reached from the nested TRY with the correct result')
+            t.ok(this == scope4Then, "Scope was correctly passed into 'THEN'")
+            
+            t.ok(this.RESULT == 'returnTo', 'THEN was reached from the nested TRY with the correct result')
             
             t.endAsync(async4)
-        })
+        }, scope4Then)
 
         
         
         //======================================================================================================================================================================================================================================================            
         //t.diag('Try/Then nesting')
         
-        var async5 = t.beginAsync()
-        var cont5 = new JooseX.CPS.Continuation.TryRetThen()
+        var async5      = t.beginAsync()
+        var cont5       = new JooseX.CPS.Continuation.TryRetThen()
+        var scope5      = {}
         
         cont5.TRY(function (cont) {
+            //======================================================================================================================================================================================================================================================            
+            t.diag('Try/Then nesting - TRY')
+            
+            t.ok(this == scope5, "Scope was correctly passed into 'TRY' #3")
+            
+            var CONT = this.CONT
+            
             
             setTimeout(function () {
                 
-                cont.TRY(function (cont) {
+                CONT.TRY(function () {
                     
-                    cont.RETURN('returnTo2')
+                    t.ok(this == scope5, "Scope was correctly passed into nested 'TRY' #2")
                     
-                }).THEN(function (cont, result) {
+                    this.RETURN('returnTo2')
                     
-                    cont.RETURN(result)
+                }).THEN(function () {
+                    
+                    t.ok(this == scope5, "Scope was correctly passed into nested 'THEN'")
+                    
+                    this.RETURN(this.RESULT)
                 })
                 
             }, 10)
             
-        }).THEN(function (cont, result) {
+        }, scope5).THEN(function () {
             //======================================================================================================================================================================================================================================================            
-            t.diag('Try/Then nesting')
+            t.diag('Try/Then nesting - THEN')
             
-            t.ok(result == 'returnTo2', 'THEN was reached from the nested TRY/THEN with the correct result :)')
+            t.ok(this == scope5, "Scope was correctly passed into outer 'THEN'")
+            
+            t.ok(this.RESULT == 'returnTo2', 'THEN was reached from the nested TRY/THEN with the correct result :)')
             
             t.endAsync(async5)
         })
@@ -151,37 +194,52 @@ StartTest(function(t) {
         //======================================================================================================================================================================================================================================================            
         //t.diag('More Try/Then nesting')
         
-        var async6 = t.beginAsync()
-        var cont6 = new JooseX.CPS.Continuation.TryRetThen()
+        var async6  = t.beginAsync()
+        var cont6   = new JooseX.CPS.Continuation.TryRetThen()
+        var scope6  = {}
         
-        cont6.TRY(function (cont) {
+        cont6.TRY(function () {
+            
+            var CONT = this.CONT
             
             setTimeout(function () {
                 
-                cont.TRY(function (cont) {
+                CONT.TRY(function () {
                     
-                    cont.RETURN('returnTo2')
+                    this.RETURN('returnTo2')
                     
-                }).THEN(function (cont, result) {
+                }).THEN(function () {
+                    //======================================================================================================================================================================================================================================================            
+                    t.diag('More Try/Then nesting - TRY')
                     
-                    t.ok(result == 'returnTo2', 'THEN was reached from the nested TRY with the correct result')
+                    t.ok(this.RESULT == 'returnTo2', 'THEN was reached from the nested TRY with the correct result')
                     
-                    cont.TRY(function (cont) {
-                        cont.RETURN('result3')
-                    }).THEN(function (cont, result) {
-                        t.ok(result == 'result3', 'Another THEN was reached from the nested TRY with the correct result')
+                    
+                    this.CONT.TRY(function () {
                         
-                        cont.RETURN('result4')
+                        t.ok(this == scope6, "Scope was correctly passed into most nested 'TRY'")
+                        
+                        this.RETURN('result3')
+                        
+                    }).THEN(function () {
+                        
+                        t.ok(this == scope6, "Scope was correctly passed into most nested 'THEN'")
+                        
+                        t.ok(this.RESULT == 'result3', 'Another THEN was reached from the nested TRY with the correct result')
+                        
+                        this.RETURN('result4')
                     })
                 })
                 
             }, 10)
             
-        }).THEN(function (cont, result) {
+        }, scope6).THEN(function (cont, result) {
             //======================================================================================================================================================================================================================================================            
-            t.diag('More Try/Then nesting')
+            t.diag('More Try/Then nesting - THEN')
             
-            t.ok(result == 'result4', 'Outer THEN was reached from the nested TRY/THEN/THEN with the correct result')
+            t.ok(this == scope6, "Scope was correctly passed into outer 'THEN'")
+            
+            t.ok(this.RESULT == 'result4', 'Outer THEN was reached from the nested TRY/THEN/THEN with the correct result')
             
             t.endAsync(async6)
         })

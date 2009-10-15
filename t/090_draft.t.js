@@ -53,7 +53,9 @@ StartTest(function(t) {
         
         var cps = new Class.With.CPS.Enabled()
         
-        cps.async1(p1, p2).THEN(
+        this <- cps
+        
+        this.async1(p1, p2).THEN(
         
             this.async2(p3, p4)
             
@@ -61,19 +63,18 @@ StartTest(function(t) {
         
             this.async3(p4, p5)
             
-        ).THEN(function (ct, result) {
+        ).THEN(function () {
             
-            if (..) 
+            if (this.RESULT == '...') 
                 this.async4().NOW()
             else
-                ct.RETURN()
+                this.RETURN()
         })
         
 
         
-        var cps = new Class.With.CPS.Enabled()
         
-        cps.async1(p1, p2).OR(
+        this.async1(p1, p2).OR(
         
             this.async2(p3, p4)
             
@@ -83,10 +84,10 @@ StartTest(function(t) {
             
         ).THEN(function () {
             
-            if (..) 
+            if (this.RESULT == '...') 
                 this.async4().NOW()
             else 
-                if () this.CONT.RETURN()
+                if (this.RESULT) this.RETURN()
         })
         
         
