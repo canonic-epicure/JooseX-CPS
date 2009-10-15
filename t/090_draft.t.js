@@ -27,56 +27,6 @@ StartTest(function(t) {
                 methods : {
                     
                     async1 : function (CPS, param1, param2) {
-                        var me  = this
-                        
-                        var callback = function () {
-                            CPS.RETURN(result)
-                        }
-                        
-                        var errback = function () {
-                            CPS.THROW(error)
-                        }
-                        
-                        
-                        CPS.TRY(function () {
-                            
-                            //'this' will be stored in CPS instance
-                            this.async2(CPS, param1 + param2).then(function (result) {
-                                CPS.RETURN(result)
-                            })/*.but(function () {
-                                CPS.THROW(error)
-                                
-                                assumes commented code
-                            })*/.now()
-                            
-                            //XHRRequest(callback, errback)
-                            
-                            
-                            //the same, but will not catch "exceptions" from async2
-                            this.async2(param1 + param2).then(function (result) {
-                                CPS.RETURN(result)
-                            })/*.but(function () {
-                                CPS.THROW(error)
-                                
-                                assumes commented code
-                            })*/.now()
-                            
-                            
-                        }).CATCH(function (exception) {
-                            
-                        })
-                        
-                        
-                        this.async2(CPS, param1 + param2).then(function (result) {
-                            CPS.RETURN(result)
-                        }).CATCH(function (exception) {
-                            
-                        }).now()
-
-                        
-                        this.async2(CPS, param1 + param2).then(function (result) {
-                            CPS.RETURN(result)
-                        }).now()
                     },
                     
                     
@@ -105,157 +55,66 @@ StartTest(function(t) {
         
         t.ok(cps, 'CPSEnabled class was instantiated')
         
-
-        //======================================================================================================================================================================================================================================================
-        t.diag('Async calls')
         
-        cps.async1().then(function (result) {
-            
-        }).but(function(error) {
-            
-        }).go()
+        cps.async1(p1, p2).THEN(
+            cps.async2(p3, p4)
+        ).THEN(
+            cps.async3(p4, p5)
+        )
 
         
-        
-        cps.async1(param1, param2).THEN(function (result) {
-            
-            //this is tied to cps
-            
-        }).CATCH(function(error) {
-            
-            //this is tied to cps            
-            
-        })
-        
-        
-        cps.async1(param1, param2).then(function (result) {
-            
-        }).except(function(error) {
-            
-        }).now()
-        
-        
-        
-        cps.async1(param1, param2).TRY()
-        
-        
-        cps.async1(param1, param2).THEN(function (result) {
-            
-            //this is tied to cps
-            
-        }).TRY()
-        
-        
-        
-        
-        
         //===================================================        
-        cps.async1(param1, param2).CATCH(function(error) {
-            
-            //this is tied to cps            
-            
-        }).FINALLY(function(){
-            
-            //this is tied to cps
-            
-        }).THEN(function (result) {
-            
-            //this is tied to cps
-            
-        })
-        
-        
-        -eq-
-        //===================================================        
-        var sc = new JooseX.CPS.Scope()
-        
-        sc.TRY(function (scL1, param1, param2) {
-            
-            scL1.RETURN(value)  // to THEN
-            
-            scL1.THROW(error) //to CATCH -> FINALLY
-            
-            //
-            this.anotherContinuedMethod(scL1, arg1, arg2).THEN(function (scL2, result) {
-                
-                if (c == d) scL2.THROW(error1)
-                
-                if (a == b) 
-                    scL2.RETURN()
-                else //!!
-                    this.yetAnotherContinuedMethod(scL2, s1, s2).THEN(function (scL3, result) {
-                        scL3.RETURN(123)
-                    })
-            })
-            
-        }, scope, [ args ] ).CATCH(function(sc, error) {
-            
-            
-        }).FINALLY(function (sc) {
-            
-            
-        }).THEN(function (sc, result) {
-        })
-        
-        -or-
-        
-        *.NOW()
-        
-        t.endAsync(async1)
-        
-        
-
-        //===================================================
-        var global = JooseX.CPS.Scope.Global.my
-        
-        global.my.TRY(function (scL1) {
-            
-            scL1.RETURN(result)  // to THEN
-            
-        }).THEN(function (scNext, result) {
-        })
-        
-        
-        //===================================================        
-        
-        global.TRY(function (scL1, arg1, arg2) {
+        g00.TRY(function (g10, arg1, arg2) {
             
             p1 = 1
             p2 = p1 * 10
             
-            this.continuedMethod(scL1, p1, p2).THEN(function (scL2, result) {
-                
-                scL2.RETURN(result+1)
-                                
-            })
-            
-        }).THEN(function (scNext, result) {
-        })
-        
-        
-        
-        //===================================================        
-        
-        global.TRY(function (scL1, arg1, arg2) {
-            
-            p1 = 1
-            p2 = p1 * 10
-            
-            this.continuedMethod(scL1, p1, p2).THEN(function (scL2, result1) {
+            this.continuedMethod1(g10, p1, p2).THEN(function (g10next, result1) {
                 
                 
-                this.anotherContinuedMethod(scL2, par1, par2).THEN(function (scL3, result2) {
+                this.anotherContinuedMethod(g10next, par1, par2).THEN(function (g10nextnext, result2) {
                     
-                    scL3.RETURN(result+1)
+                    g10nextnext.RETURN(result+1)
                 })
+                
             })
             
-        }).THEN(function (scNext, result) {
+            this.continuedMethod2(g10, p1, p2).THEN(function (scL1Next, result1) {
+                
+                
+                this.anotherContinuedMethod(scL1, par1, par2).THEN(function (scL1, result2) {
+                    
+                    scL1.RETURN(result+1)
+                })
+                
+            })
+            
+            
+        }).THEN(function (globalNext1, result) {
         })
         
         
         
+        g00.TRY(function (g1){
+            
+            g1.RETURN()
+            
+        }).[TRY()].[THEN()]
         
+
+        
+        
+        g00.TRY(function (g10){
+            
+            g10.RETURN()
+            
+        }).TRY(function (g11){
+            
+            g11.RETURN()
+            
+        }).THEN(function (g01) {
+            
+        })
         
         
     })
