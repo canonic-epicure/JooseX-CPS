@@ -149,7 +149,7 @@ StartTest(function(t) {
         
         
         
-        
+        //===================================================        
         cps.async1(param1, param2).CATCH(function(error) {
             
             //this is tied to cps            
@@ -166,27 +166,27 @@ StartTest(function(t) {
         
         
         -eq-
-        
+        //===================================================        
         var sc = new JooseX.CPS.Scope()
         
-        sc.TRY(function (sc, param1, param2) {
+        sc.TRY(function (scL1, param1, param2) {
             
-            sc.RETURN(value)  // to THEN
+            scL1.RETURN(value)  // to THEN
             
-            sc.THROW(error) //to CATCH -> FINALLY
+            scL1.THROW(error) //to CATCH -> FINALLY
             
             //
-            this.anotherContinuedMethod(sc, arg1, arg2).THEN(function (sc, result) {
+            this.anotherContinuedMethod(scL1, arg1, arg2).THEN(function (scL2, result) {
                 
-                if (c == d) sc.THROW(error1)
+                if (c == d) scL2.THROW(error1)
                 
                 if (a == b) 
-                    sc.RETURN()
+                    scL2.RETURN()
                 else //!!
-                    this.yetAnotherContinuedMethod(sc, s1, s2).THEN(function (sc, result) {
-                        sc.RETURN(123)
+                    this.yetAnotherContinuedMethod(scL2, s1, s2).THEN(function (scL3, result) {
+                        scL3.RETURN(123)
                     })
-            }, thenScope)
+            })
             
         }, scope, [ args ] ).CATCH(function(sc, error) {
             
@@ -202,6 +202,62 @@ StartTest(function(t) {
         *.NOW()
         
         t.endAsync(async1)
+        
+        
+
+        //===================================================
+        var global = JooseX.CPS.Scope.Global.my
+        
+        global.my.TRY(function (scL1) {
+            
+            scL1.RETURN(result)  // to THEN
+            
+        }).THEN(function (scNext, result) {
+        })
+        
+        
+        //===================================================        
+        
+        global.TRY(function (scL1, arg1, arg2) {
+            
+            p1 = 1
+            p2 = p1 * 10
+            
+            this.continuedMethod(scL1, p1, p2).THEN(function (scL2, result) {
+                
+                scL2.RETURN(result+1)
+                                
+            })
+            
+        }).THEN(function (scNext, result) {
+        })
+        
+        
+        
+        //===================================================        
+        
+        global.TRY(function (scL1, arg1, arg2) {
+            
+            p1 = 1
+            p2 = p1 * 10
+            
+            this.continuedMethod(scL1, p1, p2).THEN(function (scL2, result1) {
+                
+                
+                this.anotherContinuedMethod(scL2, par1, par2).THEN(function (scL3, result2) {
+                    
+                    scL3.RETURN(result+1)
+                })
+            })
+            
+        }).THEN(function (scNext, result) {
+        })
+        
+        
+        
+        
+        
+        
     })
     
 })    
