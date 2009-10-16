@@ -20,13 +20,7 @@ StartTest(function(t) {
         var cont6   = new JooseX.CPS.Continuation.TryRetThen()
         var scope6  = {}
         
-        cont6.id = 6
-        var cont7, cont8, cont9, cont10
-        
         cont6.TRY(function () {
-            
-            cont7 = this.CONT
-            cont7.id = 7
             
             var CONT = this.CONT
             
@@ -38,19 +32,11 @@ StartTest(function(t) {
                     //======================================================================================================================================================================================================================================================
                     t.diag('More Try/Then nesting - Nested TRY')
                     
-//                    debugger
-                    
-                    cont8 = this.CONT
-                    cont8.id = 8
-                    
-                    
                     t.pass("Nested 'TRY' was reached anyway, regardless of early RETURN")
                     
                     t.ok(this == scope6, "Scope was correctly passed into nested 'TRY'")
                     
                     t.ok(this.CONT.parent == CONT, "Current continuation is nested into 'CONT'")
-                    
-//                    debugger
                     
                     this.RETURN('returnTo2')
                     
@@ -58,14 +44,8 @@ StartTest(function(t) {
                     //======================================================================================================================================================================================================================================================            
                     t.diag('More Try/Then nesting - TRY')
 
-                    
-                    cont9 = this.CONT
-                    cont9.id = 9
-                    
-                    
-                    
                     t.ok(this.RESULT == 'returnTo2', 'THEN was reached from the nested TRY with the correct result')
-                    
+
                     
                     this.CONT.TRY(function () {
                         
@@ -85,8 +65,6 @@ StartTest(function(t) {
                     })
                 })
                 
-//                debugger
-                
                 CONT.RETURN('early')
                 
             }, 10)
@@ -94,15 +72,6 @@ StartTest(function(t) {
         }, scope6).THEN(function (cont, result) {
             //======================================================================================================================================================================================================================================================            
             t.diag('More Try/Then nesting - THEN')
-            
-            
-//            debugger
-
-            cont10 = this.CONT
-            cont10.id = 10
-            
-            
-            
             
             t.ok(this == scope6, "Scope was correctly passed into outer 'THEN'")
             
