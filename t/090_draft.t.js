@@ -91,6 +91,29 @@ StartTest(function(t) {
         })
         
         
+        
+        
+        
+        
+        try {
+            console.log('outer try')
+            try {
+                console.log('inner try')
+                throw 'a'
+            } finally {
+                console.log('inner fin')
+            }
+        
+        } catch (e) {
+            console.log('catch')
+        } finally {
+            console.log('outer fin')
+        }        
+        
+        
+        
+        
+        
     })
     
 })    
