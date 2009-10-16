@@ -1,6 +1,6 @@
 StartTest(function(t) {
     
-	t.plan(16)
+	t.plan(19)
     
     var async0 = t.beginAsync()
     
@@ -149,7 +149,23 @@ StartTest(function(t) {
             
             t.ok(this.RESULT == 'result4', 'Outer THEN was reached from the nested TRY/THEN/THEN with the correct result')
             
-            t.endAsync(async6)
+            
+            this.CONT.TRY(function () {
+                
+                t.ok(this == scope6, "Scope was correctly passed into nested 'TRY' of outer 'THEN'")
+                
+                this.RETURN('result5')
+                
+            }).THEN(function () {
+                
+                t.ok(this == scope6, "Scope was correctly passed into nested 'THEN' of outer 'THEN'")
+                
+                t.ok(this.RESULT == 'result5', '.. as well as result')
+                
+                this.RETURN()
+                
+                t.endAsync(async6)
+            })
         })
         
         
