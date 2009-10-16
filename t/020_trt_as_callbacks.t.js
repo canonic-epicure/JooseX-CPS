@@ -1,6 +1,6 @@
 StartTest(function(t) {
     
-	t.plan(16)
+	t.plan(20)
     
     var async0 = t.beginAsync()
     
@@ -15,7 +15,7 @@ StartTest(function(t) {
         var xhrRequest = function (params) {
             
             setTimeout(function () {
-                params.callback.call(params.scope || Joose.top, 'value1', 'value2', params)
+                params.callback.call(params.scope || Joose.top, params.value1 || 'value1', params.value2 || 'value2', params)
             }, 5)
         }
         
@@ -95,6 +95,57 @@ StartTest(function(t) {
             t.endAsync(async2)
             
         }, scope4, [])
+        
+        
+        //======================================================================================================================================================================================================================================================            
+        t.diag('Try/Return/Then used as usual callbacks, chained & nested')
+        
+        var async3  = t.beginAsync()
+        
+        var cont3   = new JooseX.CPS.Continuation.TryRetThen()
+        
+        var scope5  = {}
+        
+        cont3.TRY(function () {
+            
+            this.CONT.TRY(function () {
+                
+                xhrRequest({
+                    callback    : this.RETURN,
+                    value1      : 'yo'
+                })
+                
+            }).THEN(function (res1) {
+                
+                if (res1 == 'yo') 
+                    this.RETURN('foo')
+                else
+                    this.RETURN('bar')
+                
+            })
+            
+        }, scope5).THEN(function (res) {
+            
+            t.ok(this == scope5, "Scope was correctly passed into 'THEN'")
+            t.ok(res == 'foo', "Control flow was correct")
+            
+            xhrRequest({
+                callback    : this.RETURN,
+                value2      : 'yo2'
+            })
+            
+        }).THEN(function (res1, res2, params) {
+            
+            t.ok(this == scope5, "Scope was correctly propagated")
+            t.ok(res2 == 'yo2', "Correct arguments received")
+            
+            this.RETURN()
+            
+        }).THEN(function () {
+            
+            t.endAsync(async3)
+            
+        })
         
         
         t.endAsync(async0)
