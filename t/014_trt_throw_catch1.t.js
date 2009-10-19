@@ -36,6 +36,8 @@ StartTest(function(t) {
             
             t.endAsync(async1)
             
+            this.RETURN()
+            
         }).NOW()
 
 
@@ -63,6 +65,8 @@ StartTest(function(t) {
             
             t.endAsync(async2)
             
+            this.RETURN()
+            
         }, scope2).NOW()
         
         
@@ -84,6 +88,8 @@ StartTest(function(t) {
         }, {}).CATCH(function (e) {
             
             t.ok(e == 'error3', "Error thrown via native 'throw' was caught correctly")
+            
+            this.RETURN()
             
         }).THEN(function () {
             
