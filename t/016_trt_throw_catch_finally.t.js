@@ -1,6 +1,6 @@
 StartTest(function(t) {
     
-	t.plan(10)
+	t.plan(19)
     
     var async0 = t.beginAsync()
     
@@ -24,8 +24,7 @@ StartTest(function(t) {
         
         cont1.TRY(function () {
             //======================================================================================================================================================================================================================================================            
-            t.diag('THROW with THEN')
-            
+            t.diag('THROW from nested TRY')
             
             this.CONT.TRY(function () {
                 
@@ -74,43 +73,66 @@ StartTest(function(t) {
 
         
         
-//        //======================================================================================================================================================================================================================================================
-//        //t.diag('Nested THROW/CATCH #1')
-//
-//        var async2  = t.beginAsync()
-//        var cont2   = new JooseX.CPS.Continuation.TryRetThen()
-//        
-//        cont2.TRY(function () {
-//            //======================================================================================================================================================================================================================================================            
-//            t.diag('Nested THROW/CATCH #1')
-//            
-//            
-//            this.CONT.TRY(function () {
-//                
-//                this.THROW('error2')
-//                
-//            }).CATCH(function (e) {
-//            
-//                t.ok(e == 'error2', "Innermost throw was caught correctly")
-//                
-//                this.THROW('error22')
-//            }).NOW()
-//            
-//            
-//        }, {}).CATCH(function (e) {
-//            
-//            t.ok(e == 'error22', "Error thrown from 'CATCH' was caught correctly")
-//            
-//            this.RETURN()
-//            
-//        }).THEN(function () {
-//            
-//            t.pass("'THEN' was reached")
-//            
-//            t.endAsync(async2)
-//        })
-//        
-//        
+        //======================================================================================================================================================================================================================================================
+        //t.diag('THROW from FINALLY')
+
+        var async11  = t.beginAsync()
+        var cont11   = new JooseX.CPS.Continuation.TryRetThen()
+        
+        var finally11Reached = false
+        var finally22Reached = false
+        var catch11Reached    = false
+        
+        cont11.TRY(function () {
+            //======================================================================================================================================================================================================================================================            
+            t.diag('THROW from nested TRY')
+            
+            this.CONT.TRY(function () {
+                
+                throw 'error11'
+                
+            }).FINALLY(function () {
+                
+                finally11Reached = true
+                
+                t.pass("'FINALLY11' was reached #1")
+                
+                t.ok(!catch11Reached, "'CATCH' not yet reached")
+                t.ok(!finally22Reached, "'FINALLY22' not yet reached")
+                
+                throw 'error22'
+                
+            }).NOW()
+            
+        }, {}).CATCH(function (e) {
+            
+            catch11Reached = true
+            
+            t.ok(e == 'error22', "Caught exception is from FINALLY")
+            
+            t.ok(!finally22Reached, "'FINALLY2' not yet reached")
+            
+            this.RETURN()
+            
+        }).FINALLY(function () {
+            
+            finally22Reached = true
+                
+            t.pass("'FINALLY' was reached #2")
+            
+            t.ok(catch11Reached, "'CATCH' was reached")
+            t.ok(finally11Reached, "'FINALLY11' was reached")
+            
+            this.RETURN()
+            
+        }).THEN(function () {
+            
+            t.pass("Outer 'THEN' was reached")
+            
+            t.endAsync(async11)
+        })
+        
+        
 //        //======================================================================================================================================================================================================================================================
 //        //t.diag('Nested THROW/CATCH #2')
 //
