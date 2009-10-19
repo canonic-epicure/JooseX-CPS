@@ -44,7 +44,7 @@ StartTest(function(t) {
                     //======================================================================================================================================================================================================================================================            
                     t.diag('More Try/Then nesting - TRY')
 
-                    t.ok(this.RESULT == 'returnTo2', 'THEN was reached from the nested TRY with the correct result')
+                    t.ok(this.RESULT == 'returnTo2', 'NEXT was reached from the nested TRY with the correct result')
 
                     
                     this.CONT.TRY(function () {
@@ -55,25 +55,27 @@ StartTest(function(t) {
                         
                     }).THEN(function () {
                         
-                        t.ok(this == scope6, "Scope was correctly passed into most nested 'THEN'")
+                        t.ok(this == scope6, "Scope was correctly passed into most nested 'NEXT'")
                         
-                        t.ok(this.RESULT == 'result3', 'Another THEN was reached from the nested TRY with the correct result')
+                        t.ok(this.RESULT == 'result3', 'Another NEXT was reached from the nested TRY with the correct result')
                         
                         this.RETURN('result4')
                         
                         t.endAsync(async6)
-                    })
-                })
+                        
+                    }).NOW()
+                    
+                }).NOW()
                 
                 CONT.RETURN('early')
                 
             }, 10)
             
-        }, scope6).THEN(function (cont, result) {
+        }, scope6).NEXT(function (cont, result) {
             //======================================================================================================================================================================================================================================================            
-            t.diag('More Try/Then nesting - THEN')
+            t.diag('More Try/Then nesting - NEXT')
             
-            t.ok(this == scope6, "Scope was correctly passed into outer 'THEN'")
+            t.ok(this == scope6, "Scope was correctly passed into outer 'NEXT'")
             
             t.ok(this.RESULT == 'early', 'Early returned was processed correctly')
             

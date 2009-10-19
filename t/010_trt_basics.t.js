@@ -38,9 +38,9 @@ StartTest(function(t) {
             
             this.RETURN('value')
             
-        }, null, [ 1, 10 ]).NEXT(function (res) {
+        }, null, [ 1, 10 ]).THEN(function (res) {
             
-            t.pass('NEXT was reached')
+            t.pass('THEN was reached')
             
             t.ok(res == 'value', "Next received correct return value")
             
@@ -77,14 +77,14 @@ StartTest(function(t) {
             
         }, scope2).THEN(function () {
             //======================================================================================================================================================================================================================================================            
-            t.diag('Simple call - THEN')
+            t.diag('Simple call - NEXT')
             
-            t.ok(this == scope2, "Scope was correctly propagated to 'THEN'")
+            t.ok(this == scope2, "Scope was correctly propagated to 'NEXT'")
             
-            t.ok(this.RESULT == 'returnTo', 'THEN was reached with the correct RESULT')
+            t.ok(this.RESULT == 'returnTo', 'NEXT was reached with the correct RESULT')
             
             t.endAsync(async2)
-        })
+        }).NOW()
 
         
         
@@ -107,7 +107,7 @@ StartTest(function(t) {
             //======================================================================================================================================================================================================================================================            
             t.diag('Call without RETURN')
         
-            t.ok(!thenReached, 'THEN section was not reached without RETURN')
+            t.ok(!thenReached, 'NEXT section was not reached without RETURN')
             
             t.endAsync(async3)
         }, 100)

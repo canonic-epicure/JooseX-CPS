@@ -26,9 +26,9 @@ StartTest(function(t) {
             
             this.THROW('error1')
             
-        }, scope1).NEXT(function () {
+        }, scope1).THEN(function () {
             
-            t.fail("'NEXT' was reached after exception")
+            t.fail("'THEN' was reached after exception")
             
         }).CATCH(function (e) {
             
@@ -84,7 +84,7 @@ StartTest(function(t) {
         
         
         //======================================================================================================================================================================================================================================================
-        //t.diag('Call with THROW/CATCH - native exceptions, THROW from NEXT')
+        //t.diag('Call with THROW/CATCH - native exceptions, THROW from THEN')
 
         var async2  = t.beginAsync()
         var cont2   = new JooseX.CPS.Continuation.TryRetThen()
@@ -99,7 +99,7 @@ StartTest(function(t) {
             
             this.RETURN()
             
-        }).NEXT(function () {
+        }).THEN(function () {
             
             throw 'error2'
             
@@ -120,14 +120,14 @@ StartTest(function(t) {
         
         
         //======================================================================================================================================================================================================================================================
-        //t.diag('THROW with THEN')
+        //t.diag('THROW with NEXT')
 
         var async3  = t.beginAsync()
         var cont3   = new JooseX.CPS.Continuation.TryRetThen()
         
         cont3.TRY(function () {
             //======================================================================================================================================================================================================================================================            
-            t.diag('THROW with THEN')
+            t.diag('THROW with NEXT')
             
             throw 'error3'
             
@@ -145,9 +145,9 @@ StartTest(function(t) {
             
             this.RETURN()
             
-        }).THEN(function () {
+        }).NEXT(function () {
             
-            t.pass("'THEN' was reached")
+            t.pass("'NEXT' was reached")
             
             t.endAsync(async3)
         })

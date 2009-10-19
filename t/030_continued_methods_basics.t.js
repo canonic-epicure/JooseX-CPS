@@ -99,9 +99,9 @@ StartTest(function(t) {
         
         t.ok(res1 instanceof JooseX.CPS.Continuation.TryRetThen, "Continued methods returned an instance of 'JooseX.CPS.Continuation.TryRetThen'")
         
-        res1.NEXT(function () {
+        res1.THEN(function () {
             
-            t.fail("'NEXT' was reached in presense of error")
+            t.fail("'THEN' was reached in presense of error")
             
         }).CATCH(function (e) {
             t.ok(e == 'odd', 'Odd sum was detected')
@@ -114,10 +114,10 @@ StartTest(function(t) {
             
             this.RETURN()
             
-        }).THEN(function (res) {
-            t.pass("'THEN' was reached even in presense of error")
+        }).NEXT(function (res) {
+            t.pass("'NEXT' was reached even in presense of error")
             
-            t.ok(res == 'recover', 'THEN received recovery value from CATCH')
+            t.ok(res == 'recover', 'NEXT received recovery value from CATCH')
             
             t.endAsync(async1)
         })
@@ -128,11 +128,11 @@ StartTest(function(t) {
         
         var async2 = t.beginAsync()
         
-        cps.checkEven(1, 11).NEXT(function (res) {
+        cps.checkEven(1, 11).THEN(function (res) {
             
-            t.ok(res == 'even', 'Even sum was passed into NEXT')
+            t.ok(res == 'even', 'Even sum was passed into THEN')
             
-            t.pass("'NEXT' was correctly reached")
+            t.pass("'THEN' was correctly reached")
             
             this.RETURN(res)
             
@@ -146,9 +146,9 @@ StartTest(function(t) {
             
             this.RETURN()
             
-        }).THEN(function (res) {
+        }).NEXT(function (res) {
             
-            t.ok(res == 'even', 'Even sum was passed into THEN')
+            t.ok(res == 'even', 'Even sum was passed into NEXT')
             
             t.endAsync(async2)
         })

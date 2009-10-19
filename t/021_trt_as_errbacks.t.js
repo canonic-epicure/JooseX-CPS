@@ -100,7 +100,7 @@ StartTest(function(t) {
                 value2      : 'yo2'
             })
             
-        }).THEN(function (res1, res2, params) {
+        }).NEXT(function (res1, res2, params) {
             
             t.ok(this == scope5, "Scope was correctly propagated")
             t.ok(res2 == 'yo2', "Correct arguments received")

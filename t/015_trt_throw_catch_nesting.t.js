@@ -20,7 +20,7 @@ StartTest(function(t) {
         
         cont1.TRY(function () {
             //======================================================================================================================================================================================================================================================            
-            t.diag('THROW with THEN')
+            t.diag('THROW with NEXT')
             
             
             this.CONT.TRY(function () {
@@ -36,9 +36,9 @@ StartTest(function(t) {
             
             this.RETURN()
             
-        }).THEN(function () {
+        }).NEXT(function () {
             
-            t.pass("'THEN' was reached")
+            t.pass("'NEXT' was reached")
             
             t.endAsync(async1)
         })
@@ -75,9 +75,9 @@ StartTest(function(t) {
             
             this.RETURN()
             
-        }).THEN(function () {
+        }).NEXT(function () {
             
-            t.pass("'THEN' was reached")
+            t.pass("'NEXT' was reached")
             
             t.endAsync(async2)
         })
@@ -113,7 +113,7 @@ StartTest(function(t) {
             
             this.RETURN()
             
-        }).THEN(function (res) {
+        }).NEXT(function (res) {
             
             t.ok(res == 'recover3', "Control flow after handled exception is correct")
             

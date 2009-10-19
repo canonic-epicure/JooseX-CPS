@@ -41,11 +41,11 @@ StartTest(function(t) {
                 scope       : scope2
             })
             
-        }, scope1).THEN(function (result1, result2, params) {
+        }, scope1).NEXT(function (result1, result2, params) {
             //======================================================================================================================================================================================================================================================            
-            t.diag('Try/Return/Then used as usual callbacks - THEN')
+            t.diag('Try/Return/Then used as usual callbacks - NEXT')
             
-            t.ok(this == scope2, "Scope was correctly passed into 'THEN'")
+            t.ok(this == scope2, "Scope was correctly passed into 'NEXT'")
             
             t.ok(this.CONT.parent.parent == cont1, "Continuation is next for the one nested into 'cont1'")
             
@@ -77,13 +77,13 @@ StartTest(function(t) {
                 scope       : scope4
             })
             
-        }, scope3).THEN(function (r1, r2, r3) {
+        }, scope3).NEXT(function (r1, r2, r3) {
             //======================================================================================================================================================================================================================================================            
-            t.diag('Try/Return/Then used as usual callbacks - THEN')
+            t.diag('Try/Return/Then used as usual callbacks - NEXT')
             
-            t.ok(this == scope4, "Scope was correctly passed into 'THEN'")
+            t.ok(this == scope4, "Scope was correctly passed into 'NEXT'")
             
-            t.ok(r1 == null && r2 == null && r3 == null, 'Empty array was provided as arguments for THEN')
+            t.ok(r1 == null && r2 == null && r3 == null, 'Empty array was provided as arguments for NEXT')
             
             t.ok(this.CONT.parent.parent == cont2, "Continuation is next for the one nested into 'cont2'")
             
@@ -118,7 +118,7 @@ StartTest(function(t) {
                     value1      : 'yo'
                 })
                 
-            }).THEN(function (res1) {
+            }).NEXT(function (res1) {
                 
                 if (res1 == 'yo') 
                     this.RETURN('foo')
@@ -127,9 +127,9 @@ StartTest(function(t) {
                 
             })
             
-        }, scope5).THEN(function (res) {
+        }, scope5).NEXT(function (res) {
             
-            t.ok(this == scope5, "Scope was correctly passed into 'THEN'")
+            t.ok(this == scope5, "Scope was correctly passed into 'NEXT'")
             t.ok(res == 'foo', "Control flow was correct")
             
             xhrRequest({
@@ -137,14 +137,14 @@ StartTest(function(t) {
                 value2      : 'yo2'
             })
             
-        }).THEN(function (res1, res2, params) {
+        }).NEXT(function (res1, res2, params) {
             
             t.ok(this == scope5, "Scope was correctly propagated")
             t.ok(res2 == 'yo2', "Correct arguments received")
             
             this.RETURN()
             
-        }).THEN(function () {
+        }).NEXT(function () {
             
             t.endAsync(async3)
             

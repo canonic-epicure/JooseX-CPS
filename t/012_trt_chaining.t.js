@@ -13,7 +13,7 @@ StartTest(function(t) {
         
         
         //======================================================================================================================================================================================================================================================            
-        //t.diag('Chained THEN')
+        //t.diag('Chained NEXT')
         
         var async7  = t.beginAsync()
         var cont7   = new JooseX.CPS.Continuation.TryRetThen()
@@ -21,7 +21,7 @@ StartTest(function(t) {
         
         cont7.TRY(function () {
             //======================================================================================================================================================================================================================================================            
-            t.diag('Chained THEN - TRY')
+            t.diag('Chained NEXT - TRY')
             
             t.ok(this.CONT.parent == cont7, "Current continuation is nested into 'cont7'")
             
@@ -34,13 +34,13 @@ StartTest(function(t) {
 
         var cont9 = cont7.THEN(function () {
             //======================================================================================================================================================================================================================================================            
-            t.diag('Chained THEN - THEN #1')
+            t.diag('Chained NEXT - NEXT #1')
             
             t.ok(this.CONT.parent == cont9, "Current continuation is nested into 'cont9'")
             
-            t.ok(this == scope7, "Scope was correctly propagated to 'THEN'")
+            t.ok(this == scope7, "Scope was correctly propagated to 'NEXT'")
             
-            t.ok(this.RESULT == 'result7', 'THEN #1 was reached with the correct RESULT')
+            t.ok(this.RESULT == 'result7', 'NEXT #1 was reached with the correct RESULT')
             
             this.RETURN('result7-2')
             
@@ -49,17 +49,18 @@ StartTest(function(t) {
         
         var cont11 = cont9.THEN(function () {
             //======================================================================================================================================================================================================================================================            
-            t.diag('Chained THEN - THEN #2')
+            t.diag('Chained NEXT - NEXT #2')
             
             t.ok(this.CONT.parent == cont11, "Current continuation is nested into 'cont11'")
 
-            t.ok(this == scope7, "Scope was correctly propagated to 2nd 'THEN'")
+            t.ok(this == scope7, "Scope was correctly propagated to 2nd 'NEXT'")
             
-            t.ok(this.RESULT == 'result7-2', 'THEN #2 was reached with the correct RESULT')
+            t.ok(this.RESULT == 'result7-2', 'NEXT #2 was reached with the correct RESULT')
             
             t.endAsync(async7)
         })
         
+        cont11.NOW()
         
         t.endAsync(async0)
     })

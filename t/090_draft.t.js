@@ -55,15 +55,15 @@ StartTest(function(t) {
         
         this <- cps
         
-        this.async1(p1, p2).THEN(
+        this.async1(p1, p2).NEXT(
         
             this.async2(p3, p4)
             
-        ).THEN(
+        ).NEXT(
         
             this.async3(p4, p5)
             
-        ).THEN(function () {
+        ).NEXT(function () {
             
             if (this.RESULT == '...') 
                 this.async4().NOW()
@@ -82,7 +82,7 @@ StartTest(function(t) {
         
             this.async3(p4, p5)
             
-        ).THEN(function () {
+        ).NEXT(function () {
             
             if (this.RESULT == '...') 
                 this.async4().NOW()
@@ -153,11 +153,11 @@ StartTest(function(t) {
         
         
         
-        cps.checkEven(1, 11).NEXT(function (res) {
+        cps.checkEven(1, 11).THEN(function (res) {
             
             cps.bar(baz)
             
-        }).NEXT(function () {
+        }).THEN(function () {
             
         }).CATCH(function (e) {
             t.fail("'CATCH' was reached in absense of error")
@@ -167,7 +167,7 @@ StartTest(function(t) {
             
             this.RETURN()
             
-        }).THEN(function (res) {
+        }).NEXT(function (res) {
             
             foo.bar()
             

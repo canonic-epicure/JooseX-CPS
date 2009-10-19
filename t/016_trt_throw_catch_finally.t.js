@@ -64,9 +64,9 @@ StartTest(function(t) {
             
             this.RETURN()
             
-        }).THEN(function () {
+        }).NEXT(function () {
             
-            t.pass("'THEN' was reached")
+            t.pass("'NEXT' was reached")
             
             t.endAsync(async1)
         })
@@ -125,9 +125,9 @@ StartTest(function(t) {
             
             this.RETURN()
             
-        }).THEN(function () {
+        }).NEXT(function () {
             
-            t.pass("Outer 'THEN' was reached")
+            t.pass("Outer 'NEXT' was reached")
             
             t.endAsync(async11)
         })
@@ -188,9 +188,9 @@ StartTest(function(t) {
             
             this.RETURN()
             
-        }).THEN(function () {
+        }).NEXT(function () {
             
-            t.pass("Outer 'THEN' was reached")
+            t.pass("Outer 'NEXT' was reached")
             
             t.endAsync(async111)
         })

@@ -33,7 +33,7 @@ StartTest(function(t) {
                 
                 CONT.TRY(function () {
                     
-                    t.ok(this == scope4, "Scope was correctly passed into nested 'TRY'")
+                    t.ok(this == scope4, "Scope was correctly passed into nested 'TRY' #1")
                     
                     this.RETURN('returnTo')
                 }).NOW()
@@ -42,14 +42,14 @@ StartTest(function(t) {
             
         }, scope4).THEN(function () {
             //======================================================================================================================================================================================================================================================            
-            t.diag("'TRY' nesting - THEN")
+            t.diag("'TRY' nesting - NEXT")
             
-            t.ok(this == scope4Then, "Scope was correctly passed into 'THEN'")
+            t.ok(this == scope4Then, "Scope was correctly passed into 'NEXT'")
             
-            t.ok(this.RESULT == 'returnTo', 'THEN was reached from the nested TRY with the correct result')
+            t.ok(this.RESULT == 'returnTo', 'NEXT was reached from the nested TRY with the correct result')
             
             t.endAsync(async4)
-        }, scope4Then)
+        }, scope4Then).NOW()
 
         
         
@@ -79,23 +79,23 @@ StartTest(function(t) {
                     
                 }).THEN(function () {
                     
-                    t.ok(this == scope5, "Scope was correctly passed into nested 'THEN'")
+                    t.ok(this == scope5, "Scope was correctly passed into nested 'NEXT'")
                     
                     this.RETURN(this.RESULT)
-                })
+                }).NOW()
                 
             }, 10)
             
         }, scope5).THEN(function () {
             //======================================================================================================================================================================================================================================================            
-            t.diag('Try/Then nesting - THEN')
+            t.diag('Try/Then nesting - NEXT')
             
-            t.ok(this == scope5, "Scope was correctly passed into outer 'THEN'")
+            t.ok(this == scope5, "Scope was correctly passed into outer 'NEXT'")
             
-            t.ok(this.RESULT == 'returnTo2', 'THEN was reached from the nested TRY/THEN with the correct result :)')
+            t.ok(this.RESULT == 'returnTo2', 'NEXT was reached from the nested TRY/NEXT with the correct result :)')
             
             t.endAsync(async5)
-        })
+        }).NOW()
         
         
         
@@ -120,7 +120,7 @@ StartTest(function(t) {
                     //======================================================================================================================================================================================================================================================            
                     t.diag('More Try/Then nesting - TRY')
                     
-                    t.ok(this.RESULT == 'returnTo2', 'THEN was reached from the nested TRY with the correct result')
+                    t.ok(this.RESULT == 'returnTo2', 'NEXT was reached from the nested TRY with the correct result')
                     
                     
                     this.CONT.TRY(function () {
@@ -131,41 +131,42 @@ StartTest(function(t) {
                         
                     }).THEN(function () {
                         
-                        t.ok(this == scope6, "Scope was correctly passed into most nested 'THEN'")
+                        t.ok(this == scope6, "Scope was correctly passed into most nested 'NEXT'")
                         
-                        t.ok(this.RESULT == 'result3', 'Another THEN was reached from the nested TRY with the correct result')
+                        t.ok(this.RESULT == 'result3', 'Another NEXT was reached from the nested TRY with the correct result')
                         
                         this.RETURN('result4')
-                    })
-                })
+                    }).NOW()
+                    
+                }).NOW()
                 
             }, 10)
             
-        }, scope6).THEN(function (cont, result) {
+        }, scope6).NEXT(function (cont, result) {
             //======================================================================================================================================================================================================================================================            
-            t.diag('More Try/Then nesting - THEN')
+            t.diag('More Try/Then nesting - NEXT')
             
-            t.ok(this == scope6, "Scope was correctly passed into outer 'THEN'")
+            t.ok(this == scope6, "Scope was correctly passed into outer 'NEXT'")
             
-            t.ok(this.RESULT == 'result4', 'Outer THEN was reached from the nested TRY/THEN/THEN with the correct result')
+            t.ok(this.RESULT == 'result4', 'Outer NEXT was reached from the nested TRY/NEXT/THEN with the correct result')
             
             
             this.CONT.TRY(function () {
                 
-                t.ok(this == scope6, "Scope was correctly passed into nested 'TRY' of outer 'THEN'")
+                t.ok(this == scope6, "Scope was correctly passed into nested 'TRY' of outer 'NEXT'")
                 
                 this.RETURN('result5')
                 
             }).THEN(function () {
                 
-                t.ok(this == scope6, "Scope was correctly passed into nested 'THEN' of outer 'THEN'")
+                t.ok(this == scope6, "Scope was correctly passed into nested 'NEXT' of outer 'NEXT'")
                 
                 t.ok(this.RESULT == 'result5', '.. as well as result')
                 
                 this.RETURN()
                 
                 t.endAsync(async6)
-            })
+            }).NOW()
         })
         
         
