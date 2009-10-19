@@ -58,13 +58,14 @@ StartTest(function(t) {
             
             this.CONT.TRY(function () {
                 
-                this.THROW('error2')
+                throw 'error2'
                 
             }).CATCH(function (e) {
             
                 t.ok(e == 'error2', "Innermost throw was caught correctly")
                 
-                this.THROW('error22')
+                throw 'error22'
+                
             }).NOW()
             
             

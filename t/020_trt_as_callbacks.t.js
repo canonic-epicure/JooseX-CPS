@@ -15,7 +15,10 @@ StartTest(function(t) {
         var xhrRequest = function (params) {
             
             setTimeout(function () {
-                params.callback.call(params.scope || Joose.top, params.value1 || 'value1', params.value2 || 'value2', params)
+                if (params.error)
+                    params.errback.call(params.scope || Joose.top, params.value1 || 'value1', params.value2 || 'value2', params)
+                else
+                    params.callback.call(params.scope || Joose.top, params.value1 || 'value1', params.value2 || 'value2', params)
             }, 5)
         }
         

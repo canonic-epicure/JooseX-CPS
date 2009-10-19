@@ -128,7 +128,24 @@ StartTest(function(t) {
         } finally {
             console.log('outer fin')
         }        
+
         
+        
+        try {
+            console.log('outer try')
+            try {
+                console.log('inner try')
+                throw 'a'
+            } catch (e) {
+                console.log('inner catch')
+                throw 'b'
+            }
+        
+        } catch (e) {
+            console.log('outer catch')
+        } finally {
+            console.log('outer fin')
+        }        
         
         
     })

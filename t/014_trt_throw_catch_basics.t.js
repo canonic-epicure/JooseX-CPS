@@ -26,8 +26,6 @@ StartTest(function(t) {
             
             this.THROW('error1')
             
-            t.fail("Reached code after 'THROW'")
-            
         }, scope1).CATCH(function (e) {
             
             t.ok(this == scope1, "'CATCH' scope was copied from 'TRY'")

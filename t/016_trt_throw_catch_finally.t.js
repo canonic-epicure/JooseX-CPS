@@ -133,42 +133,67 @@ StartTest(function(t) {
         })
         
         
-//        //======================================================================================================================================================================================================================================================
-//        //t.diag('Nested THROW/CATCH #2')
-//
-//        var async3  = t.beginAsync()
-//        var cont3   = new JooseX.CPS.Continuation.TryRetThen()
-//        
-//        cont3.TRY(function () {
-//            //======================================================================================================================================================================================================================================================            
-//            t.diag('Nested THROW/CATCH #2')
-//            
-//            
-//            this.CONT.TRY(function () {
-//                
-//                this.THROW('error3')
-//                
-//            }).CATCH(function (e) {
-//            
-//                t.ok(e == 'error3', "Innermost 'THROW' was caught correctly")
-//                
-//                this.RETURN('recover3')
-//                
-//            }).NOW()
-//            
-//            
-//        }, {}).CATCH(function (e) {
-//            
-//            t.fail("'CATCH' for handled exception was reached")
-//            
-//            this.RETURN()
-//            
-//        }).THEN(function (res) {
-//            
-//            t.ok(res == 'recover3', "Control flow after handled exception is correct")
-//            
-//            t.endAsync(async3)
-//        })
+        
+        //======================================================================================================================================================================================================================================================
+        //t.diag('THROW from CATCH')
+
+        var async111  = t.beginAsync()
+        var cont111   = new JooseX.CPS.Continuation.TryRetThen()
+        
+        var catch111Reached   = false
+        var catch222Reached   = false
+        var finally222Reached = false
+        
+        cont111.TRY(function () {
+            //======================================================================================================================================================================================================================================================            
+            t.diag('THROW from CATCH')
+            
+            this.CONT.TRY(function () {
+                
+                throw 'error111'
+                
+            }).CATCH(function (e) {
+                
+                catch111Reached = true
+                
+                t.pass("'CATCH111' was reached #1")
+                
+                t.ok(e == 'error111', "Caught correct exception")
+                
+                t.ok(!catch222Reached, "'CATCH222' not yet reached")
+                t.ok(!finally222Reached, "'FINALLY222' not yet reached")
+                
+                this.THROW('error222')
+                
+            }).NOW()
+            
+        }, {}).CATCH(function (e) {
+            
+            catch222Reached = true
+            
+            t.ok(e == 'error222', "Caught exception is from inner CATCH")
+            
+            t.ok(!finally222Reached, "'FINALLY222' not yet reached")
+            
+            this.RETURN()
+            
+        }).FINALLY(function () {
+            
+            finally222Reached = true
+                
+            t.pass("'FINALLY' was reached #2")
+            
+            t.ok(catch111Reached, "'CATCH111' was reached")
+            t.ok(catch222Reached, "'CATCH222' was reached")
+            
+            this.RETURN()
+            
+        }).THEN(function () {
+            
+            t.pass("Outer 'THEN' was reached")
+            
+            t.endAsync(async111)
+        })
 
         
         t.endAsync(async0)
