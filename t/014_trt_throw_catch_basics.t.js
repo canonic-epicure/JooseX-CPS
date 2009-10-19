@@ -1,6 +1,6 @@
 StartTest(function(t) {
     
-	t.plan(7)
+	t.plan(12)
     
     var async0 = t.beginAsync()
     
@@ -38,9 +38,49 @@ StartTest(function(t) {
             
             this.RETURN()
             
+        }).FINALLY(function () {
+            
+            t.pass("'FINALLY' was reached")
+            
+            t.ok(this == scope1, "'FINALLY' scope was copied from 'TRY'")
+            
+            this.RETURN()
+            
         }).NOW()
 
 
+
+        //======================================================================================================================================================================================================================================================
+        //t.diag('Call with THROW/CATCH - no error, plus FINALLY')
+
+        var async15  = t.beginAsync()
+        var cont15   = new JooseX.CPS.Continuation.TryRetThen()
+        var scope15  = {}
+
+        cont15.TRY(function () {
+            
+            this.RETURN()
+            
+        }, {}).CATCH(function (e) {
+            
+            t.fail("'CATCH' was reached without 'THROW'")
+            
+            this.RETURN()
+            
+        }).FINALLY(function () {
+            
+            t.pass("'FINALLY' was reached")
+            
+            t.ok(this == scope15, "'FINALLY' scope was copied from arguments")
+            
+            t.endAsync(async15)
+            
+            this.RETURN()
+            
+        }, scope15).NOW()
+
+        
+        
         //======================================================================================================================================================================================================================================================
         //t.diag('Call with THROW/CATCH - native exceptions')
 
@@ -88,6 +128,12 @@ StartTest(function(t) {
         }, {}).CATCH(function (e) {
             
             t.ok(e == 'error3', "Error thrown via native 'throw' was caught correctly")
+            
+            this.RETURN()
+            
+        }).FINALLY(function () {
+            
+            t.pass("'FINALLY' was reached")
             
             this.RETURN()
             

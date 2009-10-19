@@ -34,7 +34,7 @@
 	<body>
 		<script type="text/javascript">
             var INC = []
-            Joose.A.each([ 'lib', '../lib', '/jsan' ], function (path) {
+            Joose.A.each([ '../lib', '/jsan' ], function (path) {
                 INC.push(Test.Run.Harness.Browser.Multi.my.resolveUrl(path, true))
             }) 
 		
@@ -60,8 +60,9 @@
 				'011_trt_nesting.t.js',
 				'012_trt_chaining.t.js',
 				'013_trt_early_return.t.js',
-				'014_trt_throw_catch1.t.js',
-				'015_trt_throw_catch2.t.js',
+				'014_trt_throw_catch_basics.t.js',
+				'015_trt_throw_catch_nesting.t.js',
+				'016_trt_throw_catch_finally.t.js',
 				
 				'020_trt_as_callbacks.t.js'
 			)
