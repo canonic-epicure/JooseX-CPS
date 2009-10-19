@@ -1,6 +1,6 @@
 StartTest(function(t) {
     
-	t.plan(10)
+	t.plan(12)
     
     var async0 = t.beginAsync()
     
@@ -36,11 +36,19 @@ StartTest(function(t) {
             t.ok(this == Joose.top, 'Scope was defaulted to global scope')
             t.ok(p1 == 1 && p2 == 10, 'Correct parameters were passed')
             
+            this.RETURN('value')
+            
+        }, null, [ 1, 10 ]).NEXT(function (res) {
+            
+            t.pass('NEXT was reached')
+            
+            t.ok(res == 'value', "Next received correct return value")
+            
             this.RETURN()
             
             t.endAsync(async1)
             
-        }, null, [ 1, 10 ]).NOW()
+        }).NOW()
         
         
         

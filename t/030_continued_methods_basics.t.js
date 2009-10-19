@@ -1,6 +1,6 @@
 StartTest(function(t) {
     
-	t.plan(10)
+	t.plan(14)
     
     var async0 = t.beginAsync()
 	
@@ -22,6 +22,7 @@ StartTest(function(t) {
             
             methods : {
                 
+                //hypotetical call with callback
                 xhr : function (params) {
             
                     setTimeout(function () {
@@ -47,11 +48,20 @@ StartTest(function(t) {
                                 CONT.RETURN('even')
                             else
                                 CONT.THROW('odd')
-                        })
+                        }, 1)
                     },
                     
                     
-                    async2 : function () {
+                    request : function (value1, value2, error) {
+                        this.xhr({
+                            error : error,
+                            
+                            value1 : value1, 
+                            value2 : value2,
+                            
+                            callback : this.RETURN,
+                            errback  : this.THROW
+                        })
                     },
                     
                     
@@ -89,18 +99,27 @@ StartTest(function(t) {
         
         t.ok(res1 instanceof JooseX.CPS.Continuation.TryRetThen, "Continued methods returned an instance of 'JooseX.CPS.Continuation.TryRetThen'")
         
-        res1.CATCH(function (e) {
+        res1.NEXT(function () {
+            
+            t.fail("'NEXT' was reached in presense of error")
+            
+        }).CATCH(function (e) {
             t.ok(e == 'odd', 'Odd sum was detected')
+            
+            this.RETURN('recover')
+            
+        }).FINALLY(function () {
+            
+            t.pass("'FINALLY' was reached anyway #1")
             
             this.RETURN()
             
-        }).FINALLY(function () {
-            t.pass("'FINALLY' was reached even in presense of error")
+        }).THEN(function (res) {
+            t.pass("'THEN' was reached even in presense of error")
+            
+            t.ok(res == 'recover', 'THEN received recovery value from CATCH')
             
             t.endAsync(async1)
-            
-        }).THEN(function () {
-            t.fail("'THEN' was reached in presense of error")
         })
         
 
@@ -109,20 +128,35 @@ StartTest(function(t) {
         
         var async2 = t.beginAsync()
         
-        cps.checkEven(1, 11).CATCH(function (e) {
+        cps.checkEven(1, 11).NEXT(function (res) {
+            
+            t.ok(res == 'even', 'Even sum was passed into NEXT')
+            
+            t.pass("'NEXT' was correctly reached")
+            
+            this.RETURN(res)
+            
+        }).CATCH(function (e) {
             
             t.fail("'CATCH' was reached in absense of error")
+            
         }).FINALLY(function () {
             
-            t.pass("'FINALLY' was reached even in absense of error")
+            t.pass("'FINALLY' was reached anyway #2")
             
             this.RETURN()
             
         }).THEN(function (res) {
-            t.ok(res == 'even', 'Even sum was detected')
+            
+            t.ok(res == 'even', 'Even sum was passed into THEN')
             
             t.endAsync(async2)
         })
+        
+        
+        //======================================================================================================================================================================================================================================================
+        t.diag('Basic method call - without error')
+        
         
         t.endAsync(async0)
     })

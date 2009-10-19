@@ -1,6 +1,6 @@
 StartTest(function(t) {
     
-	t.plan(12)
+	t.plan(13)
     
     var async0 = t.beginAsync()
     
@@ -26,7 +26,11 @@ StartTest(function(t) {
             
             this.THROW('error1')
             
-        }, scope1).CATCH(function (e) {
+        }, scope1).NEXT(function () {
+            
+            t.fail("'NEXT' was reached after exception")
+            
+        }).CATCH(function (e) {
             
             t.ok(this == scope1, "'CATCH' scope was copied from 'TRY'")
             
@@ -80,7 +84,7 @@ StartTest(function(t) {
         
         
         //======================================================================================================================================================================================================================================================
-        //t.diag('Call with THROW/CATCH - native exceptions')
+        //t.diag('Call with THROW/CATCH - native exceptions, THROW from NEXT')
 
         var async2  = t.beginAsync()
         var cont2   = new JooseX.CPS.Continuation.TryRetThen()
@@ -90,6 +94,12 @@ StartTest(function(t) {
         cont2.TRY(function () {
             //======================================================================================================================================================================================================================================================            
             t.diag('Call with THROW/CATCH - native exceptions')
+            
+            t.pass("Initial 'TRY' was reached")
+            
+            this.RETURN()
+            
+        }).NEXT(function () {
             
             throw 'error2'
             

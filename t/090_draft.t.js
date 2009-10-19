@@ -148,6 +148,49 @@ StartTest(function(t) {
         }        
         
         
+        
+        
+        
+        
+        
+        cps.checkEven(1, 11).NEXT(function (res) {
+            
+            cps.bar(baz)
+            
+        }).NEXT(function () {
+            
+        }).CATCH(function (e) {
+            t.fail("'CATCH' was reached in absense of error")
+        }).FINALLY(function () {
+            
+            t.pass("'FINALLY' was reached even in absense of error")
+            
+            this.RETURN()
+            
+        }).THEN(function (res) {
+            
+            foo.bar()
+            
+        })
+        
+        
+        try {
+            cps.checkEvent(1, 11)
+        } catch (e) {
+        } finally {
+            
+        }
+            
+        
+        
+        foo.bar()
+        
+        
+        
+        
+        
+        
+        
     })
     
 })    
