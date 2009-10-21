@@ -20,19 +20,19 @@ StartTest(function(t) {
             
             trait : JooseX.CPS,
             
-            methods : {
-                
-                //hypotetical call with callback
-                xhr : function (params) {
-            
-                    setTimeout(function () {
-                        if (params.error)
-                            params.errback.call(params.scope || Joose.top, params.value1 || 'value1', params.value2 || 'value2', params)
-                        else
-                            params.callback.call(params.scope || Joose.top, params.value1 || 'value1', params.value2 || 'value2', params)
-                    }, 1)
-                }
-            },
+//            methods : {
+//                
+//                //hypotetical call with callback
+//                xhr : function (params) {
+//            
+//                    setTimeout(function () {
+//                        if (params.error)
+//                            params.errback.call(params.scope || Joose.top, params.value1 || 'value1', params.value2 || 'value2', params)
+//                        else
+//                            params.callback.call(params.scope || Joose.top, params.value1 || 'value1', params.value2 || 'value2', params)
+//                    }, 1)
+//                }
+//            },
             
             
             continued : {
@@ -49,32 +49,26 @@ StartTest(function(t) {
                             else
                                 CONT.THROW('odd')
                         }, 1)
-                    },
-                    
-                    
-                    request : function (value1, value2, error) {
-                        this.xhr({
-                            error : error,
-                            
-                            value1 : value1, 
-                            value2 : value2,
-                            
-                            callback : this.RETURN,
-                            errback  : this.THROW
-                        })
-                    },
-                    
-                    
-                    async3 : function () {
                     }
-                }
-                
-//                ,
-//                after : {
-//                    async1 : function (param1, param2) {
-//                        this.RETURN()
+//                    ,
+                    
+                    
+//                    request : function (value1, value2, error) {
+//                        this.xhr({
+//                            error : error,
+//                            
+//                            value1 : value1, 
+//                            value2 : value2,
+//                            
+//                            callback : this.RETURN,
+//                            errback  : this.THROW
+//                        })
+//                    },
+//                    
+//                    
+//                    async3 : function () {
 //                    }
-//                }
+                }
             }
         
         })
@@ -148,7 +142,7 @@ StartTest(function(t) {
             
         }).NEXT(function (res) {
             
-            t.ok(res == 'even', 'Even sum was passed into NEXT')
+            t.ok(res == 'even', 'Even sum was passed into THEN, return value from FINALLY was ignored')
             
             t.endAsync(async2)
         })
