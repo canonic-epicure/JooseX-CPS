@@ -39,7 +39,7 @@ StartTest(function(t) {
                 t.ok(!catchReached, "'CATCH' not yet reached")
                 t.ok(!finally2Reached, "'FINALLY2' not yet reached")
                 
-                this.RETURN()
+                this.CONTINUE()
                 
             }).NOW()
             
@@ -51,7 +51,7 @@ StartTest(function(t) {
             
             t.ok(!finally2Reached, "'FINALLY2' not yet reached")
             
-            this.RETURN()
+            this.CONTINUE()
             
         }).FINALLY(function () {
             
@@ -62,7 +62,7 @@ StartTest(function(t) {
             t.ok(catchReached, "'CATCH' was reached")
             t.ok(finally1Reached, "'FINALLY1' was reached")
             
-            this.RETURN()
+            this.CONTINUE()
             
         }).NEXT(function () {
             
@@ -112,7 +112,7 @@ StartTest(function(t) {
             
             t.ok(!finally22Reached, "'FINALLY2' not yet reached")
             
-            this.RETURN()
+            this.CONTINUE()
             
         }).FINALLY(function () {
             
@@ -123,7 +123,7 @@ StartTest(function(t) {
             t.ok(catch11Reached, "'CATCH' was reached")
             t.ok(finally11Reached, "'FINALLY11' was reached")
             
-            this.RETURN()
+            this.CONTINUE()
             
         }).NEXT(function () {
             
@@ -175,7 +175,7 @@ StartTest(function(t) {
             
             t.ok(!finally222Reached, "'FINALLY222' not yet reached")
             
-            this.RETURN()
+            this.CONTINUE()
             
         }).FINALLY(function () {
             
@@ -186,7 +186,7 @@ StartTest(function(t) {
             t.ok(catch111Reached, "'CATCH111' was reached")
             t.ok(catch222Reached, "'CATCH222' was reached")
             
-            this.RETURN()
+            this.CONTINUE()
             
         }).NEXT(function () {
             

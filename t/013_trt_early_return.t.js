@@ -32,13 +32,13 @@ StartTest(function(t) {
                     //======================================================================================================================================================================================================================================================
                     t.diag('More Try/Then nesting - Nested TRY')
                     
-                    t.pass("Nested 'TRY' was reached anyway, regardless of early RETURN")
+                    t.pass("Nested 'TRY' was reached anyway, regardless of early CONTINUE")
                     
                     t.ok(this == scope6, "Scope was correctly passed into nested 'TRY'")
                     
                     t.ok(this.CONT.parent == CONT, "Current continuation is nested into 'CONT'")
                     
-                    this.RETURN('returnTo2')
+                    this.CONTINUE('returnTo2')
                     
                 }).THEN(function () {
                     //======================================================================================================================================================================================================================================================            
@@ -51,7 +51,7 @@ StartTest(function(t) {
                         
                         t.ok(this == scope6, "Scope was correctly passed into most nested 'TRY'")
                         
-                        this.RETURN('result3')
+                        this.CONTINUE('result3')
                         
                     }).THEN(function () {
                         
@@ -59,7 +59,7 @@ StartTest(function(t) {
                         
                         t.ok(this.RESULT == 'result3', 'Another NEXT was reached from the nested TRY with the correct result')
                         
-                        this.RETURN('result4')
+                        this.CONTINUE('result4')
                         
                         t.endAsync(async6)
                         
@@ -67,7 +67,7 @@ StartTest(function(t) {
                     
                 }).NOW()
                 
-                CONT.RETURN('early')
+                CONT.CONTINUE('early')
                 
             }, 10)
             

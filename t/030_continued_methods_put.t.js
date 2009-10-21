@@ -45,7 +45,7 @@ StartTest(function(t) {
                         
                         setTimeout(function () {
                             if ((param1 + param2) % 2 == 0) 
-                                CONT.RETURN('even')
+                                CONT.CONTINUE('even')
                             else
                                 CONT.THROW('odd')
                         }, 1)
@@ -60,7 +60,7 @@ StartTest(function(t) {
 //                            value1 : value1, 
 //                            value2 : value2,
 //                            
-//                            callback : this.RETURN,
+//                            callback : this.CONTINUE,
 //                            errback  : this.THROW
 //                        })
 //                    },
@@ -100,13 +100,13 @@ StartTest(function(t) {
         }).CATCH(function (e) {
             t.ok(e == 'odd', 'Odd sum was detected')
             
-            this.RETURN('recover')
+            this.CONTINUE('recover')
             
         }).FINALLY(function () {
             
             t.pass("'FINALLY' was reached anyway #1")
             
-            this.RETURN()
+            this.CONTINUE()
             
         }).NEXT(function (res) {
             t.pass("'NEXT' was reached even in presense of error")
@@ -128,7 +128,7 @@ StartTest(function(t) {
             
             t.pass("'THEN' was correctly reached")
             
-            this.RETURN(res)
+            this.CONTINUE(res)
             
         }).CATCH(function (e) {
             
@@ -138,7 +138,7 @@ StartTest(function(t) {
             
             t.pass("'FINALLY' was reached anyway #2")
             
-            this.RETURN()
+            this.CONTINUE()
             
         }).NEXT(function (res) {
             

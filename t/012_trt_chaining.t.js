@@ -27,7 +27,7 @@ StartTest(function(t) {
             
             t.ok(this == scope7, "Scope was correctly passed into 'TRY'")
             
-            this.RETURN('result7')
+            this.CONTINUE('result7')
             
         }, scope7)
         
@@ -42,7 +42,7 @@ StartTest(function(t) {
             
             t.ok(this.RESULT == 'result7', 'NEXT #1 was reached with the correct RESULT')
             
-            this.RETURN('result7-2')
+            this.CONTINUE('result7-2')
             
         })
         

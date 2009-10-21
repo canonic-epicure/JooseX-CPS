@@ -54,7 +54,7 @@ StartTest(function(t) {
             
             t.endAsync(async1)
             
-            this.RETURN()
+            this.CONTINUE()
             
         }, scope2).NOW()
 
@@ -96,7 +96,7 @@ StartTest(function(t) {
             t.ok(res == 'foo', "Control flow was correct")
             
             xhrRequest({
-                callback    : this.RETURN,
+                callback    : this.CONTINUE,
                 value2      : 'yo2'
             })
             

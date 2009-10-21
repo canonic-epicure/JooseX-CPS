@@ -38,7 +38,7 @@ StartTest(function(t) {
             
             t.endAsync(async1)
             
-            this.RETURN()
+            this.CONTINUE()
             
         }).FINALLY(function () {
             
@@ -46,7 +46,7 @@ StartTest(function(t) {
             
             t.ok(this == scope1, "'FINALLY' scope was copied from 'TRY'")
             
-            this.RETURN()
+            this.CONTINUE()
             
         }).NOW()
 
@@ -61,13 +61,13 @@ StartTest(function(t) {
 
         cont15.TRY(function () {
             
-            this.RETURN()
+            this.CONTINUE()
             
         }, {}).CATCH(function (e) {
             
             t.fail("'CATCH' was reached without 'THROW'")
             
-            this.RETURN()
+            this.CONTINUE()
             
         }).FINALLY(function () {
             
@@ -77,7 +77,7 @@ StartTest(function(t) {
             
             t.endAsync(async15)
             
-            this.RETURN()
+            this.CONTINUE()
             
         }, scope15).NOW()
 
@@ -97,7 +97,7 @@ StartTest(function(t) {
             
             t.pass("Initial 'TRY' was reached")
             
-            this.RETURN()
+            this.CONTINUE()
             
         }).THEN(function () {
             
@@ -113,7 +113,7 @@ StartTest(function(t) {
             
             t.endAsync(async2)
             
-            this.RETURN()
+            this.CONTINUE()
             
         }, scope2).NOW()
         
@@ -137,13 +137,13 @@ StartTest(function(t) {
             
             t.ok(e == 'error3', "Error thrown via native 'throw' was caught correctly")
             
-            this.RETURN()
+            this.CONTINUE()
             
         }).FINALLY(function () {
             
             t.pass("'FINALLY' was reached")
             
-            this.RETURN()
+            this.CONTINUE()
             
         }).NEXT(function () {
             

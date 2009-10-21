@@ -37,7 +37,7 @@ StartTest(function(t) {
             t.ok(this == scope1, "Scope was correctly passed into 'TRY'")
             
             xhrRequest({
-                callback    : this.RETURN,
+                callback    : this.CONTINUE,
                 scope       : scope2
             })
             
@@ -73,7 +73,7 @@ StartTest(function(t) {
             t.ok(this == scope3, "Scope was correctly passed into 'TRY' #2")
             
             xhrRequest({
-                callback    : this.RETURN,
+                callback    : this.CONTINUE,
                 scope       : scope4
             })
             
@@ -114,16 +114,16 @@ StartTest(function(t) {
             this.CONT.TRY(function () {
                 
                 xhrRequest({
-                    callback    : this.RETURN,
+                    callback    : this.CONTINUE,
                     value1      : 'yo'
                 })
                 
             }).NEXT(function (res1) {
                 
                 if (res1 == 'yo') 
-                    this.RETURN('foo')
+                    this.CONTINUE('foo')
                 else
-                    this.RETURN('bar')
+                    this.CONTINUE('bar')
                 
             })
             
@@ -133,7 +133,7 @@ StartTest(function(t) {
             t.ok(res == 'foo', "Control flow was correct")
             
             xhrRequest({
-                callback    : this.RETURN,
+                callback    : this.CONTINUE,
                 value2      : 'yo2'
             })
             
@@ -142,7 +142,7 @@ StartTest(function(t) {
             t.ok(this == scope5, "Scope was correctly propagated")
             t.ok(res2 == 'yo2', "Correct arguments received")
             
-            this.RETURN()
+            this.CONTINUE()
             
         }).NEXT(function () {
             

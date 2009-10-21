@@ -36,7 +36,7 @@ StartTest(function(t) {
             t.ok(this == Joose.top, 'Scope was defaulted to global scope')
             t.ok(p1 == 1 && p2 == 10, 'Correct parameters were passed')
             
-            this.RETURN('value')
+            this.CONTINUE('value')
             
         }, null, [ 1, 10 ]).THEN(function (res) {
             
@@ -44,7 +44,7 @@ StartTest(function(t) {
             
             t.ok(res == 'value', "Next received correct return value")
             
-            this.RETURN()
+            this.CONTINUE()
             
             t.endAsync(async1)
             
@@ -68,10 +68,10 @@ StartTest(function(t) {
             
             t.ok(this.CONT.parent == cont2, "Current continuation is nested into 'cont2'")
             
-            var RETURN = this.RETURN
+            var CONTINUE = this.CONTINUE
             
             setTimeout(function () {
-                RETURN('returnTo')
+                CONTINUE('returnTo')
             }, 10)
 
             
@@ -89,7 +89,7 @@ StartTest(function(t) {
         
         
         //======================================================================================================================================================================================================================================================            
-        //t.diag('Call without RETURN')
+        //t.diag('Call without CONTINUE')
         
         var async3  = t.beginAsync()
         var cont3   = new JooseX.CPS.Continuation.TryRetThen()
@@ -105,9 +105,9 @@ StartTest(function(t) {
 
         setTimeout(function () {
             //======================================================================================================================================================================================================================================================            
-            t.diag('Call without RETURN')
+            t.diag('Call without CONTINUE')
         
-            t.ok(!thenReached, 'NEXT section was not reached without RETURN')
+            t.ok(!thenReached, 'NEXT section was not reached without CONTINUE')
             
             t.endAsync(async3)
         }, 100)

@@ -51,7 +51,7 @@ StartTest(function(t) {
 //                        var CONT = this.CONT
 //                        
 //                        setTimeout(function () {
-//                            CONT.RETURN()
+//                            CONT.CONTINUE()
 //                        }, 0)
 //                    }
 //                },
@@ -66,10 +66,10 @@ StartTest(function(t) {
                         if (!this.beforeCalled) 
                             CONT.THROW("before wasn't called")
                         else
-                            CONT.RETURN(this.SUPER(param1, param2))
+                            CONT.CONTINUE(this.SUPER(param1, param2))
                             
 //                            this.SUPER(param1, param2).then(function (res) {
-//                                this.RETURN(res)
+//                                this.CONTINUE(res)
 //                            })
                             
                     }
@@ -97,7 +97,7 @@ StartTest(function(t) {
                         var CONT = this.CONT
                         
                         setTimeout(function () {
-                            CONT.RETURN()
+                            CONT.CONTINUE()
                         }, 0)
                     }
                 }
