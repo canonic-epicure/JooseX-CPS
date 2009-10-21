@@ -157,8 +157,12 @@ StartTest(function(t) {
             
             cps.bar(baz)
             
-        }).THEN(function () {
+            this.RETURN()
             
+        }).THEN(function () {
+            if (cps.baz(bar) > 1) this.CONTINUE()
+            
+            this.RETURN()
         }).CATCH(function (e) {
             t.fail("'CATCH' was reached in absense of error")
         }).FINALLY(function () {
@@ -176,17 +180,16 @@ StartTest(function(t) {
         
         try {
             cps.checkEvent(1, 11)
+            cps.bar(baz)
+            cps.baz(bar)
         } catch (e) {
         } finally {
             
         }
             
-        
-        
-        foo.bar()
-        
-        
-        
+        try {
+            foo.bar()
+        }
         
         
         

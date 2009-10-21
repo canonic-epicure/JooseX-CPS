@@ -1,6 +1,6 @@
 StartTest(function(t) {
     
-	t.plan(15)
+	t.plan(1)
     
     var async0 = t.beginAsync()
 	
@@ -21,7 +21,9 @@ StartTest(function(t) {
             
             methods : {
                 
-                checkEven : function (param1, param2) {
+                sum : function (param1, param2) {
+//                    debugger
+                    
                     return param1 + param2
                 }
             }
@@ -35,16 +37,41 @@ StartTest(function(t) {
             
             trait : JooseX.CPS,
             
+            has : {
+                beforeCalled : false
+            },
+            
             continued : {
                 
+//                before : {
+//                    checkEven : function (param1, param2) {
+//                        
+//                        this.beforeCalled = true
+//                        
+//                        var CONT = this.CONT
+//                        
+//                        setTimeout(function () {
+//                            CONT.RETURN()
+//                        }, 0)
+//                    }
+//                },
+                
+                
                 override : {
-                    checkEven : function (param1, param2) {
+                    sum : function (param1, param2) {
                         var CONT = this.CONT
                         
-                        if (this.SUPER(param1, param2) % 2 == 0) 
-                            CONT.RETURN('even')
+//                        debugger
+                        
+                        if (!this.beforeCalled) 
+                            CONT.THROW("before wasn't called")
                         else
-                            CONT.THROW('odd')
+                            CONT.RETURN(this.SUPER(param1, param2))
+                            
+//                            this.SUPER(param1, param2).then(function (res) {
+//                                this.RETURN(res)
+//                            })
+                            
                     }
                 }
             }
@@ -60,17 +87,18 @@ StartTest(function(t) {
             
             continued : {
                 
-                override : {
-                    checkEven : function (param1, param2) {
+                before : {
+                    sum : function (param1, param2) {
                         
-                        this.SUPER(param1 * 2, param2 * 3).THEN(function () {
-                            
-                            this.RETURN('p1 * 2 + p2 * 3 is even')
-                                
-                        }).CATCH(function () {
-                            
-                            this.RETURN('p1 * 2 + p2 * 3 is odd')
-                        }).NOW()
+//                        debugger
+                        
+                        this.beforeCalled = true
+                        
+                        var CONT = this.CONT
+                        
+                        setTimeout(function () {
+                            CONT.RETURN()
+                        }, 0)
                     }
                 }
             }
@@ -81,72 +109,21 @@ StartTest(function(t) {
         
         
         //======================================================================================================================================================================================================================================================
-        t.diag('Call to continued override modifier - with error')
-        
-        var cps = new CPS.Enabled()
-        
-        var async1 = t.beginAsync()
-        
-        var res1 = cps.checkEven(1, 10)
-        
-        t.ok(res1 instanceof JooseX.CPS.Continuation.TryRetThen, "Continued methods returned an instance of 'JooseX.CPS.Continuation.TryRetThen'")
-        
-        res1.THEN(function () {
-            
-            t.fail("'THEN' was reached in presense of error")
-            
-        }).CATCH(function (e) {
-            t.ok(e == 'odd', 'Odd sum was detected')
-            
-            this.RETURN('recover')
-            
-        }).FINALLY(function () {
-            
-            t.pass("'FINALLY' was reached anyway #1")
-            
-            this.RETURN()
-            
-        }).NEXT(function (res) {
-            t.pass("'NEXT' was reached even in presense of error")
-            
-            t.ok(res == 'recover', 'NEXT received recovery value from CATCH')
-            
-            t.endAsync(async1)
-        })
-        
-
-        //======================================================================================================================================================================================================================================================
         t.diag('Call to deeply overriden method')
         
         var async2 = t.beginAsync()
         
         var further = new CPS.Enabled.Further()
         
-        further.checkEven(1, 1).THEN(function (res) {
+        further.sum(1, 10).THEN(function (res) {
             
             t.pass("'THEN' was correctly reached")
             
-            t.ok(res == 'p1 * 2 + p2 * 3 is odd', 'Odd sum was correctly detected')
-            
-            this.RETURN(res)
-            
-        }).CATCH(function (e) {
-            
-            t.fail("'CATCH' was reached in absense of error")
-            
-        }).FINALLY(function () {
-            
-            t.pass("'FINALLY' was reached anyway #2")
-            
-            this.RETURN()
-            
-        }).NEXT(function (res) {
-            
-            t.ok(res == 'p1 * 2 + p2 * 3 is odd', 'Odd sum was passed into NEXT, return value from FINALLY was ignored')
+            t.ok(res == 11, 'Result is correct')
             
             t.endAsync(async2)
-        })
-        
+            
+        }).NOW()
         
 //        //======================================================================================================================================================================================================================================================
 //        t.diag('Basic method call - without error')
