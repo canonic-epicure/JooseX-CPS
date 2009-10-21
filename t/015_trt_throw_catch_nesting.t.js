@@ -4,19 +4,19 @@ StartTest(function(t) {
     
     var async0 = t.beginAsync()
     
-    use('JooseX.CPS.Continuation.TryRetThen', function () {
+    use('JooseX.CPS.Continuation', function () {
         
         //======================================================================================================================================================================================================================================================
         t.diag('Sanity')
         
-        t.ok(JooseX.CPS.Continuation.TryRetThen, "JooseX.CPS.Continuation.TryRetThen is here")
+        t.ok(JooseX.CPS.Continuation, "JooseX.CPS.Continuation is here")
         
 
         //======================================================================================================================================================================================================================================================
         //t.diag('THROW from nested TRY')
 
         var async1  = t.beginAsync()
-        var cont1   = new JooseX.CPS.Continuation.TryRetThen()
+        var cont1   = new JooseX.CPS.Continuation()
         
         cont1.TRY(function () {
             //======================================================================================================================================================================================================================================================            
@@ -49,7 +49,7 @@ StartTest(function(t) {
         //t.diag('Nested THROW/CATCH #1')
 
         var async2  = t.beginAsync()
-        var cont2   = new JooseX.CPS.Continuation.TryRetThen()
+        var cont2   = new JooseX.CPS.Continuation()
         
         cont2.TRY(function () {
             //======================================================================================================================================================================================================================================================            
@@ -87,7 +87,7 @@ StartTest(function(t) {
         //t.diag('Nested THROW/CATCH #2')
 
         var async3  = t.beginAsync()
-        var cont3   = new JooseX.CPS.Continuation.TryRetThen()
+        var cont3   = new JooseX.CPS.Continuation()
         
         cont3.TRY(function () {
             //======================================================================================================================================================================================================================================================            

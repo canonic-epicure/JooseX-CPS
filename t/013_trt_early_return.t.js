@@ -4,12 +4,12 @@ StartTest(function(t) {
     
     var async0 = t.beginAsync()
     
-    use('JooseX.CPS.Continuation.TryRetThen', function () {
+    use('JooseX.CPS.Continuation', function () {
         
         //======================================================================================================================================================================================================================================================
         t.diag('Sanity')
         
-        t.ok(JooseX.CPS.Continuation.TryRetThen, "JooseX.CPS.Continuation.TryRetThen is here")
+        t.ok(JooseX.CPS.Continuation, "JooseX.CPS.Continuation is here")
         
         
         //======================================================================================================================================================================================================================================================            
@@ -17,7 +17,7 @@ StartTest(function(t) {
         
         var async6  = t.beginAsync()
         var async7  = t.beginAsync()
-        var cont6   = new JooseX.CPS.Continuation.TryRetThen()
+        var cont6   = new JooseX.CPS.Continuation()
         var scope6  = {}
         
         cont6.TRY(function () {

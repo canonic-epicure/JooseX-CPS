@@ -11,7 +11,7 @@ StartTest(function(t) {
         
         t.ok(JooseX.CPS, "JooseX.CPS is here")
         t.ok(JooseX.CPS.Builder, "JooseX.CPS.Builder is here")
-        t.ok(JooseX.CPS.Continuation.TryRetThen, "JooseX.CPS.Continuation.TryRetThen is here")
+        t.ok(JooseX.CPS.Continuation, "JooseX.CPS.Continuation is here")
 
         //======================================================================================================================================================================================================================================================
         t.diag('Class creation')
@@ -89,7 +89,7 @@ StartTest(function(t) {
         
         var res1 = cps.checkEven(1, 10)
         
-        t.ok(res1 instanceof JooseX.CPS.Continuation.TryRetThen, "Continued methods returned an instance of 'JooseX.CPS.Continuation.TryRetThen'")
+        t.ok(res1 instanceof JooseX.CPS.Continuation, "Continued methods returned an instance of 'JooseX.CPS.Continuation'")
         
         res1.THEN(function () {
             

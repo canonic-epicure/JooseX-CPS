@@ -4,19 +4,19 @@ StartTest(function(t) {
     
     var async0 = t.beginAsync()
     
-    use('JooseX.CPS.Continuation.TryRetThen', function () {
+    use('JooseX.CPS.Continuation', function () {
         
         //======================================================================================================================================================================================================================================================
         t.diag('Sanity')
         
-        t.ok(JooseX.CPS.Continuation.TryRetThen, "JooseX.CPS.Continuation.TryRetThen is here")
+        t.ok(JooseX.CPS.Continuation, "JooseX.CPS.Continuation is here")
         
         
         //======================================================================================================================================================================================================================================================            
         //t.diag("'TRY' nesting")
         
         var async4      = t.beginAsync()
-        var cont4       = new JooseX.CPS.Continuation.TryRetThen()
+        var cont4       = new JooseX.CPS.Continuation()
         var scope4      = {}
         var scope4Then  = {}
 
@@ -57,7 +57,7 @@ StartTest(function(t) {
         //t.diag('Try/Then nesting')
         
         var async5      = t.beginAsync()
-        var cont5       = new JooseX.CPS.Continuation.TryRetThen()
+        var cont5       = new JooseX.CPS.Continuation()
         var scope5      = {}
         
         cont5.TRY(function (cont) {
@@ -103,7 +103,7 @@ StartTest(function(t) {
         //t.diag('More Try/Then nesting')
         
         var async6  = t.beginAsync()
-        var cont6   = new JooseX.CPS.Continuation.TryRetThen()
+        var cont6   = new JooseX.CPS.Continuation()
         var scope6  = {}
         
         cont6.TRY(function () {

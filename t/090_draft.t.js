@@ -41,7 +41,7 @@ StartTest(function(t) {
                 
                 after : {
                     async1 : function (CPS, param1, param2) {
-                        CPS.RETURN()
+                        CPS.CONTINUE()
                     }
                 }
             }
@@ -68,7 +68,7 @@ StartTest(function(t) {
             if (this.RESULT == '...') 
                 this.async4().NOW()
             else
-                this.RETURN()
+                this.CONTINUE()
         })
         
 
@@ -87,7 +87,7 @@ StartTest(function(t) {
             if (this.RESULT == '...') 
                 this.async4().NOW()
             else 
-                if (this.RESULT) this.RETURN()
+                if (this.RESULT) this.CONTINUE()
         })
         
         
@@ -155,21 +155,21 @@ StartTest(function(t) {
         
         cps.checkEven(1, 11).THEN(function (res) {
             
-            cps.bar(baz)
+            if (cps.bar(baz) > 1) this.CONTINUE()
             
-            this.RETURN()
+            this.CONTINUE()
             
         }).THEN(function () {
             if (cps.baz(bar) > 1) this.CONTINUE()
             
-            this.RETURN()
+            this.CONTINUE()
         }).CATCH(function (e) {
             t.fail("'CATCH' was reached in absense of error")
         }).FINALLY(function () {
             
             t.pass("'FINALLY' was reached even in absense of error")
             
-            this.RETURN()
+            this.CONTINUE()
             
         }).NEXT(function (res) {
             
@@ -180,7 +180,7 @@ StartTest(function(t) {
         
         try {
             cps.checkEvent(1, 11)
-            cps.bar(baz)
+            if (cps.bar(baz) > 1) return
             cps.baz(bar)
         } catch (e) {
         } finally {

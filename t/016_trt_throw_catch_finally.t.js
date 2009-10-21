@@ -4,19 +4,19 @@ StartTest(function(t) {
     
     var async0 = t.beginAsync()
     
-    use('JooseX.CPS.Continuation.TryRetThen', function () {
+    use('JooseX.CPS.Continuation', function () {
         
         //======================================================================================================================================================================================================================================================
         t.diag('Sanity')
         
-        t.ok(JooseX.CPS.Continuation.TryRetThen, "JooseX.CPS.Continuation.TryRetThen is here")
+        t.ok(JooseX.CPS.Continuation, "JooseX.CPS.Continuation is here")
         
 
         //======================================================================================================================================================================================================================================================
         //t.diag('THROW from nested TRY')
 
         var async1  = t.beginAsync()
-        var cont1   = new JooseX.CPS.Continuation.TryRetThen()
+        var cont1   = new JooseX.CPS.Continuation()
         
         var finally1Reached = false
         var finally2Reached = false
@@ -77,7 +77,7 @@ StartTest(function(t) {
         //t.diag('THROW from FINALLY')
 
         var async11  = t.beginAsync()
-        var cont11   = new JooseX.CPS.Continuation.TryRetThen()
+        var cont11   = new JooseX.CPS.Continuation()
         
         var finally11Reached = false
         var finally22Reached = false
@@ -138,7 +138,7 @@ StartTest(function(t) {
         //t.diag('THROW from CATCH')
 
         var async111  = t.beginAsync()
-        var cont111   = new JooseX.CPS.Continuation.TryRetThen()
+        var cont111   = new JooseX.CPS.Continuation()
         
         var catch111Reached   = false
         var catch222Reached   = false
