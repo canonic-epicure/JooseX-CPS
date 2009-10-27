@@ -29,6 +29,7 @@ StartTest(function(t) {
         t.ok(Base, 'Base class was created')
         
         
+        
         Class('CPS.Enabled', {
             
             isa : Base,
