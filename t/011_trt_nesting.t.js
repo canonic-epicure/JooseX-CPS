@@ -49,6 +49,7 @@ StartTest(function(t) {
             t.ok(this.RESULT == 'returnTo', 'NEXT was reached from the nested TRY with the correct result')
             
             t.endAsync(async4)
+            
         }, scope4Then).NOW()
 
         
@@ -142,7 +143,7 @@ StartTest(function(t) {
                 
             }, 10)
             
-        }, scope6).NEXT(function (cont, result) {
+        }, scope6).NEXT(function () {
             //======================================================================================================================================================================================================================================================            
             t.diag('More Try/Then nesting - NEXT')
             
