@@ -34,7 +34,7 @@ StartTest(function(t) {
             
             t.ok(e == 'error1', "Error thrown from nested 'TRY' was caught correctly")
             
-            this.CONTINUE()
+            this.CONT.CONTINUE()
             
         }).NEXT(function () {
             
@@ -73,7 +73,7 @@ StartTest(function(t) {
             
             t.ok(e == 'error22', "Error thrown from 'CATCH' was caught correctly")
             
-            this.CONTINUE()
+            this.CONT.CONTINUE()
             
         }).NEXT(function () {
             
@@ -96,13 +96,13 @@ StartTest(function(t) {
             
             this.CONT.TRY(function () {
                 
-                this.THROW('error3')
+                this.CONT.THROW('error3')
                 
             }).CATCH(function (e) {
             
                 t.ok(e == 'error3', "Innermost 'THROW' was caught correctly")
                 
-                this.CONTINUE('recover3')
+                this.CONT.CONTINUE('recover3')
                 
             }).NOW()
             
@@ -111,7 +111,7 @@ StartTest(function(t) {
             
             t.fail("'CATCH' for handled exception was reached")
             
-            this.CONTINUE()
+            this.CONT.CONTINUE()
             
         }).NEXT(function (res) {
             

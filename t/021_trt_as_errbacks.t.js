@@ -38,7 +38,7 @@ StartTest(function(t) {
             
             xhrRequest({
                 error       : true,
-                errback     : this.THROW,
+                errback     : this.CONT.getTHROW(),
                 scope       : scope2
             })
             
@@ -54,7 +54,7 @@ StartTest(function(t) {
             
             t.endAsync(async1)
             
-            this.CONTINUE()
+            this.CONT.CONTINUE()
             
         }, scope2).NOW()
 
@@ -75,7 +75,7 @@ StartTest(function(t) {
                 
                 xhrRequest({
                     error       : true,
-                    errback     : this.THROW,
+                    errback     : this.CONT.getTHROW(),
                     value1      : 'yo'
                 })
                 
@@ -84,9 +84,9 @@ StartTest(function(t) {
                 t.pass("Inner 'CATCH' reached")
                 
                 if (res1 == 'yo') 
-                    this.THROW('foo')
+                    this.CONT.THROW('foo')
                 else
-                    this.THROW('bar')
+                    this.CONT.THROW('bar')
                 
             }).NOW()
             
@@ -96,7 +96,7 @@ StartTest(function(t) {
             t.ok(res == 'foo', "Control flow was correct")
             
             xhrRequest({
-                callback    : this.CONTINUE,
+                callback    : this.CONT.getCONTINUE(),
                 value2      : 'yo2'
             })
             

@@ -35,7 +35,7 @@ StartTest(function(t) {
                     
                     t.ok(this == scope4, "Scope was correctly passed into nested 'TRY' #1")
                     
-                    this.CONTINUE('returnTo')
+                    this.CONT.CONTINUE('returnTo')
                 }).NOW()
                 
             }, 10)
@@ -76,13 +76,13 @@ StartTest(function(t) {
                     
                     t.ok(this == scope5, "Scope was correctly passed into nested 'TRY' #2")
                     
-                    this.CONTINUE('returnTo2')
+                    this.CONT.CONTINUE('returnTo2')
                     
                 }).THEN(function () {
                     
                     t.ok(this == scope5, "Scope was correctly passed into nested 'NEXT'")
                     
-                    this.CONTINUE(this.RESULT)
+                    this.CONT.CONTINUE(this.RESULT)
                 }).NOW()
                 
             }, 10)
@@ -115,7 +115,7 @@ StartTest(function(t) {
                 
                 CONT.TRY(function () {
                     
-                    this.CONTINUE('returnTo2')
+                    this.CONT.CONTINUE('returnTo2')
                     
                 }).THEN(function () {
                     //======================================================================================================================================================================================================================================================            
@@ -128,7 +128,7 @@ StartTest(function(t) {
                         
                         t.ok(this == scope6, "Scope was correctly passed into most nested 'TRY'")
                         
-                        this.CONTINUE('result3')
+                        this.CONT.CONTINUE('result3')
                         
                     }).THEN(function () {
                         
@@ -136,7 +136,7 @@ StartTest(function(t) {
                         
                         t.ok(this.RESULT == 'result3', 'Another NEXT was reached from the nested TRY with the correct result')
                         
-                        this.CONTINUE('result4')
+                        this.CONT.CONTINUE('result4')
                     }).NOW()
                     
                 }).NOW()
@@ -156,7 +156,7 @@ StartTest(function(t) {
                 
                 t.ok(this == scope6, "Scope was correctly passed into nested 'TRY' of outer 'NEXT'")
                 
-                this.CONTINUE('result5')
+                this.CONT.CONTINUE('result5')
                 
             }).THEN(function () {
                 
@@ -164,7 +164,7 @@ StartTest(function(t) {
                 
                 t.ok(this.RESULT == 'result5', '.. as well as result')
                 
-                this.CONTINUE()
+                this.CONT.CONTINUE()
                 
                 t.endAsync(async6)
             }).NOW()

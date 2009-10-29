@@ -66,11 +66,11 @@ StartTest(function(t) {
                         
                         this.SUPER(param1 * 2, param2 * 3).THEN(function () {
                             
-                            this.CONTINUE('p1 * 2 + p2 * 3 is even')
+                            this.CONT.CONTINUE('p1 * 2 + p2 * 3 is even')
                                 
                         }).CATCH(function () {
                             
-                            this.CONTINUE('p1 * 2 + p2 * 3 is odd')
+                            this.CONT.CONTINUE('p1 * 2 + p2 * 3 is odd')
                         }).NOW()
                     }
                 }
@@ -99,13 +99,13 @@ StartTest(function(t) {
         }).CATCH(function (e) {
             t.ok(e == 'odd', 'Odd sum was detected')
             
-            this.CONTINUE('recover')
+            this.CONT.CONTINUE('recover')
             
         }).FINALLY(function () {
             
             t.pass("'FINALLY' was reached anyway #1")
             
-            this.CONTINUE()
+            this.CONT.CONTINUE()
             
         }).NEXT(function (res) {
             t.pass("'NEXT' was reached even in presense of error")
@@ -129,7 +129,7 @@ StartTest(function(t) {
             
             t.ok(res == 'p1 * 2 + p2 * 3 is odd', 'Odd sum was correctly detected')
             
-            this.CONTINUE(res)
+            this.CONT.CONTINUE(res)
             
         }).CATCH(function (e) {
             
@@ -139,7 +139,7 @@ StartTest(function(t) {
             
             t.pass("'FINALLY' was reached anyway #2")
             
-            this.CONTINUE()
+            this.CONT.CONTINUE()
             
         }).NEXT(function (res) {
             

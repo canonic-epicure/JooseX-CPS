@@ -69,7 +69,7 @@ StartTest(function(t) {
                             CONT.CONTINUE(this.SUPER(param1, param2))
                             
 //                            this.SUPER(param1, param2).then(function (res) {
-//                                this.CONTINUE(res)
+//                                this.CONT.CONTINUE(res)
 //                            })
                             
                     }

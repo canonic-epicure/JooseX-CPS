@@ -60,8 +60,8 @@ StartTest(function(t) {
 //                            value1 : value1, 
 //                            value2 : value2,
 //                            
-//                            callback : this.CONTINUE,
-//                            errback  : this.THROW
+//                            callback : this.CONT.CONTINUE,
+//                            errback  : this.CONT.THROW
 //                        })
 //                    },
 //                    
@@ -100,13 +100,13 @@ StartTest(function(t) {
         }).CATCH(function (e) {
             t.ok(e == 'odd', 'Odd sum was detected')
             
-            this.CONTINUE('recover')
+            this.CONT.CONTINUE('recover')
             
         }).FINALLY(function () {
             
             t.pass("'FINALLY' was reached anyway #1")
             
-            this.CONTINUE()
+            this.CONT.CONTINUE()
             
         }).NEXT(function (res) {
             t.pass("'NEXT' was reached even in presense of error")
@@ -128,7 +128,7 @@ StartTest(function(t) {
             
             t.pass("'THEN' was correctly reached")
             
-            this.CONTINUE(res)
+            this.CONT.CONTINUE(res)
             
         }).CATCH(function (e) {
             
@@ -138,7 +138,7 @@ StartTest(function(t) {
             
             t.pass("'FINALLY' was reached anyway #2")
             
-            this.CONTINUE()
+            this.CONT.CONTINUE()
             
         }).NEXT(function (res) {
             

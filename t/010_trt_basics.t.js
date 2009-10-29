@@ -36,7 +36,7 @@ StartTest(function(t) {
             t.ok(this == Joose.top, 'Scope was defaulted to global scope')
             t.ok(p1 == 1 && p2 == 10, 'Correct parameters were passed')
             
-            this.CONTINUE('value')
+            this.CONT.CONTINUE('value')
             
         }, null, [ 1, 10 ]).THEN(function (res) {
             
@@ -44,7 +44,7 @@ StartTest(function(t) {
             
             t.ok(res == 'value', "Next received correct return value")
             
-            this.CONTINUE()
+            this.CONT.CONTINUE()
             
             t.endAsync(async1)
             
@@ -68,7 +68,7 @@ StartTest(function(t) {
             
             t.ok(this.CONT.parent == cont2, "Current continuation is nested into 'cont2'")
             
-            var CONTINUE = this.CONTINUE
+            var CONTINUE = this.CONT.getCONTINUE()
             
             setTimeout(function () {
                 CONTINUE('returnTo')

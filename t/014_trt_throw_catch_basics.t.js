@@ -24,7 +24,7 @@ StartTest(function(t) {
             //======================================================================================================================================================================================================================================================            
             t.diag('Call with THROW/CATCH - simple error')
             
-            this.THROW('error1')
+            this.CONT.THROW('error1')
             
         }, scope1).THEN(function () {
             
@@ -38,7 +38,7 @@ StartTest(function(t) {
             
             t.endAsync(async1)
             
-            this.CONTINUE()
+            this.CONT.CONTINUE()
             
         }).FINALLY(function () {
             
@@ -46,7 +46,7 @@ StartTest(function(t) {
             
             t.ok(this == scope1, "'FINALLY' scope was copied from 'TRY'")
             
-            this.CONTINUE()
+            this.CONT.CONTINUE()
             
         }).NOW()
 
@@ -61,13 +61,13 @@ StartTest(function(t) {
 
         cont15.TRY(function () {
             
-            this.CONTINUE()
+            this.CONT.CONTINUE()
             
         }, {}).CATCH(function (e) {
             
             t.fail("'CATCH' was reached without 'THROW'")
             
-            this.CONTINUE()
+            this.CONT.CONTINUE()
             
         }).FINALLY(function () {
             
@@ -77,7 +77,7 @@ StartTest(function(t) {
             
             t.endAsync(async15)
             
-            this.CONTINUE()
+            this.CONT.CONTINUE()
             
         }, scope15).NOW()
 
@@ -97,7 +97,7 @@ StartTest(function(t) {
             
             t.pass("Initial 'TRY' was reached")
             
-            this.CONTINUE()
+            this.CONT.CONTINUE()
             
         }).THEN(function () {
             
@@ -113,7 +113,7 @@ StartTest(function(t) {
             
             t.endAsync(async2)
             
-            this.CONTINUE()
+            this.CONT.CONTINUE()
             
         }, scope2).NOW()
         
@@ -137,13 +137,13 @@ StartTest(function(t) {
             
             t.ok(e == 'error3', "Error thrown via native 'throw' was caught correctly")
             
-            this.CONTINUE()
+            this.CONT.CONTINUE()
             
         }).FINALLY(function () {
             
             t.pass("'FINALLY' was reached")
             
-            this.CONTINUE()
+            this.CONT.CONTINUE()
             
         }).NEXT(function () {
             

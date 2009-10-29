@@ -38,7 +38,7 @@ StartTest(function(t) {
                     
                     t.ok(this.CONT.parent == CONT, "Current continuation is nested into 'CONT'")
                     
-                    this.CONTINUE('returnTo2')
+                    this.CONT.CONTINUE('returnTo2')
                     
                 }).THEN(function () {
                     //======================================================================================================================================================================================================================================================            
@@ -51,7 +51,7 @@ StartTest(function(t) {
                         
                         t.ok(this == scope6, "Scope was correctly passed into most nested 'TRY'")
                         
-                        this.CONTINUE('result3')
+                        this.CONT.CONTINUE('result3')
                         
                     }).THEN(function () {
                         
@@ -59,7 +59,7 @@ StartTest(function(t) {
                         
                         t.ok(this.RESULT == 'result3', 'Another NEXT was reached from the nested TRY with the correct result')
                         
-                        this.CONTINUE('result4')
+                        this.CONT.CONTINUE('result4')
                         
                         t.endAsync(async6)
                         
