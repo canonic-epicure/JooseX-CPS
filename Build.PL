@@ -10,3 +10,5 @@ license         bsd
 
 
 requires        JooseX.Namespace.Depended       0.01
+
+docs_markup     mmd

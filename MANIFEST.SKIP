@@ -51,4 +51,6 @@
 ^tests/lib/
 ^JooseX-CPS-*
 
-^inc\b
+^\.externalToolBuilders\b
+^\.gitignore\b
+^TODO\b
