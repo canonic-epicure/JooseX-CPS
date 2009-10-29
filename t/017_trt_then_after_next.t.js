@@ -1,6 +1,6 @@
 StartTest(function(t) {
     
-	t.plan(3)
+	t.plan(4)
     
     var async0 = t.beginAsync()
     
@@ -21,30 +21,17 @@ StartTest(function(t) {
         
         cont1.TRY(function () {
             
-            this.CONT.RETURN('return1')
+            this.CONT.CONTINUE()
             
-        }, scope1).THEN(function () {
+        }, scope1).NEXT(function (res) {
             
-            t.fail("'THEN' reached after 'RETURN'")
+            t.pass("'NEXT' reached after 'TRY'")
             
-        }).NEXT(function (res) {
-            
-            t.pass("'NEXT' reached after 'RETURN'")
-            
-            t.ok(res == 'return1', "'NEXT' received correct result")
-            
-            
-            this.CONT.TRY(function () {
-                
-                t.pass("Nested 'TRY' reached")
-                
-                this.CONT.CONTINUE('return2')
-                
-            }).NOW()
+            this.CONT.CONTINUE('return2')
             
         }).THEN(function (res) {
             
-            t.pass("OUTER 'THEN' reached after 'RETURN' from nested 'TRY'")
+            t.pass("'THEN' reached after 'CONTINUE' from 'NEXT'")
             
             t.ok(res == 'return2', "'THEN' received correct result")
             
