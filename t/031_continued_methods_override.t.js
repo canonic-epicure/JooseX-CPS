@@ -40,12 +40,11 @@ StartTest(function(t) {
                 
                 override : {
                     checkEven : function (param1, param2) {
-                        var CONT = this.CONT
                         
                         if (this.SUPER(param1, param2) % 2 == 0) 
-                            CONT.CONTINUE('even')
+                            this.CONTINUE('even')
                         else
-                            CONT.THROW('odd')
+                            this.THROW('odd')
                     }
                 }
             }
@@ -147,10 +146,6 @@ StartTest(function(t) {
             
             t.endAsync(async2)
         })
-        
-        
-//        //======================================================================================================================================================================================================================================================
-//        t.diag('Basic method call - without error')
         
         
         t.endAsync(async0)

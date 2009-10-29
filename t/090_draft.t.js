@@ -22,9 +22,22 @@ StartTest(function(t) {
             
             continued : {
                 
+                
                 cpsMeta : JooseX.CPS.Continuation,
                 
                 methods : {
+                    
+//                //hypotetical call with callback
+//                xhr : function (params) {
+//            
+//                    setTimeout(function () {
+//                        if (params.error)
+//                            params.errback.call(params.scope || Joose.top, params.value1 || 'value1', params.value2 || 'value2', params)
+//                        else
+//                            params.callback.call(params.scope || Joose.top, params.value1 || 'value1', params.value2 || 'value2', params)
+//                    }, 1)
+//                }
+                    
                     
                     async1 : function (CPS, param1, param2) {
                     },

@@ -20,54 +20,22 @@ StartTest(function(t) {
             
             trait : JooseX.CPS,
             
-//            methods : {
-//                
-//                //hypotetical call with callback
-//                xhr : function (params) {
-//            
-//                    setTimeout(function () {
-//                        if (params.error)
-//                            params.errback.call(params.scope || Joose.top, params.value1 || 'value1', params.value2 || 'value2', params)
-//                        else
-//                            params.callback.call(params.scope || Joose.top, params.value1 || 'value1', params.value2 || 'value2', params)
-//                    }, 1)
-//                }
-//            },
-            
-            
             continued : {
                 
                 methods : {
                     
                     checkEven : function (param1, param2) {
                         
-                        var CONT = this.CONT
+                        var cont        = this.getCONTINUE()
+                        var my_throw    = this.getTHROW()
                         
                         setTimeout(function () {
                             if ((param1 + param2) % 2 == 0) 
-                                CONT.CONTINUE('even')
+                                cont('even')
                             else
-                                CONT.THROW('odd')
+                                my_throw('odd')
                         }, 1)
                     }
-//                    ,
-                    
-                    
-//                    request : function (value1, value2, error) {
-//                        this.xhr({
-//                            error : error,
-//                            
-//                            value1 : value1, 
-//                            value2 : value2,
-//                            
-//                            callback : this.CONT.CONTINUE,
-//                            errback  : this.CONT.THROW
-//                        })
-//                    },
-//                    
-//                    
-//                    async3 : function () {
-//                    }
                 }
             }
         
@@ -106,12 +74,12 @@ StartTest(function(t) {
             
             t.pass("'FINALLY' was reached anyway #1")
             
-            this.CONTINUE()
+            this.CONTINUE('finally')
             
         }).NEXT(function (res) {
             t.pass("'NEXT' was reached even in presense of error")
             
-            t.ok(res == 'recover', 'NEXT received recovery value from CATCH')
+            t.ok(res == 'recover', 'NEXT received recovery value from CATCH, return value from FINALLY was ignored')
             
             t.endAsync(async1)
         })
@@ -146,10 +114,6 @@ StartTest(function(t) {
             
             t.endAsync(async2)
         })
-        
-        
-        //======================================================================================================================================================================================================================================================
-        t.diag('Basic method call - without error')
         
         
         t.endAsync(async0)

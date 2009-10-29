@@ -1,6 +1,6 @@
 StartTest(function(t) {
     
-	t.plan(8)
+	t.plan(22)
     
     var async0 = t.beginAsync()
 	
@@ -12,17 +12,31 @@ StartTest(function(t) {
         t.ok(JooseX.CPS, "JooseX.CPS is here")
         t.ok(JooseX.CPS.Builder, "JooseX.CPS.Builder is here")
         t.ok(JooseX.CPS.Continuation, "JooseX.CPS.Continuation is here")
-
+        
+        
         //======================================================================================================================================================================================================================================================
         t.diag('Class creation')
         
         
         Class('Base', {
             
+            has : {
+                sumBaseCalled       : false,
+                sumBaseParams       : null
+            },
+            
             methods : {
                 
                 sum : function (param1, param2) {
-//                    debugger
+                    
+                    t.ok(this.overrideCalled, "'override' modifier was alredy called")
+                    t.ok(this.beforeCalled, "'before' modifier was alredy called")
+                    t.ok(!this.sumBaseCalled, "Base method wasn't called yet")
+                    
+                    t.ok(this.beforeParams[0] == param1 && this.beforeParams[1] == param2, "Base method was called with correct arguments")
+                    
+                    this.sumBaseParams = arguments
+                    this.sumBaseCalled = true
                     
                     return param1 + param2
                 }
@@ -38,40 +52,32 @@ StartTest(function(t) {
             trait : JooseX.CPS,
             
             has : {
-                beforeCalled : false
+                beforeCalled : false,
+                beforeParams : null
             },
             
             continued : {
                 
-//                before : {
-//                    checkEven : function (param1, param2) {
-//                        
-//                        this.beforeCalled = true
-//                        
-//                        var CONT = this.CONT
-//                        
-//                        setTimeout(function () {
-//                            CONT.CONTINUE()
-//                        }, 0)
-//                    }
-//                },
-                
-                
-                override : {
+                before : {
                     sum : function (param1, param2) {
-//                        debugger
                         
-                        if (!this.beforeCalled) 
-                            this.THROW("before wasn't called")
-                        else
-                            this.CONTINUE(this.SUPER(param1, param2))
-                            
-//                            this.SUPER(param1, param2).then(function (res) {
-//                                this.CONT.CONTINUE(res)
-//                            })
-                            
+                        t.ok(this.overrideCalled, "'override' modifier was alredy called")
+                        t.ok(!this.beforeCalled, "'before' modifier wasn't called yet")
+                        t.ok(!this.sumBaseCalled, "Base method wasn't called yet")
+                        
+                        t.ok(this.overrideParams[0] == param1 && this.overrideParams[1] == param2, "'before' modifier was called with correct arguments")
+                        
+                        this.beforeParams = arguments
+                        this.beforeCalled = true
+                        
+                        var cont = this.getCONTINUE()
+                        
+                        setTimeout(function () {
+                            cont()
+                        }, 1)
                     }
                 }
+                
             }
         
         })
@@ -83,20 +89,26 @@ StartTest(function(t) {
             
             isa : CPS.Enabled,
             
+            has : {
+                overrideCalled : false,
+                overrideParams : null
+            },
+            
+            
             continued : {
                 
-                before : {
+                override : {
+                    
                     sum : function (param1, param2) {
                         
-//                        debugger
+                        t.ok(!this.overrideCalled, "'override' modifier wasn't called yet")
+                        t.ok(!this.beforeCalled, "'before' modifier wasn't called yet")
+                        t.ok(!this.sumBaseCalled, "Base method wasn't called yet")
                         
-                        this.beforeCalled = true
+                        this.overrideParams = arguments
+                        this.overrideCalled = true
                         
-                        var CONT = this.CONT
-                        
-                        setTimeout(function () {
-                            CONT.CONTINUE()
-                        }, 0)
+                        this.SUPER(param1, param2).NOW()
                     }
                 }
             }
@@ -107,24 +119,24 @@ StartTest(function(t) {
         
         
         //======================================================================================================================================================================================================================================================
-        t.diag('Call to deeply overriden method')
+        t.diag('Call to continued method modified with before/override')
         
-        var async2 = t.beginAsync()
+        var async1 = t.beginAsync()
         
         var further = new CPS.Enabled.Further()
         
-        further.sum(1, 10).THEN(function (res) {
+        further.sum(1, 1).NEXT(function (res) {
             
-            t.pass("'THEN' was correctly reached")
+            t.pass("'THEN' was reached")
             
-            t.ok(res == 11, 'Result is correct')
+            t.ok(res == 2, ".. with the correct result")
             
-            t.endAsync(async2)
+            t.ok(this.overrideCalled, "'override' modifier was alredy called")
+            t.ok(this.beforeCalled, "'before' modifier was alredy called")
+            t.ok(this.sumBaseCalled, "Base method was alredy called")
             
-        }).NOW()
-        
-//        //======================================================================================================================================================================================================================================================
-//        t.diag('Basic method call - without error')
+            t.endAsync(async1)
+        })
         
         
         t.endAsync(async0)
