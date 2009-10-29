@@ -68,7 +68,7 @@ DESCRIPTION
 
 `JooseX.CPS` is a trait for metaclasses, which enables "Continuation passing style" in Joose methods and method modifiers.
 
-`JooseX.CPS` allows you to define special "continued" methods and methods modifier, which forms the *asynchronous interface* of the class, 
+`JooseX.CPS` allows you to define special "continued" methods and method modifiers, which forms the *asynchronous interface* of the class, 
 but behave just like ordinary methods in other aspects (can be inherited, composed from Role, etc).
 
 
