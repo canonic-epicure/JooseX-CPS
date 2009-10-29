@@ -59,14 +59,12 @@ StartTest(function(t) {
                 
                 override : {
                     sum : function (param1, param2) {
-                        var CONT = this.CONT
-                        
 //                        debugger
                         
                         if (!this.beforeCalled) 
-                            CONT.THROW("before wasn't called")
+                            this.THROW("before wasn't called")
                         else
-                            CONT.CONTINUE(this.SUPER(param1, param2))
+                            this.CONTINUE(this.SUPER(param1, param2))
                             
 //                            this.SUPER(param1, param2).then(function (res) {
 //                                this.CONT.CONTINUE(res)
