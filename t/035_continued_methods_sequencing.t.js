@@ -1,6 +1,6 @@
 StartTest(function(t) {
     
-	t.plan(1)
+	t.plan(47)
     
     var async0 = t.beginAsync()
 	
@@ -114,7 +114,7 @@ StartTest(function(t) {
                         this.process3(param1, param2)
                         this.process4(param1, param2)
                         
-                        this.now()
+                        this.NOW()
                     }
                 }
             }
@@ -170,7 +170,7 @@ StartTest(function(t) {
             
             t.endAsync(async2)
             
-        }).now()
+        }).NOW()
         
         
         t.endAsync(async0)
