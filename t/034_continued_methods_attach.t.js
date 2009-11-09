@@ -48,6 +48,7 @@ StartTest(function(t) {
                 one     : null
             },
             
+            
             continued : {
                 
                 methods : {
@@ -59,7 +60,7 @@ StartTest(function(t) {
                     
                     withError2 : function (param1, param2) {
                         this.one.attach(this).withError1(param1, param2).now()
-                    } 
+                    }
                 }
             }
         })
