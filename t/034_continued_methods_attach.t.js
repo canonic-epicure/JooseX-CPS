@@ -54,12 +54,12 @@ StartTest(function(t) {
                 methods : {
                     
                     process2 : function (param1, param2) {
-                        this.one.attach(this).process1(param1, param2).now()
+                        this.one.attachScope(this).process1(param1, param2).now()
                     },
                     
                     
                     withError2 : function (param1, param2) {
-                        this.one.attach(this).withError1(param1, param2).now()
+                        this.one.attachScope(this).withError1(param1, param2).now()
                     }
                 }
             }
