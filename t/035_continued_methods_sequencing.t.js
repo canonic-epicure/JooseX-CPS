@@ -71,7 +71,7 @@ StartTest(function(t) {
                         
                         this.process2Called = true
                         
-                        this.one.attachScope(this).process1(param1, param2).now()
+                        this.one.process1(param1, param2).now()
                     },
                     
                     

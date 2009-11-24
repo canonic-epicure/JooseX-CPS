@@ -1,16 +1,29 @@
+IDEAS
+=====
+
+- VAR, GET, SET - analog of scoped variables
+
+
+
 TASKS
 =====
 
-- global CONT instead of scoped? (no attach then, only detach)
+- keep the intuitively expected scope during continued method calls (fixed?)
 
-- do not remove CONT/RESULT after exiting the scope to slightly improve the performance?
-
-
-- VAR, GET, SET - analog of scoped variables
+- test the 'detachScope' method
+- implement 'AND' method for parallel running tasks, and single exit point
+ 
 
 
 DONE
 ====
 
-
+- global CONT instead of scoped? (no attach then, only detach)
 - clear CONT after returning from the continued method
+
+
+
+GARBAGE
+=======
+
+- do not remove CONT/RESULT after exiting the scope to slightly improve the performance?

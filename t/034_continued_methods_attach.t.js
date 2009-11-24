@@ -1,6 +1,6 @@
 StartTest(function(t) {
     
-	t.plan(9)
+	t.plan(11)
     
     var async0 = t.beginAsync()
 	
@@ -54,12 +54,12 @@ StartTest(function(t) {
                 methods : {
                     
                     process2 : function (param1, param2) {
-                        this.one.attachScope(this).process1(param1, param2).now()
+                        this.one.process1(param1, param2).now()
                     },
                     
                     
                     withError2 : function (param1, param2) {
-                        this.one.attachScope(this).withError1(param1, param2).now()
+                        this.one.withError1(param1, param2).now()
                     }
                 }
             }
@@ -83,6 +83,8 @@ StartTest(function(t) {
             
             t.ok(res == 2, ".. with the correct result")
             
+            t.ok(this == obj, ".. and in the correct scope")
+            
             t.endAsync(async1)
         })
         
@@ -101,6 +103,8 @@ StartTest(function(t) {
             t.pass("'CATCH' was reached")
             
             t.ok(e == 11, ".. with the correct exception")
+            
+            t.ok(this == obj, ".. and in the correct scope")
             
             t.endAsync(async2)
         }).NOW()

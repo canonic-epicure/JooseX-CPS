@@ -1,6 +1,6 @@
 StartTest(function(t) {
     
-	t.plan(15)
+	t.plan(18)
     
     var async0 = t.beginAsync()
 	
@@ -63,7 +63,14 @@ StartTest(function(t) {
                 override : {
                     checkEven : function (param1, param2) {
                         
+                        var me = this
+                        
                         this.SUPER(param1 * 2, param2 * 3).THEN(function () {
+                            
+                            //======================================================================================================================================================================================================================================================
+                            t.diag('Scope check')
+                            
+                            t.ok(this == me, 'THEN was reached in the correct scope')
                             
                             this.CONTINUE('p1 * 2 + p2 * 3 is even')
                                 
@@ -146,6 +153,21 @@ StartTest(function(t) {
             
             t.endAsync(async2)
         })
+        
+        
+        //======================================================================================================================================================================================================================================================
+        t.diag('Call to deeply overriden method #2')
+        
+        var async3 = t.beginAsync()
+        
+        further.checkEven(2, 2).THEN(function (res) {
+            
+            t.pass("'THEN' was correctly reached")
+            
+            t.ok(res == 'p1 * 2 + p2 * 3 is even', 'Even sum was correctly detected')
+            
+            t.endAsync(async3)
+        }).NOW()
         
         
         t.endAsync(async0)
