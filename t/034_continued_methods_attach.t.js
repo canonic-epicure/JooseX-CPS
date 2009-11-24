@@ -1,6 +1,6 @@
 StartTest(function(t) {
     
-	t.plan(11)
+	t.plan(13)
     
     var async0 = t.beginAsync()
 	
@@ -54,12 +54,25 @@ StartTest(function(t) {
                 methods : {
                     
                     process2 : function (param1, param2) {
-                        this.one.process1(param1, param2).now()
+                        var scope = this.one
+                        
+                        this.one.process1(param1, param2).next(function (res) {
+                            t.ok(this == scope, 'Scope is correct')
+                            
+                            this.CONTINUE(res)
+                        })
                     },
                     
                     
                     withError2 : function (param1, param2) {
-                        this.one.withError1(param1, param2).now()
+                        var scope = this.one
+                        
+                        this.one.withError1(param1, param2).CATCH(function (e) {
+                            
+                            t.ok(this == scope, 'Scope is in CATCH is correct')
+                            
+                            this.THROW(e)
+                        }).NOW()
                     }
                 }
             }

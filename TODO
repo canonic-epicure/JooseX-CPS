@@ -8,8 +8,6 @@ IDEAS
 TASKS
 =====
 
-- keep the intuitively expected scope during continued method calls (fixed?)
-
 - test the 'detachScope' method
 - implement 'AND' method for parallel running tasks, and single exit point
  
@@ -20,6 +18,7 @@ DONE
 
 - global CONT instead of scoped? (no attach then, only detach)
 - clear CONT after returning from the continued method
+- keep the intuitively expected scope during continued method calls (fixed?)
 
 
 
