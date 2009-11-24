@@ -1,4 +1,16 @@
 TASKS
 =====
 
+- global CONT instead of scoped? (no attach then, only detach)
+
+- do not remove CONT/RESULT after exiting the scope to slightly improve the performance?
+
+
 - VAR, GET, SET - analog of scoped variables
+
+
+DONE
+====
+
+
+- clear CONT after returning from the continued method
