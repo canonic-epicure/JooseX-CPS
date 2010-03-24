@@ -31,3 +31,4 @@ t/032_continued_methods_before.t.js
 t/033_continued_methods_after.t.js
 t/090_draft.t.js
 t/index.html
+META.json

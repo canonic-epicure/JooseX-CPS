@@ -8,8 +8,14 @@ IDEAS
 TASKS
 =====
 
+- RETURN from inside of CATCH scope
+
+- create Task/ package to speedup the loading
+
 - test the 'detachScope' method
-- implement 'AND' method for parallel running tasks, and single exit point
+
+- implement 'AND' method for parallel running tasks, and single exit point (?)
+ - how to handle CATCH/THROW for them then?
  
 
 

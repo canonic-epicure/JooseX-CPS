@@ -1,0 +1,57 @@
+{
+   "resources" : {
+      "license" : "http://www.opensource.org/licenses/bsd-license.php"
+   },
+   "generated_by" : "Module::Build version 0.3601",
+   "meta-spec" : {
+      "version" : "1.4",
+      "url" : "http://module-build.sourceforge.net/META-spec-v1.4.html"
+   },
+   "version" : "0.01",
+   "name" : "JooseX.CPS",
+   "author" : [
+      "Nickolay (SamuraiJack) Platonov <root@symbie.org>"
+   ],
+   "license" : "bsd",
+   "provides" : {
+      "JooseX.CPS.MethodModifier.Put" : {
+         "version" : null,
+         "file" : "lib/JooseX/CPS/MethodModifier/Put.js"
+      },
+      "JooseX.CPS.MethodModifier.Before" : {
+         "version" : null,
+         "file" : "lib/JooseX/CPS/MethodModifier/Before.js"
+      },
+      "JooseX.CPS" : {
+         "version" : null,
+         "file" : "lib/JooseX/CPS.js"
+      },
+      "JooseX.CPS.Builder" : {
+         "version" : null,
+         "file" : "lib/JooseX/CPS/Builder.js"
+      },
+      "JooseX.CPS.MethodModifier.Override" : {
+         "version" : null,
+         "file" : "lib/JooseX/CPS/MethodModifier/Override.js"
+      },
+      "JooseX.CPS.Continuation" : {
+         "version" : null,
+         "file" : "lib/JooseX/CPS/Continuation.js"
+      },
+      "JooseX.CPS.ControlFlow" : {
+         "version" : null,
+         "file" : "lib/JooseX/CPS/ControlFlow.js"
+      },
+      "JooseX.CPS.MethodModifier.After" : {
+         "version" : null,
+         "file" : "lib/JooseX/CPS/MethodModifier/After.js"
+      }
+   },
+   "requires" : {
+      "JooseX.Namespace.Depended" : "0.01"
+   },
+   "abstract" : "Continuation Passing Style for Joose classes",
+   "configure_requires" : {
+      "Module::Build" : "0.36"
+   }
+}
