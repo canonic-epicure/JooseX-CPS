@@ -24,19 +24,11 @@
         
         <link rel="stylesheet" type="text/css" href="/jsan/Test/Run/static/css/all.css">
         <script type="text/javascript" src="/jsan/Task/Test/Run/ExtJS.js"></script>
-        
-        <script type="text/javascript" src="/jsan/JooseX/SimpleRequest.js"></script>
-
 
 	</head>
 	
 	<body>
 		<script type="text/javascript">
-            var INC = []
-            Joose.A.each([ '../lib', '/jsan' ], function (path) {
-                INC.push(Test.Run.Harness.Browser.Multi.my.resolveUrl(path, true))
-            }) 
-		
 		
 			Test.Run.Harness.Browser.Multi.my.configure({
 				title : 'JooseX.CPS Test Suite',
@@ -45,36 +37,38 @@
 				
 				preload : [
 				    '/jsan/Task/Joose/Core.js',
-                    "/jsan/JooseX/SimpleRequest.js",
-                    '/jsan/Task/JooseX/Namespace/Depended/Web.js',
-                    {
-                        text : "JooseX.Namespace.Depended.Manager.my.INC = " + Ext.encode(INC)
-                    }
+                    'Task.JooseX.CPS.Core'
 			    ]
 			})
 			
 			
 			Test.Run.Harness.Browser.Multi.my.start(
-				'010_trt_basics.t.js',
-				'011_trt_nesting.t.js',
-				'012_trt_chaining.t.js',
-				'013_trt_early_return.t.js',
-				'014_trt_throw_catch_basics.t.js',
-				'015_trt_throw_catch_nesting.t.js',
-				'016_trt_throw_catch_finally.t.js',
-				'017_trt_then_after_next.t.js',
-				'018_trt_return.t.js',
-				
-				'020_trt_as_callbacks.t.js',
-				'021_trt_as_errbacks.t.js',
-				
-				'030_continued_methods_put.t.js',
-				'031_continued_methods_override.t.js',
-				'032_continued_methods_before.t.js',
-				'033_continued_methods_after.t.js',
-				'034_continued_methods_attach.t.js',
-				'035_continued_methods_sequencing.t.js'
+				'010_statement.t.js',
+                '020_block.t.js'
 			)
 		</script>
 	</body>
 </html>
+
+<!--
+  
+                '011_trt_nesting.t.js',
+                '012_trt_chaining.t.js',
+                '013_trt_early_return.t.js',
+                '014_trt_throw_catch_basics.t.js',
+                '015_trt_throw_catch_nesting.t.js',
+                '016_trt_throw_catch_finally.t.js',
+                '017_trt_then_after_next.t.js',
+                '018_trt_return.t.js',
+                
+                '020_trt_as_callbacks.t.js',
+                '021_trt_as_errbacks.t.js',
+                
+                '030_continued_methods_put.t.js',
+                '031_continued_methods_override.t.js',
+                '032_continued_methods_before.t.js',
+                '033_continued_methods_after.t.js',
+                '034_continued_methods_attach.t.js',
+                '035_continued_methods_sequencing.t.js'
+
+-->

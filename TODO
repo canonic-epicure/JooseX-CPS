@@ -8,7 +8,7 @@ IDEAS
 TASKS
 =====
 
-- RETURN from inside of CATCH scope
+- RETURN from inside of CATCH scope (was a bug in Symbie, not related directly)
 
 - create Task/ package to speedup the loading
 
