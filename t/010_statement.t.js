@@ -61,7 +61,7 @@ StartTest(function(t) {
             
             var CONT = this.CONT
             
-            t.ok(CONT == statement2, "Statement was correctly embedded into scope")
+            t.ok(CONT.parent == statement2, "Statement was correctly embedded into scope")
             
             setTimeout(function () {
                 CONT.CONTINUE('returnTo')
