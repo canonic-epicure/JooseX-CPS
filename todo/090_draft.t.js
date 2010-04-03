@@ -23,7 +23,7 @@ StartTest(function(t) {
             continued : {
                 
                 
-                cpsMeta : JooseX.CPS.Continuation,
+                cpsMeta : JooseX.CPS.Statement,
                 
                 methods : {
                     
@@ -78,7 +78,7 @@ StartTest(function(t) {
             
         ).NEXT(function () {
             
-            if (this.RESULT == '...') 
+            if (result == '...') 
                 this.async4().NOW()
             else
                 this.CONTINUE()
@@ -97,10 +97,10 @@ StartTest(function(t) {
             
         ).NEXT(function () {
             
-            if (this.RESULT == '...') 
+            if (result == '...') 
                 this.async4().NOW()
             else 
-                if (this.RESULT) this.CONTINUE()
+                if (result) this.CONTINUE()
         })
         
         

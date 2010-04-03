@@ -4,12 +4,12 @@ StartTest(function(t) {
     
     var async0 = t.beginAsync()
     
-    use('JooseX.CPS.Continuation', function () {
+    use('JooseX.CPS.Statement', function () {
         
         //======================================================================================================================================================================================================================================================
         t.diag('Sanity')
         
-        t.ok(JooseX.CPS.Continuation, "JooseX.CPS.Continuation is here")
+        t.ok(JooseX.CPS.Statement, "JooseX.CPS.Statement is here")
         
         
         var xhrRequest = function (params) {
@@ -28,7 +28,7 @@ StartTest(function(t) {
         
         var async1  = t.beginAsync()
         
-        var cont1   = new JooseX.CPS.Continuation()
+        var cont1   = new JooseX.CPS.Statement()
         var scope1  = {}
         var scope2  = {}
         
@@ -64,7 +64,7 @@ StartTest(function(t) {
         
         var async2  = t.beginAsync()
         
-        var cont2   = new JooseX.CPS.Continuation()
+        var cont2   = new JooseX.CPS.Statement()
         var scope3  = {}
         var scope4  = {}
         
@@ -87,13 +87,13 @@ StartTest(function(t) {
             
             t.ok(this.CONT.parent.parent == cont2, "Continuation is next for the one nested into 'cont2'")
             
-            t.ok(this.RESULT == 'value1', "'RESULT' is aliased to 1st argument in the callback called actually")
+            t.ok(result == 'value1', "'RESULT' is aliased to 1st argument in the callback called actually")
             
-            t.ok(this.RESULTS[0] == this.RESULT, "'RESULT' is alias for 'RESULTS[1]' actually")
-            t.ok(this.RESULTS[1] == 'value2', "Second parameter for callback was passed to 'RESULTS[1]'")
-            t.ok(this.RESULTS[2].scope == scope4, "Third parameter for callback was passed to 'RESULTS[2]'")
+            t.ok(resultS[0] == result, "'RESULT' is alias for 'RESULTS[1]' actually")
+            t.ok(resultS[1] == 'value2', "Second parameter for callback was passed to 'RESULTS[1]'")
+            t.ok(resultS[2].scope == scope4, "Third parameter for callback was passed to 'RESULTS[2]'")
             
-            t.ok(this.RESULTS.length == 3, "No extra params appeared")
+            t.ok(resultS.length == 3, "No extra params appeared")
             
             t.endAsync(async2)
             
@@ -105,7 +105,7 @@ StartTest(function(t) {
         
         var async3  = t.beginAsync()
         
-        var cont3   = new JooseX.CPS.Continuation()
+        var cont3   = new JooseX.CPS.Statement()
         
         var scope5  = {}
         

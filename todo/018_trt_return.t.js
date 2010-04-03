@@ -4,19 +4,19 @@ StartTest(function(t) {
     
     var async0 = t.beginAsync()
     
-    use('JooseX.CPS.Continuation', function () {
+    use('JooseX.CPS.Statement', function () {
         
         //======================================================================================================================================================================================================================================================
         t.diag('Sanity')
         
-        t.ok(JooseX.CPS.Continuation, "JooseX.CPS.Continuation is here")
+        t.ok(JooseX.CPS.Statement, "JooseX.CPS.Statement is here")
         
         
         //======================================================================================================================================================================================================================================================            
         //t.diag('Nesting with RETURN')
         
         var async1  = t.beginAsync()
-        var cont1   = new JooseX.CPS.Continuation()
+        var cont1   = new JooseX.CPS.Statement()
         var scope1  = {}
         
         cont1.TRY(function () {
