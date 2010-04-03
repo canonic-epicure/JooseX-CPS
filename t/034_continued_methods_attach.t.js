@@ -67,11 +67,7 @@ StartTest(function(t) {
                     withError2 : function (param1, param2) {
                         var scope = this.one
                         
-                        debugger
-                        
                         this.one.withError1(param1, param2).CATCH(function (e) {
-                            
-                            debugger
                             
                             t.ok(this == scope, 'Scope in CATCH is correct')
                             
