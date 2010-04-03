@@ -1,21 +1,18 @@
 IDEAS
 =====
 
-- VAR, GET, SET - analog of scoped variables
-
 
 
 TASKS
 =====
 
-- RETURN from inside of CATCH scope (was a bug in Symbie, not related directly)
+- VAR, GET, SET - analog of scoped variables
 
-- create Task/ package to speedup the loading
-
-- test the 'detachScope' method
 
 - implement 'AND' method for parallel running tasks, and single exit point (?)
- - how to handle CATCH/THROW for them then?
+    - how to handle CATCH/THROW for them then?
+    
+- allow JooseX.CPS.Statement instances as parameters to TRY, THEN, CATCH and FINALLLY
  
 
 
@@ -25,6 +22,7 @@ DONE
 - global CONT instead of scoped? (no attach then, only detach)
 - clear CONT after returning from the continued method
 - keep the intuitively expected scope during continued method calls (fixed?)
+- create Task/ package to speedup the loading
 
 
 
@@ -32,3 +30,5 @@ GARBAGE
 =======
 
 - do not remove CONT/RESULT after exiting the scope to slightly improve the performance?
+- test the 'detachScope' method
+- RETURN from inside of CATCH scope (was a bug in Symbie, not related directly)
