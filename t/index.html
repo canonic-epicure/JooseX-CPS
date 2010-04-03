@@ -29,7 +29,13 @@
 	
 	<body>
 		<script type="text/javascript">
-		
+        
+            var INC = []
+            Joose.A.each([ '../lib', '/jsan' ], function (path) {
+                INC.push(Test.Run.Harness.Browser.Multi.my.resolveUrl(path, true))
+            }) 
+        
+        
 			Test.Run.Harness.Browser.Multi.my.configure({
 				title : 'JooseX.CPS Test Suite',
 				
@@ -37,13 +43,18 @@
 				
 				preload : [
 				    '/jsan/Task/Joose/Core.js',
+                    "/jsan/JooseX/SimpleRequest.js",
+                    '/jsan/Task/JooseX/Namespace/Depended/Web.js',
+                    {
+                        text : "JooseX.Namespace.Depended.Manager.my.INC = " + Ext.encode(INC)
+                    },
                     'Task.JooseX.CPS.All'
 			    ]
 			})
 			
 			
 			Test.Run.Harness.Browser.Multi.my.start(
-				'010_statement.t.js'
+				'010_statement_nesting.t.js'
 			)
 		</script>
 	</body>
