@@ -60,16 +60,20 @@ StartTest(function(t) {
                             t.ok(this == scope, 'Scope is correct')
                             
                             this.CONTINUE(res)
-                        })
+                        }).now()
                     },
                     
                     
                     withError2 : function (param1, param2) {
                         var scope = this.one
                         
+                        debugger
+                        
                         this.one.withError1(param1, param2).CATCH(function (e) {
                             
-                            t.ok(this == scope, 'Scope is in CATCH is correct')
+                            debugger
+                            
+                            t.ok(this == scope, 'Scope in CATCH is correct')
                             
                             this.THROW(e)
                         }).NOW()
@@ -99,7 +103,7 @@ StartTest(function(t) {
             t.ok(this == obj, ".. and in the correct scope")
             
             t.endAsync(async1)
-        })
+        }).NOW()
         
         
         //======================================================================================================================================================================================================================================================

@@ -136,7 +136,7 @@ StartTest(function(t) {
             t.ok(this.sumBaseCalled, "Base method was alredy called")
             
             t.endAsync(async1)
-        })
+        }).NOW()
         
         
         t.endAsync(async0)

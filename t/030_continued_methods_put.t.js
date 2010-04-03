@@ -82,7 +82,7 @@ StartTest(function(t) {
             t.ok(res == 'recover', 'NEXT received recovery value from CATCH, return value from FINALLY was ignored')
             
             t.endAsync(async1)
-        })
+        }).NOW()
         
 
         //======================================================================================================================================================================================================================================================
@@ -113,7 +113,7 @@ StartTest(function(t) {
             t.ok(res == 'even', 'Even sum was passed into THEN, return value from FINALLY was ignored')
             
             t.endAsync(async2)
-        })
+        }).NOW()
         
         
         t.endAsync(async0)
