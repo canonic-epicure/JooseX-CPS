@@ -1,6 +1,6 @@
 {
    "resources" : {
-      "license" : "http://www.opensource.org/licenses/bsd-license.php"
+      "license" : "http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt"
    },
    "generated_by" : "Module::Build version 0.3601",
    "meta-spec" : {
@@ -12,7 +12,7 @@
    "author" : [
       "Nickolay (SamuraiJack) Platonov <root@symbie.org>"
    ],
-   "license" : "bsd",
+   "license" : "lgpl",
    "provides" : {
       "JooseX.CPS.MethodModifier.Put" : {
          "version" : null,
@@ -22,6 +22,10 @@
          "version" : null,
          "file" : "lib/JooseX/CPS/MethodModifier/Before.js"
       },
+      "JooseX.CPS.MethodModifier.Override" : {
+         "version" : null,
+         "file" : "lib/JooseX/CPS/MethodModifier/Override.js"
+      },
       "JooseX.CPS" : {
          "version" : null,
          "file" : "lib/JooseX/CPS.js"
@@ -29,14 +33,6 @@
       "JooseX.CPS.Builder" : {
          "version" : null,
          "file" : "lib/JooseX/CPS/Builder.js"
-      },
-      "JooseX.CPS.MethodModifier.Override" : {
-         "version" : null,
-         "file" : "lib/JooseX/CPS/MethodModifier/Override.js"
-      },
-      "JooseX.CPS.Continuation" : {
-         "version" : null,
-         "file" : "lib/JooseX/CPS/Continuation.js"
       },
       "JooseX.CPS.ControlFlow" : {
          "version" : null,
@@ -48,7 +44,8 @@
       }
    },
    "requires" : {
-      "JooseX.Namespace.Depended" : "0.01"
+      "Joose" : "3.001",
+      "JooseX.Namespace.Depended" : "0.02"
    },
    "abstract" : "Continuation Passing Style for Joose classes",
    "configure_requires" : {
