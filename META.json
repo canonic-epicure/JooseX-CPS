@@ -13,42 +13,10 @@
       "Nickolay (SamuraiJack) Platonov <root@symbie.org>"
    ],
    "license" : "lgpl",
-   "provides" : {
-      "JooseX.CPS.MethodModifier.Put" : {
-         "version" : null,
-         "file" : "lib/JooseX/CPS/MethodModifier/Put.js"
-      },
-      "JooseX.CPS.MethodModifier.Before" : {
-         "version" : null,
-         "file" : "lib/JooseX/CPS/MethodModifier/Before.js"
-      },
-      "JooseX.CPS.MethodModifier.Override" : {
-         "version" : null,
-         "file" : "lib/JooseX/CPS/MethodModifier/Override.js"
-      },
-      "JooseX.CPS" : {
-         "version" : null,
-         "file" : "lib/JooseX/CPS.js"
-      },
-      "JooseX.CPS.Builder" : {
-         "version" : null,
-         "file" : "lib/JooseX/CPS/Builder.js"
-      },
-      "JooseX.CPS.ControlFlow" : {
-         "version" : null,
-         "file" : "lib/JooseX/CPS/ControlFlow.js"
-      },
-      "JooseX.CPS.MethodModifier.After" : {
-         "version" : null,
-         "file" : "lib/JooseX/CPS/MethodModifier/After.js"
-      }
-   },
+   "static_dir" : "static",
    "requires" : {
       "Joose" : "3.001",
       "JooseX.Namespace.Depended" : "0.02"
    },
-   "abstract" : "Continuation Passing Style for Joose classes",
-   "configure_requires" : {
-      "Module::Build" : "0.36"
-   }
+   "abstract" : "Continuation Passing Style for Joose classes"
 }
