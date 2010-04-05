@@ -2,12 +2,50 @@ Name
 ====
 
 
-JooseX.CPS - Some syntax sugar, enabling the [Continuation Passing Style](http://en.wikipedia.org/wiki/Continuation-passing_style) for Joose methods
+JooseX.CPS - Implementation of [Continuation Passing Style](http://en.wikipedia.org/wiki/Continuation-passing_style) for JavaScript and some syntax sugar, simplifying its usage with Joose
 
 
 SYNOPSIS
 ========
 
+Procedural approach:
+
+        UI.maskScreen("Please wait")
+        
+        TRY(function (url, data) {
+                    
+            XHR.request({
+                url      : url,
+                data     : data,
+            
+                callback : this.CONT.getCONTINUE(),
+                errback  : this.CONT.getTHROW()
+            })
+            
+        }).THEN(function (response) {
+            
+            if (response.isOk) {           
+                alert('Saved correctly')
+                
+                this.CONT.CONTINUE()
+            } else
+                this.CONT.THROW('still got the error') //or just: throw 'still got the error'
+            
+        }).CATCH(function (e) {
+        
+            alert('Error during saving: ' + e)
+            
+            this.CONT.CONTINUE()
+            
+        }).FINALLY(function () {
+        
+            UI.removeScreenMask()
+            
+        }).NOW('http://remote.site.com/webservice', 'some data')
+        
+        
+The same in OOP:        
+        
         Class("DataStore", {
         
             trait : JooseX.CPS,
@@ -24,7 +62,7 @@ SYNOPSIS
                     
                         XHR.request({
                             url      : url,
-                            data     : this.data,
+                            data     : this.getData(),
                         
                             callback : this.getCONTINUE(),
                             errback  : this.getTHROW()
@@ -47,7 +85,7 @@ SYNOPSIS
                 
                 this.CONTINUE()
             } else
-                this.THROW('still got the error')
+                this.THROW('still got the error') //or just: throw 'still got the error'
             
         }).CATCH(function (e) {
         
@@ -58,7 +96,7 @@ SYNOPSIS
         }).FINALLY(function () {
         
             UI.removeScreenMask()
-        })
+        }).NOW()
 
 
 DESCRIPTION
@@ -66,12 +104,112 @@ DESCRIPTION
 
 `JooseX.CPS` is a trait for metaclasses, which enables "Continuation passing style" in Joose methods and method modifiers.
 
-`JooseX.CPS` allows you to define special "continued" methods and method modifiers, which forms the *asynchronous interface* of the class, 
-but behave just like ordinary methods in other aspects (can be inherited, composed from Role, etc).
+`JooseX.CPS` allows you to define special "continued" methods and method modifiers, which forms the *asynchronous interface* of your class, 
+and behave just like ordinary methods - can be inherited, composed from Role, etc.
+
+
+STANDALONE USAGE
+================
+
+This module exports `TRY` function to the global namespace.
+
+### TRY
+
+> `JooseX.CPS.Statement TRY(Function func, Object scope, Array args)`
+
+> Create and setup an anonymous [JooseX.CPS.Statement]() instance. For the complete list of the available methods please refer to the link,
+in the meantime, take a look on the example below to see the main idea:
+
+        TRY(function () {
+        
+            var CONT = this.CONT
+            
+            XHR.request({
+                url      : url,
+                data     : this.data,
+            
+                callback : this.CONT.getCONTINUE(),
+                errback  : function (err1, err2) {
+                    CONT.THROW(err1, err2) 
+                }
+            })
+            
+        }).CATCH(function (e1, e2) {
+        
+            ...
+            
+            this.CONT.CONTINUE()
+        
+        }).FINALLY(function () {
+            
+            ...
+            
+            this.CONT.CONTINUE()
+                
+        }).THEN(function(res1, res2) {
+            ...
+        }).THEN(
+            ...
+        ) 
+
+As you can see, the control flow of the functions, wrapped with `TRY/CATCH/FINALLY` isn't managed by the standard `return` statement or explicit function end. 
+Instead, to transfer the flow, you need to explicitly call the method on the embedded continuation instance, which is available as `this.CONT` (`this` scope can be passed as 2nd argument to TRY).
+
+The call to such "control flow" method don't have to be synchronous - you can delay it arbitrary. This naturally allows to use them as callbacks (or errbacks).
+
+However, the embedded continuation instance is only valid on the "synchronous interval" of the function execution. If you are delaying the call to the control flow method, 
+either capture the continuation to the closure, or use one of `getCONTINUE/getTHROW/getRETURN` methods (see the example above).
+
+The arguments to the control flow method will become arguments to the next corresponding section of the flow:
+
+        // CONTINUE transfers to next THEN section
+
+        TRY(function (p1) {
+        
+            this.CONT.CONTINUE('value1', 'value2')
+
+        }).THEN(function(arg1, arg2) {
+            
+            //arg1 == 'value1', arg2 == 'value2' 
+            
+            this.CONT.CONTINUE('value3', 'value4')
+            
+        }).THEN(function(arg1, arg2) {
+            
+            //arg1 == 'value3', arg2 == 'value4' 
+            
+        }).NOW('p1') 
+ 
+
+        // THROW transfers to the corresponding CATCH section
+
+        TRY(function (p1) {
+        
+            this.CONT.THROW('error1', 'error2')
+
+        }).CATCH(function(arg1, arg2) {
+            
+            //arg1 == 'error1', arg2 == 'error2' 
+            
+            this.CONT.CONTINUE('value3', 'value4')
+            
+        }).FINALLY(function() {
+            
+        }).THEN(function(arg1, arg2) {
+            
+            //arg1 == 'value3', arg2 == 'value4' 
+            
+        }).NOW('p1') 
+
+*NOTE:* The `CATCH/FINALLY` statements are also "continued" - to transfer the flow from you need to call
+
+
+USAGE IN JOOSE CLASSES
+======================
 
 
 `continued` BUILDER
-===================
+-------------------
 
 Adding `JooseX.CPS` trait will provide your class with the `continued` builder. This builder groups the declaration of the "asynchrounous part" of your class.
 Inside it, you can use the following builders: `methods`, `override`, `after`, `before`. This builders have the same meaning as standard ones, however instead of usual, 
@@ -81,34 +219,32 @@ they defines the "continued" methods.
 "Continued" methods
 -------------------
 
-"Continued" methods are methods which do not transfer the control flow with the standard `return` statement. Instead, to transfer the control flow from such method you need to call the
-`CONTINUE` (or `RETURN`, or `THROW`) method in the current scope:
+These methods are called "continued" because inside of them, in the current scope, is embedded the continuation instance, available as `this.CONT` 
+
+"Continued" methods do not transfer the control flow with the standard `return` statement or explicit function end. Instead, to transfer the control 
+flow, you need to call the `CONTINUE` (or `RETURN`, or `THROW`) method of the continuation:
 
 
         Class("DataStore", {
+            trait : JooseX.CPS,
         
             continued : {
             
                 methods : {
                 
                     save : function (url) {
-                        if (!url.test(/^http/) { this.THROW("Invalid URL"); return }
+                        if (!url.test(/^http/) { this.CONT.THROW("Invalid URL"); return }
                         
                         ...
                         
-                        this.CONTINUE(result)
+                        this.CONT.CONTINUE(result)
                     }
                 }
             }
         })
         
-The call to such method don't have to be synchronous - this naturally allows to use them as callbacks (or errbacks).
-
-The `CONTINUE`, `RETURN` or `THROW` methods in the current scope are called "control flow" methods. 
 
 Continued methods have the following features:
-
-- They are executed strictly asynchronously (with `setTimeout(func, 0)`). You *cannot* rely that any of such method will be executed synchronously.
 
 - You cannot return the value from it, in the usual meaning (with `return`). Any returned value will cause an error.
 
@@ -122,6 +258,8 @@ Continued methods have the following features:
 
 "Continued" method modifiers
 ----------------------------
+
+
 
 
 EXAMPLES
@@ -175,5 +313,5 @@ Redistribution and use in source and binary forms, with or without modification,
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
 
-[JooseX.CPS.Statement]: CPS/Continuation.html
+[JooseX.CPS.Statement]: CPS/Statement.html
 [JooseX.CPS.ControlFlow]: CPS/ControlFlow.html
