@@ -130,6 +130,7 @@ For the complete list of the available methods please refer to the link, in the 
                 data     : this.data,
             
                 callback : this.CONT.getCONTINUE(),
+                
                 errback  : function (err1, err2) {
                     CONT.THROW(err1, err2) 
                 }
@@ -330,7 +331,78 @@ You can re-throw the exceptions from `CATCH/FINALLY` statements, to propagate it
 Statement boundaries
 --------------------
 
-`NEXT`
+When defining your control flow with `TRY/THEN/CATCH/FINALLY`, consider the following rules, which affect the scope of `CATCH/FINALLY` statements.
+
+- `THEN` is just a synonym for `TRY`. Calls to `TRY/THEN` add statements to the sequential group.
+
+- `CATCH/FINALLY` will handle the exceptions from the immediate previous sequential group
+
+- `THEN` after `CATCH/FINALLY` will start a new sequential group 
+
+If you need to explicitly start a new sequential group use `NEXT`. Take a look on some illustrating examples:
+
+
+        TRY(function () {                         |     try {
+                                                  |         doSomething1()
+            doSomething1()                        |         doSomething2()
+                                                  |     } catch (e) {
+        }).THEN(function() {                      |
+                                                  |         doCatch()
+            doSomething2()                        |              
+                                                  |     } finally {
+        }).CATCH(function() {                     |         doFinally()
+                                                  |     }
+            doCatch()                             |
+                                                  |
+        }).FINALLY(function () {                  |
+                                                  |
+            doFinally()                           |
+        })                                        |
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        TRY(function () {                         |     doSomething1()
+                                                  |    
+            doSomething1()                        |     try {
+                                                  |         doSomething2()
+        }).NEXT(function() {                      |         
+                                                  |     } catch (e) {
+            doSomething2()                        |         doCatch()
+                                                  |     } 
+        }).CATCH(function() {                     |    
+                                                  |     try {
+            doCatch()                             |         
+                                                  |         doSomething3()
+        }).THEN(function (){                      |         
+                                                  |     } finally {
+            doSomething3()                        |         doFinally()
+                                                  |     }
+        }).FINALLY(function () {                  |
+                                                  |
+            doFinally()                           |
+        })                                        |
+
+
+
+Return
+------
 
 
 Parallel statements
