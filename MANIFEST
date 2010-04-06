@@ -10,6 +10,7 @@ doc/html/JooseX/CPS/MethodModifier/Override.html
 doc/html/JooseX/CPS/MethodModifier/Put.html
 doc/html/JooseX/CPS/Statement.html
 doc/html/Task/JooseX/CPS/All.html
+doc/html/Task/JooseX/CPS/Standalone.html
 doc/mmd/JooseX/CPS.txt
 doc/mmd/JooseX/CPS/Builder.txt
 doc/mmd/JooseX/CPS/ControlFlow.txt
@@ -19,6 +20,7 @@ doc/mmd/JooseX/CPS/MethodModifier/Override.txt
 doc/mmd/JooseX/CPS/MethodModifier/Put.txt
 doc/mmd/JooseX/CPS/Statement.txt
 doc/mmd/Task/JooseX/CPS/All.txt
+doc/mmd/Task/JooseX/CPS/Standalone.txt
 inc/Module/Build/Functions.pm
 inc/Module/Build/Functions/DSL.pm
 inc/Module/Build/JSAN.pm
@@ -35,6 +37,7 @@ lib/JooseX/CPS/MethodModifier/Override.js
 lib/JooseX/CPS/MethodModifier/Put.js
 lib/JooseX/CPS/Statement.js
 lib/Task/JooseX/CPS/All.js
+lib/Task/JooseX/CPS/Standalone.js
 MANIFEST
 META.json
 README.markdown

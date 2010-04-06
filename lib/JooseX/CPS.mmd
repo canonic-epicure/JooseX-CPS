@@ -2,7 +2,7 @@ Name
 ====
 
 
-JooseX.CPS - Implementation of [Continuation Passing Style](http://en.wikipedia.org/wiki/Continuation-passing_style) for JavaScript and some syntax sugar, simplifying its usage with Joose
+JooseX.CPS - Implementation of [Continuation Passing Style](http://en.wikipedia.org/wiki/Continuation-passing_style) for JavaScript, plus some syntax sugar, simplifying its usage with Joose
 
 
 SYNOPSIS
@@ -16,7 +16,7 @@ Procedural approach:
                     
             XHR.request({
                 url      : url,
-                data     : data,
+                data     : 'data',
             
                 callback : this.CONT.getCONTINUE(),
                 errback  : this.CONT.getTHROW()
@@ -29,7 +29,7 @@ Procedural approach:
                 
                 this.CONT.CONTINUE()
             } else
-                this.CONT.THROW('still got the error') //or just: throw 'still got the error'
+                throw 'still got the error' // or: this.CONT.THROW('still got the error') 
             
         }).CATCH(function (e) {
         
@@ -85,7 +85,7 @@ The same in OOP:
                 
                 this.CONTINUE()
             } else
-                this.THROW('still got the error') //or just: throw 'still got the error'
+                throw 'still got the error' // or: this.CONT.THROW('still got the error') 
             
         }).CATCH(function (e) {
         
@@ -102,7 +102,7 @@ The same in OOP:
 DESCRIPTION
 ===========
 
-`JooseX.CPS` is a trait for metaclasses, which enables "Continuation passing style" in Joose methods and method modifiers.
+`JooseX.CPS` is a trait for meta-classes, which enables "Continuation passing style" in Joose methods and method modifiers.
 
 `JooseX.CPS` allows you to define special "continued" methods and method modifiers, which forms the *asynchronous interface* of your class, 
 and behave just like ordinary methods - can be inherited, composed from Role, etc.
@@ -111,14 +111,15 @@ and behave just like ordinary methods - can be inherited, composed from Role, et
 STANDALONE USAGE
 ================
 
-This module exports `TRY` function to the global namespace.
+This module can be used on its own, completely separately from Joose. For this mode, use `TRY` function, which is the exported to the global namespace.
 
 ### TRY
 
 > `JooseX.CPS.Statement TRY(Function func, Object scope, Array args)`
 
-> Create and setup an anonymous [JooseX.CPS.Statement]() instance. For the complete list of the available methods please refer to the link,
-in the meantime, take a look on the example below to see the main idea:
+> Create and setup an anonymous [JooseX.CPS.Statement]() instance. 
+
+For the complete list of the available methods please refer to the link, in the meantime, take a look on the example below to see the main idea:
 
         TRY(function () {
         
@@ -155,53 +156,171 @@ in the meantime, take a look on the example below to see the main idea:
 As you can see, the control flow of the functions, wrapped with `TRY/CATCH/FINALLY` isn't managed by the standard `return` statement or explicit function end. 
 Instead, to transfer the flow, you need to explicitly call the method on the embedded continuation instance, which is available as `this.CONT` (`this` scope can be passed as 2nd argument to TRY).
 
-The call to such "control flow" method don't have to be synchronous - you can delay it arbitrary. This naturally allows to use them as callbacks (or errbacks).
+The call to such "control flow method" don't have to be synchronous - you can defer it arbitrary. This naturally allows to use them as callbacks (or errbacks).
 
-However, the embedded continuation instance is only valid on the "synchronous interval" of the function execution. If you are delaying the call to the control flow method, 
-either capture the continuation to the closure, or use one of `getCONTINUE/getTHROW/getRETURN` methods (see the example above).
+However, the embedded continuation instance is only valid on the "synchronous interval" of the function execution. If you are deferring the call to the control flow method, 
+either capture the continuation to the closure, or use one of the `getCONTINUE/getTHROW/getRETURN` methods (see the example above).
 
 The arguments to the control flow method will become arguments to the next corresponding section of the flow:
 
         // CONTINUE transfers to next THEN section
+        
+        var tryScope = {}
 
         TRY(function (p1) {
+            // p1 == 'p1'
+            // this == tryScope 
         
             this.CONT.CONTINUE('value1', 'value2')
 
-        }).THEN(function(arg1, arg2) {
-            
-            //arg1 == 'value1', arg2 == 'value2' 
+        }, tryScope).THEN(function(arg1, arg2) {
+            // arg1 == 'value1', arg2 == 'value2' 
             
             this.CONT.CONTINUE('value3', 'value4')
             
         }).THEN(function(arg1, arg2) {
-            
-            //arg1 == 'value3', arg2 == 'value4' 
+            // arg1 == 'value3', arg2 == 'value4' 
             
         }).NOW('p1') 
- 
+
+        
+        
 
         // THROW transfers to the corresponding CATCH section
+        
+        var catchScope = {}
 
         TRY(function (p1) {
+            // p1 == 'p1'
         
             this.CONT.THROW('error1', 'error2')
 
         }).CATCH(function(arg1, arg2) {
-            
-            //arg1 == 'error1', arg2 == 'error2' 
+            // arg1 == 'error1', arg2 == 'error2' 
             
             this.CONT.CONTINUE('value3', 'value4')
             
-        }).FINALLY(function() {
+        }, catchScope).FINALLY(function() {
+        
+            this.CONTINUE()
             
         }).THEN(function(arg1, arg2) {
-            
-            //arg1 == 'value3', arg2 == 'value4' 
+            // arg1 == 'value3', arg2 == 'value4' 
             
         }).NOW('p1') 
 
-*NOTE:* The `CATCH/FINALLY` statements are also "continued" - to transfer the flow from you need to call
+*Things to note:* 
+
+- The `CATCH/FINALLY` statements are also "continued" - they have embedded continuation instance, and do not transfer the control flow without call to `CONTINUE` (or other method).
+If you'll forget to call it - your control flow will remain inside of the `CATCH/FINALLY` statement
+
+- Arguments to `CONTINUE` from inside the `CATCH` statement will be passed further on flow - to the next `THEN` section (***this may change in future versions***)
+
+- Arguments to `CONTINUE` from inside the `FINALLY` statement will be ignored.
+
+- You can pass the scope for the statement's function as the 2nd argument of any control flow method
+
+- You can pass the arguments for the statement's function as the 3nd argument of any control flow method. This will *override* the arguments received from the previous statement (or from `NOW`, see below).
+
+
+Activation
+----------
+
+The control flow, defined with the `TRY/CATCH/FINALLY` will not start immediately. To start it, call the `NOW` method of the continuation. 
+
+Arguments to `NOW` will become the arguments to the initial statement (see the example above).     
+
+
+Nesting
+-------
+
+You can nest the statements arbitrary. To do it, instead of global `TRY` use the `TRY` method of the embedded continuation:
+
+        TRY(function () {
+        
+            this.CONT.TRY(function () {
+                XHR.request({
+                    url      : url,
+                    data     : this.data,
+                
+                    callback : this.CONT.getCONTINUE(),
+                    errback  : function (err1, err2) {
+                        CONT.THROW(err1, err2) 
+                    }
+                })
+            }).THEN(function () {
+            
+                // do something else
+            
+            }).NOW()
+            
+            
+        }).CATCH(function (e1, e2) {
+        
+            ...
+            
+            this.CONT.CONTINUE()
+        
+        }).FINALLY(function () {
+            
+            ...
+            
+            this.CONT.CONTINUE()
+                
+        }).THEN(function(res1, res2) {
+            ...
+        }).THEN(
+            ...
+        ) 
+    
+    
+Exceptions
+----------
+
+To raise the exceptions you have 2 options. If you are raising it, during the "synchronous interval" of the statement's function, you can just use standard `throw`:
+
+        TRY(function (arg1, arg2) {
+        
+            if (!arg1 || !arg2) throw new MyException({ description : 'Incorrect arguments' })
+            
+            ...
+        
+        }).CATCH(function (e) {
+        
+            this.CONT.CONTINUE()
+        
+        }).FINALLY(function () {
+            ...
+        }).NOW()
+
+
+If you are raising it deferred, use the `THROW` method of the continuation:
+
+        TRY(function (arg1, arg2) {
+        
+            var CONT = this.CONT
+            
+            XHR.request({
+                errback  : function (err1, err2) {
+                    
+                    CONT.THROW(new MyException({ param1 : err1, param2 : err2 })) 
+                }
+            })
+        
+        }).CATCH(function (e) {
+        
+            this.CONT.CONTINUE()
+        
+        }).FINALLY(function () {
+            ...
+        }).NOW()
+
+Note, that with `THROW` you can throw (and accordingly catch) several values.
+
+Exceptions from the nested statements will be correctly caught/handled by the outer `CATCH` statements. All `FINALLY` statements will be honored, in the correct order.
+
+You can re-throw the exceptions from `CATCH/FINALLY` statements, to propagate it.
+
 
 
 USAGE IN JOOSE CLASSES

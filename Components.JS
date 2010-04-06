@@ -1,7 +1,11 @@
 COMPONENTS = {
     
+    "Standalone" : [
+        "JooseX.CPS.Statement"
+    ],
+    
     "All" : [
-        "JooseX.CPS.Statement",
+        "+Standalone",
         
         "JooseX.CPS.MethodModifier.Override",
         "JooseX.CPS.MethodModifier.After",
