@@ -2,7 +2,7 @@ Name
 ====
 
 
-JooseX.CPS - Implementation of [Continuation Passing Style](http://en.wikipedia.org/wiki/Continuation-passing_style) for JavaScript, plus some syntax sugar, simplifying its usage with Joose
+JooseX.CPS - Implementation of the Continuation Passing Style<sup>[1](http://en.wikipedia.org/wiki/Continuation-passing_style)</sup> for JavaScript, plus some syntax sugar, simplifying its usage with Joose
 
 
 SYNOPSIS
@@ -111,7 +111,7 @@ and behave just like ordinary methods - can be inherited, composed from Role, et
 STANDALONE USAGE
 ================
 
-This module can be used on its own, completely separately from Joose. For this mode, use `TRY` function, which is the exported to the global namespace.
+This module can be used on its own, completely separately from Joose. For this mode, use `TRY` function, which is exported to the global namespace.
 
 ### TRY
 
@@ -196,7 +196,8 @@ The arguments to the control flow method will become arguments to the next corre
             this.CONT.THROW('error1', 'error2')
 
         }).CATCH(function(arg1, arg2) {
-            // arg1 == 'error1', arg2 == 'error2' 
+            // arg1 == 'error1', arg2 == 'error2'
+            // this == catchScope 
             
             this.CONT.CONTINUE('value3', 'value4')
             
@@ -209,9 +210,13 @@ The arguments to the control flow method will become arguments to the next corre
             
         }).NOW('p1') 
 
-*Things to note:* 
 
-- The `CATCH/FINALLY` statements are also "continued" - they have embedded continuation instance, and do not transfer the control flow without call to `CONTINUE` (or other method).
+Features
+--------
+
+- You can't return the value from the statement's function, using the standard `return`. Any value returned will throw an exception. 
+
+- The `CATCH/FINALLY` statements are also "continued" - they have embedded continuation instance, and **do not** transfer the control flow without call to `CONTINUE` (or other method).
 If you'll forget to call it - your control flow will remain inside of the `CATCH/FINALLY` statement
 
 - Arguments to `CONTINUE` from inside the `CATCH` statement will be passed further on flow - to the next `THEN` section (***this may change in future versions***)
@@ -220,7 +225,7 @@ If you'll forget to call it - your control flow will remain inside of the `CATCH
 
 - You can pass the scope for the statement's function as the 2nd argument of any control flow method
 
-- You can pass the arguments for the statement's function as the 3nd argument of any control flow method. This will *override* the arguments received from the previous statement (or from `NOW`, see below).
+- You can pass the arguments for the statement's function as the 3rd argument of any control flow method. This will *override* the arguments received from the previous statement (or from `NOW`, see below).
 
 
 Activation
@@ -277,7 +282,7 @@ You can nest the statements arbitrary. To do it, instead of global `TRY` use the
 Exceptions
 ----------
 
-To raise the exceptions you have 2 options. If you are raising it, during the "synchronous interval" of the statement's function, you can just use standard `throw`:
+To raise the exceptions you have 2 options. If you are raising it, during the "synchronous interval" of the statement's function, you can just use the standard `throw`:
 
         TRY(function (arg1, arg2) {
         
@@ -322,15 +327,28 @@ Exceptions from the nested statements will be correctly caught/handled by the ou
 You can re-throw the exceptions from `CATCH/FINALLY` statements, to propagate it.
 
 
+Statement boundaries
+--------------------
+
+`NEXT`
+
+
+Parallel statements
+-------------------
+
+`AND`
+
+
+<br><br>
+
 
 USAGE IN JOOSE CLASSES
 ======================
 
-
 `continued` BUILDER
 -------------------
 
-Adding `JooseX.CPS` trait will provide your class with the `continued` builder. This builder groups the declaration of the "asynchrounous part" of your class.
+Adding `JooseX.CPS` trait will provide your class with the `continued` builder. This builder groups the declaration of the "asynchronous part" of your class.
 Inside it, you can use the following builders: `methods`, `override`, `after`, `before`. This builders have the same meaning as standard ones, however instead of usual, 
 they defines the "continued" methods.
 
@@ -338,10 +356,8 @@ they defines the "continued" methods.
 "Continued" methods
 -------------------
 
-These methods are called "continued" because inside of them, in the current scope, is embedded the continuation instance, available as `this.CONT` 
-
-"Continued" methods do not transfer the control flow with the standard `return` statement or explicit function end. Instead, to transfer the control 
-flow, you need to call the `CONTINUE` (or `RETURN`, or `THROW`) method of the continuation:
+These methods are called "continued", because they are implicitly wrapped with the "continued" `TRY` statement, described in the section above.
+Inside of such methods is also embedded the continuation instance, available as `this.CONT` 
 
 
         Class("DataStore", {
@@ -352,7 +368,7 @@ flow, you need to call the `CONTINUE` (or `RETURN`, or `THROW`) method of the co
                 methods : {
                 
                     save : function (url) {
-                        if (!url.test(/^http/) { this.CONT.THROW("Invalid URL"); return }
+                        if (!url.test(/^http/) throw "Invalid URL"
                         
                         ...
                         
@@ -363,20 +379,24 @@ flow, you need to call the `CONTINUE` (or `RETURN`, or `THROW`) method of the co
         })
         
 
-Continued methods have the following features:
+Continued methods have the same [features][] as functions, wrapped with `TRY`, plus a very important additional one, see below.
 
-- You cannot return the value from it, in the usual meaning (with `return`). Any returned value will cause an error.
 
-- Inside of each method, in the current scope, is available the special *continuation instance*: `this.CONT`
- 
- Its an instance of [JooseX.CPS.Statement][JooseX.CPS.Statement]. All the "control flow" methods are actually executed as methods of this instance. 
- See the [JooseX.CPS.ControlFlow][JooseX.CPS.ControlFlow] for details.
-    
-- The parameters for any control flow method will became the arguments for the following scope. 
+Implicit methods chaining
+-------------------------
+
+
+
 
 
 "Continued" method modifiers
 ----------------------------
+
+
+
+Overriding usual methods
+------------------------
+
 
 
 
@@ -390,11 +410,13 @@ GETTING HELP
 
 This extension is supported via github issues tracker: <http://github.com/SamuraiJack/JooseX-CPS/issues>
 
-For general Joose questions you can also visit #joose on irc.freenode.org. 
+For general Joose questions you can also visit the [#joose](http://webchat.freenode.net/?randomnick=1&channels=joose&prompt=1) on irc.freenode.org, or the forum at <http://joose.it/forum>
 
 
 SEE ALSO
 ========
+
+[Continuation Passing Style](http://en.wikipedia.org/wiki/Continuation-passing_style)
 
 Web page of this extension: <http://github.com/SamuraiJack/JooseX-CPS/>
 
