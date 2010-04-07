@@ -111,7 +111,8 @@ and behave just like ordinary methods - can be inherited, composed from Role, et
 STANDALONE USAGE
 ================
 
-This module can be used on its own, completely separately from Joose. For this mode, use `TRY` function, which is exported to the global namespace.
+This module can be used on its own, completely separately from Joose. For this mode, include only the `lib/Task/JooseX/CPS/Standalone.js` file in your deployment.
+This file will export `TRY` function:
 
 ### TRY
 
@@ -321,7 +322,7 @@ If you are raising it deferred, use the `THROW` method of the continuation:
             ...
         }).NOW()
 
-Note, that with `THROW` you can throw (and accordingly catch) several values.
+Note, that with `THROW` you can throw (and accordingly catch) several values. If you are deferring call to `THROW`, you can also use `getTHROW`.
 
 Exceptions from the nested statements will be correctly caught/handled by the outer `CATCH` statements. All `FINALLY` statements will be honored, in the correct order.
 
@@ -339,7 +340,9 @@ When defining your control flow with `TRY/THEN/CATCH/FINALLY`, consider the foll
 
 - `THEN` after `CATCH/FINALLY` will start a new sequential group 
 
-If you need to explicitly start a new sequential group use `NEXT`. Take a look on some illustrating examples:
+- If you need to explicitly start a new sequential group use `NEXT`
+ 
+Take a look on some illustrating examples:
 
 
         TRY(function () {                         |     try {
@@ -358,25 +361,8 @@ If you need to explicitly start a new sequential group use `NEXT`. Take a look o
                                                   |
             doFinally()                           |
         })                                        |
-        
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+&nbsp;
 
         TRY(function () {                         |     doSomething1()
                                                   |    
@@ -400,22 +386,102 @@ If you need to explicitly start a new sequential group use `NEXT`. Take a look o
         })                                        |
 
 
-
 Return
 ------
 
+In any statement of the sequential group, you can also skip the rest of statements, using `RETURN`
 
-Parallel statements
+
+        TRY(function (arg) {                      |     (function() {
+                                                  |         if (!arg) return 'value1'
+            if (!arg) this.CONT.RETURN('value1')  |         
+                                                  |         doSomething1()
+            doSomething1()                        |         doSomething2()
+                                                  |     })()
+        }).THEN(function() {                      |
+                                                  |     doSomething3()
+            doSomething2()                        |
+                                                  |
+        }).NEXT(function(arg) {                   |
+            // arg == 'value1'                    |
+                                                  |
+            doSomething3()                        |   
+        })                                        |
+                                                  
+
+Remember, if you are deferring the call to `RETURN`, either capture the continuation to closure, or use the `getRETURN`
+                                                  
+                                                  
+Parallel statements                               
 -------------------
 
-`AND`
+Along with sequential groups, you can run your flow in parallel, with the `AND` method of the continuation. 
 
+Please note, that `AND` will change the type of the *whole current group* to parallel. So even the further calls to `THEN` will be considered
+as parallel branches. To start a new sequential group, which will act as a synchronization point, use `NEXT`.
+
+When entering the parallel group, all branches will receive the same arguments: 
+
+
+        TRY(function (p) {                        |                NOW('param')
+            //branch1, p == 'param'               |                     |
+                                                  |                     |
+                                                  |        /------------------------\
+            this.CONT.CONTINUE('res1')            |        |       |        |       | 
+                                                  |        |       |        |       |
+        }).AND(function(p) {                      |     branch1 branch2  branch3 branch4
+            //branch2, p == 'param'               |        |       |        |       |       
+                                                  |        |       |        |       |
+            this.CONT.CONTINUE('res2')            |        \------------------------/
+                                                  |                     |
+        }).AND(function(p) {                      |                     |
+            //branch3, p == 'param'               |        NEXT([ [1], [2], [3], [4] ])      
+                                                  |
+            this.CONT.THROW('err3')               |
+                                                  |
+        }).THEN(function(p) {                     |
+            //branch4, p == 'param'               |           
+                                                  |
+            this.CONT.THROW('err4')               |
+                                                  |
+        }).NEXT(function (arg) {                  |
+                                                  |
+            // arg == [                           |
+            //     [ 'res1'], [ 'res2' ],         |
+            //     [ 'err3'], [ 'err4' ]          |
+            // ]                                  |
+                                                  |
+        }).NOW('param')                           |
+                                                  |
+
+The synchronization point will receive a single argument, which will be an array, containing the `arguments` objects with the results from each branch.
+This array will be filled in order of branches *declaration*, not in the order they finish execution.
+
+***The following convention may change in future versions:*** Each `AND` statement is implicitly wrapped with `CATCH`. So the whole parallel group will never
+throw an exception (adding a `CATCH` statement to it will be a no-op, though  `FINALLY` statement will be honored). Instead, any exceptions from branches will be caught, 
+and considered as the results. Its your responsibility to examine the resulting array and separate exceptions from normal results.
+
+
+Synonyms
+--------
+
+The following upper-case methods of the continuation have lower-case synonyms:
+
+        THEN      |   then
+        NEXT      |   next
+        AND       |   and
+        NOW       |   now
+        CATCH     |   except
+        FINALLY   |   ensure
+                  
 
 <br><br>
 
 
 USAGE IN JOOSE CLASSES
 ======================
+
+For this mode, include the `lib/Task/JooseX/CPS/All.js` file in your deployment.
 
 `continued` BUILDER
 -------------------
