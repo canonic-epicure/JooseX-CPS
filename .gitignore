@@ -7,3 +7,4 @@ MANIFEST.bak
 Makefile.PL
 doc
 /inc/*
+JooseX.CPS-*.tar.gz

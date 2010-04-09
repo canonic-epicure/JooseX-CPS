@@ -9,7 +9,6 @@ doc/html/JooseX/CPS/MethodModifier/After.html
 doc/html/JooseX/CPS/MethodModifier/Before.html
 doc/html/JooseX/CPS/MethodModifier/Override.html
 doc/html/JooseX/CPS/MethodModifier/Put.html
-doc/html/JooseX/CPS/Statement.html
 doc/html/Task/JooseX/CPS/All.html
 doc/html/Task/JooseX/CPS/Standalone.html
 doc/mmd/JooseX/CPS.txt
@@ -20,7 +19,6 @@ doc/mmd/JooseX/CPS/MethodModifier/After.txt
 doc/mmd/JooseX/CPS/MethodModifier/Before.txt
 doc/mmd/JooseX/CPS/MethodModifier/Override.txt
 doc/mmd/JooseX/CPS/MethodModifier/Put.txt
-doc/mmd/JooseX/CPS/Statement.txt
 doc/mmd/Task/JooseX/CPS/All.txt
 doc/mmd/Task/JooseX/CPS/Standalone.txt
 inc/Module/Build/Functions.pm
@@ -38,12 +36,11 @@ lib/JooseX/CPS/MethodModifier/After.js
 lib/JooseX/CPS/MethodModifier/Before.js
 lib/JooseX/CPS/MethodModifier/Override.js
 lib/JooseX/CPS/MethodModifier/Put.js
-lib/JooseX/CPS/Statement.js
 lib/Task/JooseX/CPS/All.js
 lib/Task/JooseX/CPS/Standalone.js
 MANIFEST
 META.json
-README.markdown
+README.md
 t/010_statement_basics.t.js
 t/011_statement_nesting.t.js
 t/012_statement_chaining.t.js

@@ -10,15 +10,11 @@
    "version" : "0.01",
    "name" : "JooseX.CPS",
    "author" : [
-      "Nickolay (SamuraiJack) Platonov <root@symbie.org>"
+      "Nickolay (SamuraiJack) Platonov <nickolayp@cpan.org>"
    ],
    "license" : "lgpl",
    "static_dir" : "static",
    "provides" : {
-      "JooseX.CPS.Statement" : {
-         "version" : null,
-         "file" : "lib/JooseX/CPS/Statement.js"
-      },
       "JooseX.CPS.MethodModifier.Put" : {
          "version" : null,
          "file" : "lib/JooseX/CPS/MethodModifier/Put.js"
@@ -43,6 +39,10 @@
          "version" : null,
          "file" : "lib/JooseX/CPS/MethodModifier/Override.js"
       },
+      "JooseX.CPS.Continuation" : {
+         "version" : null,
+         "file" : "lib/JooseX/CPS/Continuation.js"
+      },
       "JooseX.CPS.ControlFlow" : {
          "version" : null,
          "file" : "lib/JooseX/CPS/ControlFlow.js"
@@ -58,7 +58,7 @@
    },
    "requires" : {
       "Joose" : "3.001",
-      "JooseX.Namespace.Depended" : "0.02"
+      "JooseX.Namespace.Depended" : "0.01"
    },
    "abstract" : "Continuation Passing Style for Joose classes"
 }
