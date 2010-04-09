@@ -14,6 +14,48 @@
    ],
    "license" : "lgpl",
    "static_dir" : "static",
+   "provides" : {
+      "JooseX.CPS.Statement" : {
+         "version" : null,
+         "file" : "lib/JooseX/CPS/Statement.js"
+      },
+      "JooseX.CPS.MethodModifier.Put" : {
+         "version" : null,
+         "file" : "lib/JooseX/CPS/MethodModifier/Put.js"
+      },
+      "JooseX.CPS.MethodModifier.Before" : {
+         "version" : null,
+         "file" : "lib/JooseX/CPS/MethodModifier/Before.js"
+      },
+      "JooseX.CPS" : {
+         "version" : null,
+         "file" : "lib/JooseX/CPS.js"
+      },
+      "JooseX.CPS.Builder" : {
+         "version" : null,
+         "file" : "lib/JooseX/CPS/Builder.js"
+      },
+      "Task.JooseX.CPS.All" : {
+         "version" : null,
+         "file" : "lib/Task/JooseX/CPS/All.js"
+      },
+      "JooseX.CPS.MethodModifier.Override" : {
+         "version" : null,
+         "file" : "lib/JooseX/CPS/MethodModifier/Override.js"
+      },
+      "JooseX.CPS.ControlFlow" : {
+         "version" : null,
+         "file" : "lib/JooseX/CPS/ControlFlow.js"
+      },
+      "JooseX.CPS.MethodModifier.After" : {
+         "version" : null,
+         "file" : "lib/JooseX/CPS/MethodModifier/After.js"
+      },
+      "Task.JooseX.CPS.Standalone" : {
+         "version" : null,
+         "file" : "lib/Task/JooseX/CPS/Standalone.js"
+      }
+   },
    "requires" : {
       "Joose" : "3.001",
       "JooseX.Namespace.Depended" : "0.02"

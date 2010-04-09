@@ -119,7 +119,7 @@ This file will export `TRY` function:
 
 > `JooseX.CPS.Statement TRY(Function func, Object scope, Array args)`
 
-> Create and setup an anonymous [JooseX.CPS.Statement]() instance. 
+> Create and setup an anonymous [JooseX.CPS.Statement] instance. 
 
 For the complete list of the available methods please refer to the link, in the meantime, take a look on the example below to see the main idea:
 
@@ -621,9 +621,75 @@ then write it like:
 Looks a bit noisier, but you can't get something for nothing, don't you?        
         
         
+Cross-objects methods chaining 
+------------------------------
+
+The implicit methods chaining also works for the case, when you call "continued" methods of different objects. 
+This works because single-threaded nature of JavaScript allows us to keep the global continuation instance. For example:
+
+        Class("Data.Logger", {                   
+            trait : JooseX.CPS,                 
+                                                
+            continued : {                       
+                                                
+                methods : {                     
+                                                
+                    log : function () {         
+                        //do log                
+                        this.CONTINUE()         
+                    }                          
+                }                               
+            }                                   
+        })
+        
+                                              
+        Class("Data.Store", {                   
+            trait : JooseX.CPS,
+            
+            has : {
+                logger      : null,
+            },                 
+                                                
+            continued : {                       
+                                                
+                methods : {
+                                     
+                    save : function (url) {     
+                        //do save               
+                        this.CONTINUE()         
+                    },                          
+                                                
+                    update : function (url) {   
+                        this.save(url)          
+                                                
+                        this.logger.log().now()        
+                    }                           
+                }                               
+            }                                   
+        })                                      
+                                                
+        var store = new Data.Store()            
+                                                
+        store.update('http://my.site.com').now()
+
+Thing to note is that, the scope propagates to further chained statements, so your should consider that. Take a look on the illustrating examples:
 
 
-"Continued" method modifiers
+        update : function (url) {                 |    update : function (url) {           
+            this.save(url)                        |        this.save(url)                  
+                                                  |                                        
+            var me      = this                    |        var me      = this              
+            var logger  = this.logger             |        var logger  = this.logger                       
+                                                  |                                        
+            logger.log().then(function () {       |        logger.log().then(function () { 
+                                                  |                                        
+                // this == logger                 |            // this == me              
+                                                  |                                        
+            }).now()                              |        }, this).now()                  
+        }                                         |    }                                   
+                                                  
+                                                  
+"Continued" method modifiers                      
 ----------------------------
 
 You can define the "continued" method modifiers as well. The only modifier type, that isn't supported is `augment`.
@@ -688,6 +754,8 @@ For general Joose questions you can also visit the [#joose](http://webchat.freen
 
 SEE ALSO
 ========
+
+Continuation class: [JooseX.CPS.Statement]
 
 [Continuation Passing Style](http://en.wikipedia.org/wiki/Continuation-passing_style)
 
