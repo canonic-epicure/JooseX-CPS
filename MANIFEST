@@ -3,6 +3,7 @@ Changes
 Components.JS
 doc/html/JooseX/CPS.html
 doc/html/JooseX/CPS/Builder.html
+doc/html/JooseX/CPS/Continuation.html
 doc/html/JooseX/CPS/ControlFlow.html
 doc/html/JooseX/CPS/MethodModifier/After.html
 doc/html/JooseX/CPS/MethodModifier/Before.html
@@ -13,6 +14,7 @@ doc/html/Task/JooseX/CPS/All.html
 doc/html/Task/JooseX/CPS/Standalone.html
 doc/mmd/JooseX/CPS.txt
 doc/mmd/JooseX/CPS/Builder.txt
+doc/mmd/JooseX/CPS/Continuation.txt
 doc/mmd/JooseX/CPS/ControlFlow.txt
 doc/mmd/JooseX/CPS/MethodModifier/After.txt
 doc/mmd/JooseX/CPS/MethodModifier/Before.txt
@@ -30,6 +32,7 @@ inc/Module/JSAN/DSL.pm
 lib/JooseX/CPS.js
 lib/JooseX/CPS.mmd
 lib/JooseX/CPS/Builder.js
+lib/JooseX/CPS/Continuation.js
 lib/JooseX/CPS/ControlFlow.js
 lib/JooseX/CPS/MethodModifier/After.js
 lib/JooseX/CPS/MethodModifier/Before.js

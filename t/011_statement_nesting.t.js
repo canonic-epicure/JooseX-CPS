@@ -5,14 +5,14 @@ StartTest(function(t) {
     //======================================================================================================================================================================================================================================================
     t.diag('Sanity')
     
-    t.ok(JooseX.CPS.Statement, "JooseX.CPS.Statement is here")
+    t.ok(JooseX.CPS.Continuation, "JooseX.CPS.Continuation is here")
     
 
     //======================================================================================================================================================================================================================================================            
     //t.diag("'TRY' nesting")
     
     var async4      = t.beginAsync()
-    var cont4       = new JooseX.CPS.Statement()
+    var cont4       = new JooseX.CPS.Continuation()
     var scope4      = { toString : function () { return 'scope4'} }
     var scope4Then  = { toString : function () { return 'scope4Then'} }
 
@@ -54,7 +54,7 @@ StartTest(function(t) {
     //t.diag('Try/Then nesting')
     
     var async5      = t.beginAsync()
-    var cont5       = new JooseX.CPS.Statement()
+    var cont5       = new JooseX.CPS.Continuation()
     var scope5      = {}
     
     cont5.TRY(function () {
@@ -100,7 +100,7 @@ StartTest(function(t) {
     //t.diag('More Try/Then nesting')
     
     var async6  = t.beginAsync()
-    var cont6   = new JooseX.CPS.Statement()
+    var cont6   = new JooseX.CPS.Continuation()
     var scope6  = {}
     
     cont6.TRY(function () {

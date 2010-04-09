@@ -5,7 +5,7 @@ StartTest(function(t) {
     //======================================================================================================================================================================================================================================================
     t.diag('Sanity')
     
-    t.ok(JooseX.CPS.Statement, "JooseX.CPS.Statement is here")
+    t.ok(JooseX.CPS.Continuation, "JooseX.CPS.Continuation is here")
     
     
     //======================================================================================================================================================================================================================================================            
@@ -13,7 +13,7 @@ StartTest(function(t) {
     
     var async6  = t.beginAsync()
     var async7  = t.beginAsync()
-    var cont6   = new JooseX.CPS.Statement()
+    var cont6   = new JooseX.CPS.Continuation()
     var scope6  = {}
     var scope7  = {}
     

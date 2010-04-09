@@ -5,15 +5,15 @@ StartTest(function(t) {
     //======================================================================================================================================================================================================================================================
     t.diag('Sanity')
     
-    t.ok(JooseX.CPS.Statement, "JooseX.CPS.Statement is here")
+    t.ok(JooseX.CPS.Continuation, "JooseX.CPS.Continuation is here")
     
 
     //======================================================================================================================================================================================================================================================
     t.diag('Instantiation')
     
-    var cont = new JooseX.CPS.Statement()
+    var cont = new JooseX.CPS.Continuation()
     
-    t.ok(cont, "'JooseX.CPS.Statement' was instantiated")
+    t.ok(cont, "'JooseX.CPS.Continuation' was instantiated")
     
     
 
@@ -49,7 +49,7 @@ StartTest(function(t) {
     //t.diag('Simple successfull call')
     
     var async2  = t.beginAsync()
-    var cont2   = new JooseX.CPS.Statement()
+    var cont2   = new JooseX.CPS.Continuation()
     var scope2  = {}
 
     
@@ -85,7 +85,7 @@ StartTest(function(t) {
     //t.diag('Call without CONTINUE')
     
     var async3  = t.beginAsync()
-    var cont3   = new JooseX.CPS.Statement()
+    var cont3   = new JooseX.CPS.Continuation()
     
     var thenReached = false
     

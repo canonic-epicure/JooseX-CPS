@@ -11,7 +11,7 @@ StartTest(function(t) {
         
         t.ok(JooseX.CPS, "JooseX.CPS is here")
         t.ok(JooseX.CPS.Builder, "JooseX.CPS.Builder is here")
-        t.ok(JooseX.CPS.Statement, "JooseX.CPS.Statement is here")
+        t.ok(JooseX.CPS.Continuation, "JooseX.CPS.Continuation is here")
         
         
         //======================================================================================================================================================================================================================================================

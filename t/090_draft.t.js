@@ -23,7 +23,7 @@ StartTest(function(t) {
             continued : {
                 
                 
-                cpsMeta : JooseX.CPS.Statement,
+                cpsMeta : JooseX.CPS.Continuation,
                 
                 methods : {
                     

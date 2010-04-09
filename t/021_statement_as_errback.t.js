@@ -5,7 +5,7 @@ StartTest(function(t) {
     //======================================================================================================================================================================================================================================================
     t.diag('Sanity')
     
-    t.ok(JooseX.CPS.Statement, "JooseX.CPS.Statement is here")
+    t.ok(JooseX.CPS.Continuation, "JooseX.CPS.Continuation is here")
     
     
     var xhrRequest = function (params) {
@@ -24,7 +24,7 @@ StartTest(function(t) {
     
     var async1  = t.beginAsync()
     
-    var cont1   = new JooseX.CPS.Statement()
+    var cont1   = new JooseX.CPS.Continuation()
     var scope1  = {}
     var scope2  = {}
     
@@ -61,7 +61,7 @@ StartTest(function(t) {
     
     var async3  = t.beginAsync()
     
-    var cont3   = new JooseX.CPS.Statement()
+    var cont3   = new JooseX.CPS.Continuation()
     
     var scope5  = {}
     

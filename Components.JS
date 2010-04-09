@@ -1,7 +1,7 @@
 COMPONENTS = {
     
     "Standalone" : [
-        "JooseX.CPS.Statement"
+        "JooseX.CPS.Continuation"
     ],
     
     "All" : [

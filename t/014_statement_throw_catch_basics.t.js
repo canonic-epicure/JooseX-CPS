@@ -5,14 +5,14 @@ StartTest(function(t) {
     //======================================================================================================================================================================================================================================================
     t.diag('Sanity')
     
-    t.ok(JooseX.CPS.Statement, "JooseX.CPS.Statement is here")
+    t.ok(JooseX.CPS.Continuation, "JooseX.CPS.Continuation is here")
     
 
     //======================================================================================================================================================================================================================================================
     //t.diag('Call with THROW/CATCH - simple error')
 
     var async1  = t.beginAsync()
-    var cont1   = new JooseX.CPS.Statement()
+    var cont1   = new JooseX.CPS.Continuation()
     var scope1  = {}
 
     
@@ -52,7 +52,7 @@ StartTest(function(t) {
     //t.diag('Call with THROW/CATCH - no error, plus FINALLY')
 
     var async15  = t.beginAsync()
-    var cont15   = new JooseX.CPS.Statement()
+    var cont15   = new JooseX.CPS.Continuation()
     var scope15  = {}
 
     cont15.TRY(function () {
@@ -83,7 +83,7 @@ StartTest(function(t) {
     //t.diag('Call with THROW/CATCH - native exceptions, THROW from THEN')
 
     var async2  = t.beginAsync()
-    var cont2   = new JooseX.CPS.Statement()
+    var cont2   = new JooseX.CPS.Continuation()
     var scope2  = {}
 
     
@@ -119,7 +119,7 @@ StartTest(function(t) {
     //t.diag('THROW with NEXT')
 
     var async3  = t.beginAsync()
-    var cont3   = new JooseX.CPS.Statement()
+    var cont3   = new JooseX.CPS.Continuation()
     
     cont3.TRY(function () {
         //======================================================================================================================================================================================================================================================            
