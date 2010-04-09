@@ -117,7 +117,7 @@ This file will export `TRY` function:
 
 ### TRY
 
-> `JooseX.CPS.Continuation TRY(Function func, Object scope, Array args)`
+> `JooseX.CPS.Continuation TRY(Function func, Object scope?, Array args?)`
 
 > Create and setup an anonymous [JooseX.CPS.Continuation] instance. 
 
@@ -259,9 +259,7 @@ You can nest the statements arbitrary. To do it, instead of global `TRY` use the
                     data     : this.data,
                 
                     callback : this.CONT.getCONTINUE(),
-                    errback  : function (err1, err2) {
-                        CONT.THROW(err1, err2) 
-                    }
+                    errback  : this.CONT.getTHROW(),
                 })
             }).THEN(function () {
             
@@ -326,13 +324,13 @@ If you are raising it deferred, use the `THROW` method of the continuation:
         
         }).CATCH(function (e) {
         
-            this.CONT.CONTINUE()
+            this.CONT.THROW(e)
         
         }).FINALLY(function () {
             ...
         }).NOW()
 
-Note, that with `THROW` you can throw (and accordingly catch) several values. If you are deferring call to `THROW`, you can also use `getTHROW`.
+Note, that with `THROW` you can throw (and accordingly catch) several values. If you are deferring call to `THROW`, you should use `getTHROW` (or a closure).
 
 Exceptions from the nested statements will be correctly caught/handled by the outer `CATCH` statements. All `FINALLY` statements will be honored, in the correct order.
 
@@ -534,7 +532,7 @@ Continued methods have the same [features][] as functions, wrapped with `TRY`, p
 Shortcuts
 ---------
 
-The class with `JooseX.CPS` trait, will receive a [JooseX.CPS.ControlFlow][] role, which will provide several shortcut methods: 
+The class with `JooseX.CPS` trait, will receive a `JooseX.CPS.ControlFlow` role, which will provide several shortcut methods: 
 
         TRY/THEN/AND/NEXT
         
@@ -672,7 +670,10 @@ This works because single-threaded nature of JavaScript allows us to keep the gl
                                                 
         store.update('http://my.site.com').now()
 
-Thing to note is that, the scope propagates to further chained statements, so your should consider that. Take a look on the illustrating examples:
+Thing to note is that, the scope propagates along the statements chain and your should consider that. So, if in your "continued" method, you invoke the "continued" method of the another object,
+the scope of the following `CATCH/FINALLY/THEN/NEXT` statements will be that object. To override it, pass 2nd argument to control flow method.
+
+Take a look on the illustrating examples:
 
 
         update : function (url) {                 |    update : function (url) {           
