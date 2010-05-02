@@ -11,7 +11,7 @@
 
     [BUG FIXES]
     
-    -none-
+    - fixed bug, when thrown exception wasn't being propagated from nested statements 
 
 0.01   .........
 
