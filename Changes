@@ -1,5 +1,7 @@
 {{ $NEXT }}
 
+0.03      2010-06-14 19:57
+
     - switched to Dist::Zilla for distribution management
 
 0.02   .........
