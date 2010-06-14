@@ -1,3 +1,7 @@
+{{ $NEXT }}
+
+    - switched to Dist::Zilla for distribution management
+
 0.02   .........
 
     [ENHANCEMENTS]
