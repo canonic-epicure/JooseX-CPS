@@ -1,5 +1,7 @@
 {{ $NEXT }}
 
+0.04      2010-06-23 14:12
+
     - re-released with correct requirements format in META.json, no other changes
 
 0.03      2010-06-14 19:57
