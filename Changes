@@ -1,5 +1,7 @@
 {{ $NEXT }}
 
+0.05      2010-06-24 13:30
+
     - fixed bug, when the already leaved continuation instance could be
       picked up during implicit methods chaining
 
