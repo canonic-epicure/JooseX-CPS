@@ -1,5 +1,8 @@
 {{ $NEXT }}
 
+    - fixed bug, when the already leaved continuation instance could be
+      picked up during implicit methods chaining
+
 0.04      2010-06-23 14:12
 
     - re-released with correct requirements format in META.json, no other changes
