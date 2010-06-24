@@ -3,6 +3,8 @@ IDEAS
 
 - CONTINUE/RETURN should throw a special exceptions, so the usual 'return' won't be needed
 
+- somehow eliminate the need in THROW (usual `throw` should be enough)?
+
 - VAR, GET, SET - analog of scoped variables
 
 
