@@ -1,24 +1,22 @@
 IDEAS
 =====
 
+- CONTINUE/RETURN should throw a special exceptions, so the usual 'return' won't be needed
+
+- VAR, GET, SET - analog of scoped variables
 
 
 TASKS
 =====
 
-- VAR, GET, SET - analog of scoped variables
 
-
-- implement 'AND' method for parallel running tasks, and single exit point (?)
-    - how to handle CATCH/THROW for them then?
-    
-- allow JooseX.CPS.Statement instances as parameters to TRY, THEN, CATCH and FINALLLY
- 
 
 
 DONE
 ====
 
+- implement 'AND' method for parallel running tasks, and single exit point (?)
+    - how to handle CATCH/THROW for them then?
 - global CONT instead of scoped? (no attach then, only detach)
 - clear CONT after returning from the continued method
 - keep the intuitively expected scope during continued method calls (fixed?)
@@ -32,3 +30,4 @@ GARBAGE
 - do not remove CONT/RESULT after exiting the scope to slightly improve the performance?
 - test the 'detachScope' method
 - RETURN from inside of CATCH scope (was a bug in Symbie, not related directly)
+- allow JooseX.CPS.Statement instances as parameters to TRY, THEN, CATCH and FINALLLY
