@@ -4,6 +4,7 @@ COMPONENTS = {
         "JooseX.CPS.Continuation"
     ],
     
+    
     "All" : [
         "+Standalone",
         
@@ -15,7 +16,21 @@ COMPONENTS = {
         "JooseX.CPS.Builder",
         "JooseX.CPS.ControlFlow",
         "JooseX.CPS"
-    ]
+    ],
     
+    
+    "WebTest" : [
+        "jsan:Task.Joose.Core",
+        "jsan:JooseX.SimpleRequest",
+        "jsan:Task.JooseX.Namespace.Depended.Web",
+        "+All"
+    ],
+    
+    
+    "NodeJSTest" : [
+        "jsan:Task.Joose.Core",
+        "jsan:Task.JooseX.Namespace.Depended.NodeJS",
+        "+All"
+    ]
 } 
 
