@@ -1,5 +1,7 @@
 {{ $NEXT }}
 
+0.07      2010-07-05 19:18
+
     - test suite now passes on the NodeJS platform
 
 0.06      2010-06-25 09:42
