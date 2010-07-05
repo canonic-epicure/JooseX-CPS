@@ -11,9 +11,9 @@ if (typeof process != 'undefined' && process.pid) {
 var INC = [ '../lib', '/jsan' ]
 
 
-Harness.my.configure({
+Harness.configure({
 	title : 'JooseX.CPS Test Suite',
-	
+    
 	preload : Joose.is_NodeJS ? [
         'Task.JooseX.CPS.NodeJSTest',
         {
@@ -23,13 +23,13 @@ Harness.my.configure({
     ] : [
         'Task.JooseX.CPS.WebTest',
         {
-            text : "JooseX.Namespace.Depended.Manager.my.INC = " + Ext.encode(Harness.my.absolutizeINC(INC))
+            text : "JooseX.Namespace.Depended.Manager.my.INC = " + Ext.encode(Harness.absolutizeINC(INC))
         }
     ]
 })
 
 
-Harness.my.start(
+Harness.start(
 	'010_statement_basics.t.js',
     '011_statement_nesting.t.js',
     '012_statement_chaining.t.js',

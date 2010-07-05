@@ -1,5 +1,7 @@
 {{ $NEXT }}
 
+    - test suite now passes on the NodeJS platform
+
 0.06      2010-06-25 09:42
 
     - somehow the 0.05 release didn't appear on JSAN, re-releasing
