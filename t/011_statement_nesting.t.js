@@ -36,7 +36,7 @@ StartTest(function(t) {
             
         }, 10)
         
-    }, scope4).THEN(function (res) {
+    }, scope4).andTHEN(function (res) {
         //======================================================================================================================================================================================================================================================            
         t.diag("'TRY' nesting - THEN")
         
@@ -46,7 +46,7 @@ StartTest(function(t) {
         
         t.endAsync(async4)
         
-    }, scope4Then).NOW()
+    }, scope4Then)
 
     
     
@@ -83,7 +83,7 @@ StartTest(function(t) {
             
         }, 10)
         
-    }, scope5).THEN(function (result) {
+    }, scope5).andTHEN(function (result) {
         //======================================================================================================================================================================================================================================================            
         t.diag('Try/Then nesting - NEXT')
         
@@ -92,7 +92,7 @@ StartTest(function(t) {
         t.ok(result == 'returnTo2', 'NEXT was reached from the nested TRY/NEXT with the correct result :)')
         
         t.endAsync(async5)
-    }).NOW()
+    })
     
     
     
@@ -126,14 +126,14 @@ StartTest(function(t) {
                     
                     this.CONT.CONTINUE('result3')
                     
-                }).THEN(function (result) {
+                }).andThen(function (result) {
                     
                     t.ok(this == scope6, "Scope was correctly passed into most nested 'NEXT'")
                     
                     t.ok(result == 'result3', 'Another NEXT was reached from the nested TRY with the correct result')
                     
                     this.CONT.CONTINUE('result4')
-                }).NOW()
+                })
                 
             }).NOW()
             

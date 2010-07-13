@@ -46,7 +46,7 @@ StartTest(function(t) {
     
     
     //======================================================================================================================================================================================================================================================            
-    //t.diag('Simple successfull call')
+    //t.diag('Simple successfull call + andTHEN')
     
     var async2  = t.beginAsync()
     var cont2   = new JooseX.CPS.Continuation()
@@ -68,7 +68,7 @@ StartTest(function(t) {
         }, 10)
 
         
-    }, scope2).THEN(function (result) {
+    }, scope2).andTHEN(function (result) {
         //======================================================================================================================================================================================================================================================            
         t.diag('Simple call - NEXT')
         
@@ -77,7 +77,7 @@ StartTest(function(t) {
         t.ok(result == 'returnTo', 'NEXT was reached with the correct RESULT')
         
         t.endAsync(async2)
-    }).NOW()
+    })
 
     
     
