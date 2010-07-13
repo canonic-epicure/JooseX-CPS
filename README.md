@@ -243,7 +243,10 @@ Activation
 
 The control flow, defined with the `TRY/CATCH/FINALLY` will not start immediately. To start it, call the `NOW` method of the continuation. 
 
-Arguments to `NOW` will become the arguments to the initial statement (see the example above).     
+Arguments to `NOW` will become the arguments to the initial statement (see the example above).
+
+Alternatively, there is a `andTHEN` method of the continuation (not related to parallel flow). 
+Its equivalent to `.THEN().NOW()`. Note, that when using this method the `NOW` method will be called w/o arguments.     
 
 
 Nesting
@@ -477,6 +480,7 @@ Synonyms
 The following upper-case methods of the continuation have lower-case synonyms:
 
         THEN      |   then
+        andTHEN   |   andThen
         NEXT      |   next
         AND       |   and
         NOW       |   now
@@ -682,11 +686,11 @@ Take a look on the illustrating examples:
             var me      = this                    |        var me      = this              
             var logger  = this.logger             |        var logger  = this.logger                       
                                                   |                                        
-            logger.log().then(function () {       |        logger.log().then(function () { 
+            logger.log().then(function () {       |        logger.log().andThen(function () { 
                                                   |                                        
                 // this == logger                 |            // this == me              
                                                   |                                        
-            }).now()                              |        }, this).now()                  
+            }).now()                              |        }, this)                  
         }                                         |    }                                   
                                                   
                                                   
