@@ -3,22 +3,19 @@ IDEAS
 
 - CONTINUE/RETURN should throw a special exceptions, so the usual 'return' won't be needed
 
-- somehow eliminate the need in THROW (usual `throw` should be enough)?
-
 - VAR, GET, SET - analog of scoped variables
-
-- then_now - `then` combined with `now`
 
 
 TASKS
 =====
 
-
+- NOW on empty continuation should be the equivalent of CONTINUE
 
 
 DONE
 ====
 
+- then_now - `then` combined with `now`
 - implement 'AND' method for parallel running tasks, and single exit point (?)
     - how to handle CATCH/THROW for them then?
 - global CONT instead of scoped? (no attach then, only detach)
@@ -31,6 +28,7 @@ DONE
 GARBAGE
 =======
 
+- somehow eliminate the need in THROW (usual `throw` should be enough)?
 - do not remove CONT/RESULT after exiting the scope to slightly improve the performance?
 - test the 'detachScope' method
 - RETURN from inside of CATCH scope (was a bug in Symbie, not related directly)
