@@ -447,7 +447,7 @@ When entering the parallel group, all branches will receive the same arguments:
             this.CONT.CONTINUE('res2')            |        \------------------------/
                                                   |                     |
         }).AND(function(p) {                      |                     |
-            //branch3, p == 'param'               |        THEN([ [1], [2], [3], [4] ])      
+            //branch3, p == 'param'               |        THEN( [1], [2], [3], [4] )      
                                                   |
             this.CONT.THROW('err3')               |
                                                   |
@@ -456,18 +456,18 @@ When entering the parallel group, all branches will receive the same arguments:
                                                   |
             this.CONT.THROW('err4')               |
                                                   |
-        }).THEN(function (arg) {                  |
+        }).THEN(function (r1, r2, r3, r4) {       |
                                                   |
-            // arg == [                           |
-            //     [ 'res1'], [ 'res2' ],         |
-            //     [ 'err3'], [ 'err4' ]          |
-            // ]                                  |
+            // r1 == [ 'res1' ]                   |
+            // r2 == [ 'res2' ]                   |
+            // r3 == [ 'err3' ]                   |
+            // r4 == [ 'err4' ]                   |
                                                   |
         }).NOW('param')                           |
                                                   |
 
-The synchronization point will receive a single argument, which will be an array, containing the `arguments` objects with the results from each branch.
-This array will be filled in order of branches **declaration**, not in the order they finished execution.
+The synchronization point will receive several arguments, by the number of branches. Each argument will be the `arguments` object with the results of each branch.
+Arguments be filled in order of branches **declaration**, not in the order they finished execution.
 
 ***The following convention may change in future versions:*** Each `AND` statement is implicitly wrapped with `CATCH`. So the whole parallel group will never
 throw an exception (adding a `CATCH` statement to it will be a no-op, though  `FINALLY` statement will be honored). Instead, any exceptions from branches will be caught, 

@@ -1,6 +1,8 @@
 {{ $NEXT }}
 
     - added 'andThen' method, a shortcut for `.then().now()`
+    
+    - the synchronization point of AND will receive several arguments instead of a array
 
 0.07      2010-07-05 19:18
 

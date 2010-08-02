@@ -81,7 +81,7 @@ StartTest(function(t) {
         
         this.CONTINUE()
         
-    }).THEN(function (results) {
+    }).THEN(function () {
         
         t.pass('THEN was reached')
         
@@ -91,11 +91,11 @@ StartTest(function(t) {
         t.ok(!thenReached, "THEN wasn't reached yet")
         
         
-        t.ok(results instanceof Array && results.length == 3, 'Seems we have correct results')
+        t.ok(arguments.length == 3, 'Seems we have correct results')
         
-        t.ok(results[0][0] == 'error1', 'Indeed 1')
-        t.ok(results[1][0] == 'error2', 'Indeed 2')
-        t.ok(results[2][0] == 'value3', 'Indeed 3')
+        t.ok(arguments[0][0] == 'error1', 'Indeed 1')
+        t.ok(arguments[1][0] == 'error2', 'Indeed 2')
+        t.ok(arguments[2][0] == 'value3', 'Indeed 3')
         
         
         t.endAsync(async1)
