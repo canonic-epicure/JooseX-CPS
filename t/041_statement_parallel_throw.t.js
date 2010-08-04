@@ -79,7 +79,7 @@ StartTest(function(t) {
         
         t.fail("Reached 'CATCH' from parallel statement")
         
-        this.CONTINUE()
+        this.CONT.CONTINUE()
         
     }).THEN(function () {
         
