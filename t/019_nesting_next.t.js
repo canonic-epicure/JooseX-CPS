@@ -18,36 +18,19 @@ StartTest(function(t) {
     
         this.CONT.TRY(function () {
             
-            var CONT = this.CONT
             
-            CONT.AND(function () {
-                
-                t.pass('Branch 1 reached')
+            this.CONT.THEN(function () {
+                t.pass('THEN reached')
                 
                 this.CONT.CONTINUE()
-            })
-            
-            
-            CONT.AND(function () {
                 
-                t.pass('Branch 2 reached')
+            }).NEXT(function () {
+                
+                t.pass('NEXT reached')
                 
                 this.CONT.CONTINUE()
-            })
-    
-            CONT.AND(function () {
                 
-                t.pass('Branch 3 reached')
-                
-                this.CONT.CONTINUE()
-            })
-            
-            
-            CONT.andTHEN(function () {
-                t.pass('THEN immediately after parallel reached')
-                
-                this.CONT.CONTINUE()
-            })
+            }).NOW()
             
         }).andTHEN(function () {
             

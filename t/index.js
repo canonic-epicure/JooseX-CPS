@@ -39,6 +39,7 @@ Harness.start(
     '016_statement_throw_catch_finally.t.js',
     '017_statement_then_after_next.t.js',
     '018_statement_return.t.js',
+    '019_nesting_next.t.js',
     '020_statement_as_callback.t.js',
     '021_statement_as_errback.t.js',
     '030_continued_methods_put.t.js',
@@ -49,6 +50,5 @@ Harness.start(
     '035_continued_methods_sequencing.t.js',
     '036_continued_methods_fallback.t.js',
     '040_statement_parallel_basics.t.js',
-    '041_statement_parallel_throw.t.js',
-    '042_parallel_nested.t.js'
+    '041_statement_parallel_throw.t.js'
 )

@@ -13,15 +13,16 @@ StartTest(function(t) {
     
     var async1  = t.beginAsync()
     var cont1   = new JooseX.CPS.Continuation()
-    var scope1  = {}
     
     cont1.TRY(function () {
         
         this.CONT.RETURN('return1')
         
-    }, scope1).THEN(function () {
+    }).THEN(function () {
         
         t.fail("'THEN' reached after 'RETURN'")
+        
+        this.CONT.CONTINUE()
         
     }).NEXT(function (res) {
         

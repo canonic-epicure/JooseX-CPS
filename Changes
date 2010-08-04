@@ -1,4 +1,8 @@
 {{ $NEXT }}
+    
+    
+    - fixed bug, when nested `NEXT` statement could skip the outer `THEN`
+     
 
 0.08      2010-08-02 11:00
 
