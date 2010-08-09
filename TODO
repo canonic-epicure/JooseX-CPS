@@ -11,6 +11,8 @@ TASKS
 
 - NOW on empty continuation should be the equivalent of CONTINUE
 
+- add a parameter for maximum number of parallel branches running at the same time
+
 
 DONE
 ====
