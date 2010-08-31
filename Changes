@@ -1,7 +1,9 @@
 {{ $NEXT }}
 
+    - fixed bug, when throwing exceptions from the AND statements synchronously,
+      caused incorrect exception propagation
+
 0.09      2010-08-08 12:14
-    
     
     - fixed bug, when nested `NEXT` statement could skip the outer `THEN`
      
