@@ -13,6 +13,8 @@ TASKS
 
 - add a parameter for maximum number of parallel branches running at the same time
 
+- the 1st THROW from one of the AND branches should propagate to outer flow, results of remainig branches should be ignored
+
 
 DONE
 ====
