@@ -51,5 +51,6 @@ Harness.start(
     '036_continued_methods_fallback.t.js',
     '040_statement_parallel_basics.t.js',
     '041_statement_parallel_throw.t.js',
-    '045_statement_parallel_throw.t.js'
+    '045_statement_parallel_throw.t.js',
+    '050_double_leave_sequential.js'
 )

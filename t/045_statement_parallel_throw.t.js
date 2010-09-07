@@ -24,10 +24,6 @@ StartTest(function(t) {
             
             throw 'error-then'
             
-            t.endAsync(async1)
-            
-            t.done()
-            
         }).NOW()
         
     } catch (e) {
