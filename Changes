@@ -1,5 +1,7 @@
 {{ $NEXT }}
 
+0.10      2010-09-07 15:15
+
     - fixed bug, when throwing exceptions from the AND statements synchronously,
       caused incorrect exception propagation
       
