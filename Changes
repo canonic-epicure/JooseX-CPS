@@ -1,5 +1,8 @@
 {{ $NEXT }}
 
+    
+    - really fixed bug, when leaving sequential flow with CONTINUE from other scope, could cause exception
+
 0.10      2010-09-07 15:15
 
     - fixed bug, when throwing exceptions from the AND statements synchronously,
