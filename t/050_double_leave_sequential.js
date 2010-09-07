@@ -14,6 +14,10 @@ StartTest(function(t) {
         
         CONT.THEN(function () {
             
+            this.CONT.CONTINUE()
+            
+        }).THEN(function () {
+            
             CONTINUE()
         })
         
