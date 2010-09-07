@@ -2,6 +2,8 @@
 
     - fixed bug, when throwing exceptions from the AND statements synchronously,
       caused incorrect exception propagation
+      
+    - fixed bug, when leaving sequential flow with CONTINUE from other scope, could cause exception
 
 0.09      2010-08-08 12:14
     
