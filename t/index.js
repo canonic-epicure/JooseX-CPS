@@ -15,16 +15,10 @@ Harness.configure({
 	title : 'JooseX.CPS Test Suite',
     
 	preload : Joose.is_NodeJS ? [
-        'Task.JooseX.CPS.NodeJSTest',
-        {
-            text : "JooseX.Namespace.Depended.Manager.my.INC = " + JSON.stringify(INC)
-        }
+        'Task.JooseX.CPS.NodeJSTest'
         
     ] : [
-        'Task.JooseX.CPS.WebTest',
-        {
-            text : "JooseX.Namespace.Depended.Manager.my.INC = " + Ext.encode(Harness.absolutizeINC(INC))
-        }
+        'Task.JooseX.CPS.WebTest'
     ]
 })
 
@@ -52,5 +46,6 @@ Harness.start(
     '040_statement_parallel_basics.t.js',
     '041_statement_parallel_throw.t.js',
     '045_statement_parallel_throw.t.js',
-    '050_double_leave_sequential.js'
+    '050_double_leave_sequential.js',
+    '051_finally_after_sequential.js'
 )
