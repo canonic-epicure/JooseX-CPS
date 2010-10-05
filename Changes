@@ -1,6 +1,6 @@
 {{ $NEXT }}
 
-    - re-release with fixed in package.json, no functional changes
+    - re-release with fixes in package.json, no functional changes
 
 0.11      2010-09-07 15:29
 
