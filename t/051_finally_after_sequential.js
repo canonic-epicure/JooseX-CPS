@@ -13,20 +13,18 @@ StartTest(function(t) {
             var CONTINUE        = CONT.getCONTINUE()
             
             
-            CONT.THEN(function () {
-                
-                this.CONT.CONTINUE()
-                
-            }).THEN(function () {
+//            CONT.THEN(function () {
+//                
+//                this.CONT.CONTINUE()
+//                
+//            }).THEN(function () {
                 
                 CONTINUE()
-            })
+//            })
             
             CONT.NOW()
             
         }).THEN(function () {
-            
-//            debugger
             
             throw "exception"
             
