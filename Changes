@@ -1,5 +1,7 @@
 {{ $NEXT }}
 
+0.13      2010-11-01 13:38
+
     - re-release solely for `npm` platform, no functional changes
 
 0.12      2010-10-05 12:46
