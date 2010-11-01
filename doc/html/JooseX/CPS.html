@@ -1,0 +1,765 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+	<head>
+		<link type="text/css" rel="stylesheet" href="http://bit.ly/multi_markdown_style_css " />
+	</head>
+<body>
+<h1 id="name">Name</h1>
+
+<p>JooseX.CPS - Implementation of the Continuation Passing Style<sup><a href="http://en.wikipedia.org/wiki/Continuation-passing_style">1</a></sup> 
+for JavaScript, plus some syntax sugar, simplifying its usage in Joose methods and method modifiers</p>
+
+<h1 id="synopsis">SYNOPSIS</h1>
+
+<p>Stand-alone usage:</p>
+
+<pre><code>    UI.maskScreen("Please wait")
+
+    TRY(function (url, data) {
+
+        XHR.request({
+            url      : url,
+            data     : 'data',
+
+            callback : this.CONT.getCONTINUE(),
+            errback  : this.CONT.getTHROW()
+        })
+
+    }).THEN(function (response) {
+
+        if (response.isOk) {           
+            alert('Saved correctly')
+
+            this.CONT.CONTINUE()
+        } else
+            throw 'still got the error' // or: this.CONT.THROW('still got the error') 
+
+    }).CATCH(function (e) {
+
+        alert('Error during saving: ' + e)
+
+        this.CONT.CONTINUE()
+
+    }).FINALLY(function () {
+
+        UI.removeScreenMask()
+
+    }).NOW('http://remote.site.com/webservice', 'some data')
+</code></pre>
+
+<p>The same in OOP:        </p>
+
+<pre><code>    Class("DataStore", {
+
+        trait : JooseX.CPS,
+
+        has: {
+            data    : { is: "rw" }
+        },
+
+        continued : {
+
+            methods : {
+
+                save : function (url) {
+
+                    XHR.request({
+                        url      : url,
+                        data     : this.getData(),
+
+                        callback : this.getCONTINUE(),
+                        errback  : this.getTHROW()
+                    })
+                }
+            }
+        }
+    })
+
+    var store = new DataStore({
+        data : [ 1, 2, 3 ]
+    })
+
+    UI.maskScreen("Please wait")
+
+    store.save('http://remote.site.com/webservice').THEN(function (response) {
+
+        if (response.isOk) {           
+            alert('Saved correctly')
+
+            this.CONTINUE()
+        } else
+            throw 'still got the error' // or: this.CONT.THROW('still got the error') 
+
+    }).CATCH(function (e) {
+
+        alert('Error during saving: ' + e)
+
+        this.CONTINUE()
+
+    }).FINALLY(function () {
+
+        UI.removeScreenMask()
+    }).NOW()
+</code></pre>
+
+<h1 id="description">DESCRIPTION</h1>
+
+<p><code>JooseX.CPS</code> is a trait for meta-classes, which enables "Continuation passing style" in Joose methods and method modifiers.</p>
+
+<p><code>JooseX.CPS</code> allows you to define special "continued" methods and method modifiers, which forms the <em>asynchronous interface</em> of your class, 
+and behave just like ordinary methods - can be inherited, composed from Role, etc.</p>
+
+<h1 id="standaloneusage">STANDALONE USAGE</h1>
+
+<p>This module can be used on its own, completely separately from Joose. For this mode, include only the <code>lib/Task/JooseX/CPS/Standalone.js</code> file in your deployment.
+This file will export <code>TRY</code> function:</p>
+
+<h3 id="try">TRY</h3>
+
+<blockquote>
+  <p><code>JooseX.CPS.Continuation TRY(Function func, Object scope?, Array args?)</code></p>
+  
+  <p>Create and setup an anonymous <a href="CPS/Continuation.html">JooseX.CPS.Continuation</a> instance. </p>
+</blockquote>
+
+<p>For the complete list of the available methods please refer to the link, in the meantime, take a look on the example below to see the main idea:</p>
+
+<pre><code>    TRY(function () {
+
+        var CONT = this.CONT
+
+        XHR.request({
+            url      : url,
+            data     : this.data,
+
+            callback : this.CONT.getCONTINUE(),
+
+            errback  : function (err1, err2) {
+                CONT.THROW(err1, err2) 
+            }
+        })
+
+    }).CATCH(function (e1, e2) {
+
+        ...
+
+        this.CONT.CONTINUE()
+
+    }).FINALLY(function () {
+
+        ...
+
+        this.CONT.CONTINUE()
+
+    }).THEN(function(res1, res2) {
+        ...
+    }).THEN(
+        ...
+    ) 
+</code></pre>
+
+<p>As you can see, the control flow of the functions, wrapped with <code>TRY/CATCH/FINALLY</code> isn't managed by the standard <code>return</code> statement or explicit function end. 
+Instead, to transfer the flow, you need to explicitly call the method on the embedded continuation instance, which is available as <code>this.CONT</code> (<code>this</code> scope can be passed as 2nd argument to TRY).</p>
+
+<p>The call to such "control flow method" don't have to be synchronous - you can defer it arbitrary. This naturally allows to use them as callbacks (or errbacks).</p>
+
+<p>However, the embedded continuation instance is only valid on the "synchronous interval" of the function execution. If you are deferring the call to the control flow method, 
+either capture the continuation to the closure, or use one of the <code>getCONTINUE/getTHROW/getRETURN</code> methods (see the example above).</p>
+
+<p>The arguments to the control flow method will become arguments to the next corresponding section of the flow. If the scope was passed as 2nd argument, it will propagate
+as the scope of all further statements at the same nesting level.</p>
+
+<pre><code>    // CONTINUE transfers to next THEN section
+
+    var tryScope = {}
+
+    TRY(function (p1) {
+        // p1 == 'p1'
+        // this == tryScope 
+
+        this.CONT.CONTINUE('value1', 'value2')
+
+    }, tryScope).THEN(function(arg1, arg2) {
+        // arg1 == 'value1', arg2 == 'value2'
+        // this == tryScope 
+
+        this.CONT.CONTINUE('value3', 'value4')
+
+    }).THEN(function(arg1, arg2) {
+        // arg1 == 'value3', arg2 == 'value4'
+        // this == tryScope 
+
+    }).NOW('p1') 
+</code></pre>
+
+<p>&nbsp;        </p>
+
+<pre><code>    // THROW transfers to the corresponding CATCH section
+
+    var tryScope = {}
+    var catchScope = {}
+
+    TRY(function (p1) {
+        // p1 == 'p1'
+        // this == tryScope
+
+        this.CONT.THROW('error1', 'error2')
+
+    }).CATCH(function(arg1, arg2) {
+        // arg1 == 'error1', arg2 == 'error2'
+        // this == catchScope 
+
+        this.CONT.CONTINUE('value3', 'value4')
+
+    }, catchScope).FINALLY(function() {
+        // this == tryScope
+
+        this.CONTINUE()
+
+    }).THEN(function(arg1, arg2) {
+        // this == tryScope
+        // arg1 == 'value3', arg2 == 'value4' 
+
+    }).NOW('p1') 
+</code></pre>
+
+<h2 id="features">Features</h2>
+
+<ul>
+<li><p>You can't return the value from the statement's function, using the standard <code>return</code>. Any value returned will throw an exception. </p></li>
+<li><p>The <code>CATCH/FINALLY</code> statements are also "continued" - they have embedded continuation instance, and <strong>do not</strong> transfer the control flow <strong>without call to <code>CONTINUE</code></strong> (or other method).
+If you'll forget to call it - your control flow will remain inside of the <code>CATCH/FINALLY</code> statement</p></li>
+<li><p>Arguments to <code>CONTINUE</code> from inside the <code>CATCH</code> statement will be passed further on flow - to the next <code>THEN</code> section (<strong><em>this may change in future versions</em></strong>)</p></li>
+<li><p>Arguments to <code>CONTINUE</code> from inside the <code>FINALLY</code> statement will be ignored.</p></li>
+<li><p>You can pass the scope for the statement's function as the 2nd argument of any control flow method</p></li>
+<li><p>You can pass the arguments for the statement's function as the 3rd argument of any control flow method. This will <em>override</em> the arguments received from the previous statement (or from <code>NOW</code>, see below).</p></li>
+</ul>
+
+<h2 id="activation">Activation</h2>
+
+<p>The control flow, defined with the <code>TRY/CATCH/FINALLY</code> will not start immediately. To start it, call the <code>NOW</code> method of the continuation. </p>
+
+<p>Arguments to <code>NOW</code> will become the arguments to the initial statement (see the example above).</p>
+
+<p>Alternatively, there is a <code>andTHEN</code> method of the continuation (not related to parallel flow). 
+Its equivalent to <code>.THEN().NOW()</code>. Note, that when using this method the <code>NOW</code> method will be called w/o arguments.     </p>
+
+<h2 id="nesting">Nesting</h2>
+
+<p>You can nest the statements arbitrary. To do it, instead of global <code>TRY</code> use the <code>TRY</code> method of the embedded continuation:</p>
+
+<pre><code>    TRY(function () {
+
+        this.CONT.TRY(function () {
+            XHR.request({
+                url      : url,
+                data     : this.data,
+
+                callback : this.CONT.getCONTINUE(),
+                errback  : this.CONT.getTHROW(),
+            })
+        }).THEN(function () {
+
+            // do something else
+
+        }).NOW()
+
+
+    }).CATCH(function (e1, e2) {
+
+        ...
+
+        this.CONT.CONTINUE()
+
+    }).FINALLY(function () {
+
+        this.CONT.TRY(function () {
+            ...
+
+            this.CONT.CONTINUE()    
+        }).NOW()
+
+    }).THEN(function(res1, res2) {
+        ...
+    }).THEN(
+        ...
+    ) 
+</code></pre>
+
+<h2 id="exceptions">Exceptions</h2>
+
+<p>To raise the exceptions you have 2 options. If you are raising it, during the "synchronous interval" of the statement's function, you can just use the standard <code>throw</code>:</p>
+
+<pre><code>    TRY(function (arg1, arg2) {
+
+        if (!arg1 || !arg2) throw new MyException({ description : 'Incorrect arguments' })
+
+        ...
+
+    }).CATCH(function (e) {
+
+        this.CONT.CONTINUE()
+
+    }).FINALLY(function () {
+        ...
+    }).NOW()
+</code></pre>
+
+<p>If you are raising it deferred, use the <code>THROW</code> method of the continuation:</p>
+
+<pre><code>    TRY(function (arg1, arg2) {
+
+        var CONT = this.CONT
+
+        XHR.request({
+            errback  : function (err1, err2) {
+
+                CONT.THROW(new MyException({ param1 : err1, param2 : err2 })) 
+            }
+        })
+
+    }).CATCH(function (e) {
+
+        this.CONT.THROW(e)
+
+    }).FINALLY(function () {
+        ...
+    }).NOW()
+</code></pre>
+
+<p>Note, that with <code>THROW</code> you can throw (and accordingly catch) several values. If you are deferring call to <code>THROW</code>, you should use <code>getTHROW</code> (or a closure).</p>
+
+<p>Exceptions from the nested statements will be correctly caught/handled by the outer <code>CATCH</code> statements. All <code>FINALLY</code> statements will be honored, in the correct order.</p>
+
+<p>You can re-throw the exceptions from <code>CATCH/FINALLY</code> statements, to propagate it.</p>
+
+<h2 id="statementboundaries">Statement boundaries</h2>
+
+<p>When defining your control flow with <code>TRY/THEN/CATCH/FINALLY</code>, consider the following rules, which affect the scope of <code>CATCH/FINALLY</code> statements.</p>
+
+<ul>
+<li><p><code>THEN</code> is just a synonym for <code>TRY</code>. Calls to <code>TRY/THEN</code> add statements to the sequential group.</p></li>
+<li><p><code>CATCH/FINALLY</code> will handle the exceptions from the immediate previous sequential group</p></li>
+<li><p><code>THEN</code> after <code>CATCH/FINALLY</code> will start a new sequential group </p></li>
+<li><p>If you need to explicitly start a new sequential group use <code>NEXT</code></p></li>
+</ul>
+
+<p>Take a look on some illustrating examples:</p>
+
+<pre><code>    TRY(function () {                         |     try {
+                                              |         doSomething1()
+        doSomething1()                        |         doSomething2()
+                                              |     } catch (e) {
+    }).THEN(function() {                      |
+                                              |         doCatch()
+        doSomething2()                        |              
+                                              |     } finally {
+    }).CATCH(function() {                     |         doFinally()
+                                              |     }
+        doCatch()                             |
+                                              |
+    }).FINALLY(function () {                  |
+                                              |
+        doFinally()                           |
+    })                                        |
+</code></pre>
+
+<p>&nbsp;</p>
+
+<pre><code>    TRY(function () {                         |     doSomething1()
+                                              |    
+        doSomething1()                        |     try {
+                                              |         doSomething2()
+    }).NEXT(function() {                      |         
+                                              |     } catch (e) {
+        doSomething2()                        |         doCatch()
+                                              |     } 
+    }).CATCH(function() {                     |    
+                                              |     try {
+        doCatch()                             |         
+                                              |         doSomething3()
+    }).THEN(function (){                      |         
+                                              |     } finally {
+        doSomething3()                        |         doFinally()
+                                              |     }
+    }).FINALLY(function () {                  |
+                                              |
+        doFinally()                           |
+    })                                        |
+</code></pre>
+
+<h2 id="return">Return</h2>
+
+<p>In any statement of the sequential group, you can also skip the rest of statements, using <code>RETURN</code></p>
+
+<pre><code>    TRY(function (arg) {                      |     (function() {
+                                              |         if (!arg) return 'value1'
+        if (!arg) this.CONT.RETURN('value1')  |         
+                                              |         doSomething1()
+        doSomething1()                        |         doSomething2()
+                                              |     })()
+    }).THEN(function() {                      |
+                                              |     doSomething3()
+        doSomething2()                        |
+                                              |
+    }).NEXT(function(arg) {                   |
+        // arg == 'value1'                    |
+                                              |
+        doSomething3()                        |   
+    })                                        |
+</code></pre>
+
+<p>Remember, if you are deferring the call to <code>RETURN</code>, either capture the continuation to closure, or use <code>getRETURN</code></p>
+
+<h2 id="parallelstatements">Parallel statements                               </h2>
+
+<p>Along with sequential groups, you can run your flow in parallel, with the <code>AND</code> method of the continuation. </p>
+
+<p>Please note, that <code>AND</code> will change the type of the <em>whole current group</em> to parallel. So all previous calls to <code>THEN</code> in the current group will be considered
+as parallel branches (<strong>this may change in future versions</strong>). But, <em>after</em> the type of current group has been changed to parallel, calls to <code>THEN</code> will start a new group
+(you can always start a new sequential group with <code>NEXT</code>).</p>
+
+<p>When entering the parallel group, all branches will receive the same arguments: </p>
+
+<pre><code>    TRY(function (p) {                        |                NOW('param')
+        //branch1, p == 'param'               |                     |
+                                              |                     |
+                                              |        /------------------------\
+        this.CONT.CONTINUE('res1')            |        |       |        |       | 
+                                              |        |       |        |       |
+    }).THEN(function(p) {                     |     branch1 branch2  branch3 branch4
+        //branch2, p == 'param'               |        |       |        |       |       
+                                              |        |       |        |       |
+        this.CONT.CONTINUE('res2')            |        \------------------------/
+                                              |                     |
+    }).AND(function(p) {                      |                     |
+        //branch3, p == 'param'               |        THEN( [1], [2], [3], [4] )      
+                                              |
+        this.CONT.THROW('err3')               |
+                                              |
+    }).AND(function(p) {                      |
+        //branch4, p == 'param'               |           
+                                              |
+        this.CONT.THROW('err4')               |
+                                              |
+    }).THEN(function (r1, r2, r3, r4) {       |
+                                              |
+        // r1 == [ 'res1' ]                   |
+        // r2 == [ 'res2' ]                   |
+        // r3 == [ 'err3' ]                   |
+        // r4 == [ 'err4' ]                   |
+                                              |
+    }).NOW('param')                           |
+                                              |
+</code></pre>
+
+<p>The synchronization point will receive several arguments, by the number of branches. Each argument will be the <code>arguments</code> object with the results of each branch.
+Arguments be filled in order of branches <strong>declaration</strong>, not in the order they finished execution.</p>
+
+<p><strong><em>The following convention may change in future versions:</em></strong> Each <code>AND</code> statement is implicitly wrapped with <code>CATCH</code>. So the whole parallel group will never
+throw an exception (adding a <code>CATCH</code> statement to it will be a no-op, though  <code>FINALLY</code> statement will be honored). Instead, any exceptions from branches will be caught, 
+and considered as the results. Its your responsibility to examine the resulting array and separate exceptions from normal results.</p>
+
+<h2 id="synonyms">Synonyms</h2>
+
+<p>The following upper-case methods of the continuation have lower-case synonyms:</p>
+
+<pre><code>    THEN      |   then
+    andTHEN   |   andThen
+    NEXT      |   next
+    AND       |   and
+    NOW       |   now
+    CATCH     |   except
+    FINALLY   |   ensure
+</code></pre>
+
+<p><br><br></p>
+
+<h1 id="usageinjooseclasses">USAGE IN JOOSE CLASSES</h1>
+
+<p>For this mode, include the <code>lib/Task/JooseX/CPS/All.js</code> file in your deployment.</p>
+
+<h2 id="continuedbuilder"><code>continued</code> BUILDER</h2>
+
+<p>Adding <code>JooseX.CPS</code> trait will provide your class with the <code>continued</code> builder. This builder groups the declarations of the "asynchronous part" of your class.
+Inside of it, you can use the following builders: <code>methods</code>, <code>override</code>, <code>after</code>, <code>before</code>. This builders have the same meaning as standard ones, however instead of usual, 
+they define the "continued" methods.</p>
+
+<h2 id="continuedmethods">"Continued" methods</h2>
+
+<p>These methods are called "continued", because they are implicitly wrapped with the "continued" <code>TRY</code> statement, described in the section above.
+Inside of such methods, there is also embedded continuation instance, available as <code>this.CONT</code> </p>
+
+<pre><code>    Class("DataStore", {
+        trait : JooseX.CPS,
+
+        continued : {
+
+            methods : {
+
+                save : function (url) {
+                    if (!url.test(/^http/) throw "Invalid URL"
+
+                    ...
+
+                    this.CONTINUE(result)
+                }
+            }
+        }
+    })
+</code></pre>
+
+<p>Continued methods have the same <a href="#features" title="Features">features</a> as functions, wrapped with <code>TRY</code>, plus some important additional ones, see below.</p>
+
+<h2 id="shortcuts">Shortcuts</h2>
+
+<p>The class with <code>JooseX.CPS</code> trait, will receive a <code>JooseX.CPS.ControlFlow</code> role, which will provide several shortcut methods: </p>
+
+<pre><code>    TRY/THEN/AND/NEXT
+
+    CATCH/FINALLY
+
+    THROW/CONTINUE/RETURN
+
+    getCONTINUE/getTHROW/getRETURN
+</code></pre>
+
+<p>All this methods just delegates to the embedded continuation instance.</p>
+
+<h2 id="implicitmethodschaining">Implicit methods chaining</h2>
+
+<p>"Continued" methods supports implicit methods chaining, and this allows you to write asynchronous code, that looks almost like synchronous one.</p>
+
+<p>Consider the following example and its "raw" equivalent:   </p>
+
+<pre><code>    Class("Data.Store", {                     |    var store = new Data.Store()
+        trait : JooseX.CPS,                   |    
+                                              |    // the "de-sugared" version of `update` method
+        continued : {                         |    TRY(function (url) {
+                                              |        
+            methods : {                       |        this.CONT.TRY(function () {
+                                              |            //do save
+                log : function () {           |            this.CONT.CONTINUE()
+                    //do log                  |        }).THEN(function () {
+                    this.CONTINUE()           |            //do log
+                },                            |            this.CONT.CONTINUE()
+                                              |        }).NOW()
+                save : function (url) {       |        
+                    //do save                 |    }, store, [ 'http://my.site.com' ]).NOW()
+                    this.CONTINUE()           |
+                },                            |
+                                              |
+                update : function (url) {     |
+                    this.save(url)            |
+                                              |
+                    this.log().now()          |
+                }                             |
+            }                                 |
+        }                                     |
+    })                                        |
+                                              |
+    var store = new Data.Store()              |
+                                              |
+    store.update('http://my.site.com').now()  |
+</code></pre>
+
+<p>Technically, each call to "continued" method will pick up the current continuation, and delegate to its <code>TRY</code> method.
+Thus, the sequential method calls will form a sequential statements group.</p>
+
+<p>This will work for you as long as your whole method form a single source of exceptions. If you need a fine-tuned control 
+over the areas from where the exceptions may came from, then fall-back to the usual control flow methods chaining.</p>
+
+<p>For example, if you need this "exceptions layout" in your method:</p>
+
+<pre><code>    update : function (url) {
+
+        this.save(url)
+
+        try {
+            this.log()
+        } catch (e) {
+        }
+    }
+</code></pre>
+
+<p>then write it like:</p>
+
+<pre><code>    update : function (url) {   
+
+        this.save(url).next(function () {
+
+            this.log().now()
+
+        }).except(function () {
+
+           this.CONTINUE()
+
+        }).now()
+    }                           
+</code></pre>
+
+<p>Looks a bit noisier, but you can't get something for nothing, don't you?        </p>
+
+<h2 id="cross-objectsmethodschaining">Cross-objects methods chaining </h2>
+
+<p>The implicit methods chaining also works for the case, when you call "continued" methods of different objects. 
+This works because single-threaded nature of JavaScript allows us to keep the global continuation instance. For example:</p>
+
+<pre><code>    Class("Data.Logger", {                   
+        trait : JooseX.CPS,                 
+
+        continued : {                       
+
+            methods : {                     
+
+                log : function () {         
+                    //do log                
+                    this.CONTINUE()         
+                }                          
+            }                               
+        }                                   
+    })
+
+
+    Class("Data.Store", {                   
+        trait : JooseX.CPS,
+
+        has : {
+            logger      : null,
+        },                 
+
+        continued : {                       
+
+            methods : {
+
+                save : function (url) {     
+                    //do save               
+                    this.CONTINUE()         
+                },                          
+
+                update : function (url) {   
+                    this.save(url)          
+
+                    this.logger.log().now()        
+                }                           
+            }                               
+        }                                   
+    })                                      
+
+    var store = new Data.Store()            
+
+    store.update('http://my.site.com').now()
+</code></pre>
+
+<p>Thing to note is that, the scope propagates along the statements chain and your should consider that. So, if in your "continued" method, you invoke the "continued" method of the another object,
+the scope of the following <code>CATCH/FINALLY/THEN/NEXT</code> statements will be that object. To override it, pass 2nd argument to control flow method.</p>
+
+<p>Take a look on the illustrating examples:</p>
+
+<pre><code>    update : function (url) {                 |    update : function (url) {           
+        this.save(url)                        |        this.save(url)                  
+                                              |                                        
+        var me      = this                    |        var me      = this              
+        var logger  = this.logger             |        var logger  = this.logger                       
+                                              |                                        
+        logger.log().then(function () {       |        logger.log().andThen(function () { 
+                                              |                                        
+            // this == logger                 |            // this == me              
+                                              |                                        
+        }).now()                              |        }, this)                  
+    }                                         |    }                                   
+</code></pre>
+
+<h2 id="continuedmethodmodifiers">"Continued" method modifiers                      </h2>
+
+<p>You can define the "continued" method modifiers as well. The only modifier type, that isn't supported is <code>augment</code>.
+All other types works identically to their normal variants, just keep in mind that you need to explicitly call <code>CONTINUE</code> (or <code>THROW</code>)
+to transfer the control flow from the modifier. In the same way, when using <code>override</code> don't forget that call to <code>this.SUPER()</code> will not start
+the method immediately, you need to activate it: <code>this.SUPER().now()</code></p>
+
+<pre><code>    Class("Data.Store.Improved", {
+        trait : JooseX.CPS,
+
+        continued : {
+
+            override : {
+                log : function (arg) {
+                    if (arg == 'something') 
+                        this.SUPER().now()
+                    else
+                        throw "Wrong arguments"
+                }
+            },
+
+            methods : {
+                save : function () {
+                    ...
+
+                    this.CONTINUE()
+                }
+            },
+
+            after : {
+
+                save : function () {
+                    ...
+
+                    this.CONTINUE()
+                }
+            }
+        }
+    })
+</code></pre>
+
+<h2 id="overridingusualmethodswithcontinuedandvice-versa">Overriding usual methods with "continued" and vice-versa</h2>
+
+<p><code>JooseX.CPS</code> even allows you to freely mix the usual and "continued" methods in <code>override/after/before</code> modifiers.</p>
+
+<p>That is, if your superclass defines a usual method, you can re-define it into the "continued" section just fine.
+The same about the modifiers. Naturally, after such operation, your method will became "continued".</p>
+
+<p>The vice-versa re-definition is also valid. </p>
+
+<h1 id="gettinghelp">GETTING HELP</h1>
+
+<p>This extension is supported via github issues tracker: <a href="http://github.com/SamuraiJack/JooseX-CPS/issues">http://github.com/SamuraiJack/JooseX-CPS/issues</a></p>
+
+<p>For general Joose questions you can also visit the <a href="http://webchat.freenode.net/?randomnick=1&amp;channels=joose&amp;prompt=1">#joose</a> on irc.freenode.org, or the forum at <a href="http://joose.it/forum">http://joose.it/forum</a></p>
+
+<h1 id="seealso">SEE ALSO</h1>
+
+<p>Continuation class: <a href="CPS/Continuation.html">JooseX.CPS.Continuation</a></p>
+
+<p><a href="http://en.wikipedia.org/wiki/Continuation-passing_style">Continuation Passing Style</a></p>
+
+<p>Web page of this extension: <a href="http://github.com/SamuraiJack/JooseX-CPS/">http://github.com/SamuraiJack/JooseX-CPS/</a></p>
+
+<p>General information about Joose: <a href="http://joose.it">http://joose.it</a></p>
+
+<h1 id="bugs">BUGS</h1>
+
+<p>All complex software has bugs lurking in it, and this module is no exception.</p>
+
+<p>Please report any bugs through the web interface at <a href="http://github.com/SamuraiJack/JooseX-CPS/issues">http://github.com/SamuraiJack/JooseX-CPS/issues</a></p>
+
+<h1 id="authors">AUTHORS</h1>
+
+<p>Nickolay Platonov <a href="&#109;&#97;&#x69;l&#116;&#111;:&#x6E;&#112;&#108;&#x61;&#x74;&#x6F;&#110;&#111;&#x76;&#64;&#99;&#x70;a&#x6E;&#46;&#111;&#x72;&#103;">&#x6E;&#112;&#108;&#x61;&#x74;&#x6F;&#110;&#111;&#x76;&#64;&#99;&#x70;a&#x6E;&#46;&#111;&#x72;&#103;</a></p>
+
+<h1 id="copyrightandlicense">COPYRIGHT AND LICENSE</h1>
+
+<p>Copyright (c) 2009, Nickolay Platonov</p>
+
+<p>All rights reserved.</p>
+
+<p>Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:</p>
+
+<ul>
+<li>Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.</li>
+<li>Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.</li>
+<li>Neither the name of Nickolay Platonov nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission. </li>
+</ul>
+
+<p>THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. </p>
+</body>
+</html>

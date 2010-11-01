@@ -1,0 +1,252 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+	<head>
+		<link type="text/css" rel="stylesheet" href="http://bit.ly/multi_markdown_style_css " />
+	</head>
+<body>
+<h1 id="name">Name</h1>
+
+<p>JooseX.CPS.Continuation - A continuation class</p>
+
+<h1 id="synopsis">SYNOPSIS</h1>
+
+<pre><code>    TRY = function () {
+        var continuation = new JooseX.CPS.Continuation()
+
+        return continuation.TRY.apply(continuation, arguments)
+    }
+</code></pre>
+
+<h1 id="description">DESCRIPTION</h1>
+
+<p><code>JooseX.CPS.Continuation</code> implements a continuation - an underlaying basis for <code>JooseX.CPS</code> trait.</p>
+
+<h1 id="isa">ISA</h1>
+
+<p>None.</p>
+
+<h1 id="does">DOES</h1>
+
+<p>None.</p>
+
+<h1 id="traits">TRAITS</h1>
+
+<p>None.</p>
+
+<h1 id="attributes">ATTRIBUTES</h1>
+
+<h3 id="parent">parent</h3>
+
+<blockquote>
+  <p><code>JooseX.CPS.Continuation parent</code></p>
+  
+  <p>A parent for this continuation. Can be asked for default scope or for the <a href="#nextfunc" title="nextFunc">nextFunc</a></p>
+</blockquote>
+
+<h3 id="previous">previous</h3>
+
+<blockquote>
+  <p><code>JooseX.CPS.Continuation previous</code></p>
+  
+  <p>A previous continuation for this continuation. Can be asked for default scope or for the <a href="#nextfunc" title="nextFunc">nextFunc</a></p>
+</blockquote>
+
+<h3 id="statements">statements</h3>
+
+<blockquote>
+  <p><code>Array statements</code></p>
+  
+  <p>An array of statements. Each statement is an object like : </p>
+</blockquote>
+
+<pre><code>        {
+            func    : ... , // function to execute
+            scope   : ... , // scope into which execute the function
+            args    : ...   // arguments for function 
+        }
+</code></pre>
+
+<h3 id="type">type</h3>
+
+<blockquote>
+  <p><code>String type</code></p>
+  
+  <p>The type of this continuation. Can be 'Sequential' or 'Parallel's</p>
+</blockquote>
+
+<h3 id="entered">entered</h3>
+
+<blockquote>
+  <p><code>Boolean entered</code></p>
+  
+  <p>The sign whether this continuation was already entered - i.e. activated.</p>
+</blockquote>
+
+<h3 id="leaved">leaved</h3>
+
+<blockquote>
+  <p><code>Boolean leaved</code></p>
+  
+  <p>The sign whether this continuation was already leaved - i.e. the <code>CONTINUE</code> or <code>THROW</code> method were called.</p>
+</blockquote>
+
+<h3 id="defaultscope">defaultScope</h3>
+
+<blockquote>
+  <p><code>Object defaultScope</code></p>
+  
+  <p>The default scope which will be supplied to the statements if not provided explicitly. Once passed to <code>TRY</code>, propagates to the further statements. </p>
+</blockquote>
+
+<h3 id="nextfunc">nextFunc</h3>
+
+<blockquote>
+  <p><code>Function nextFunc</code></p>
+  
+  <p>If present, this function will be called, when leaving this continuation. Will be called in the global scope, with the arguments from the method, initated the leave. </p>
+</blockquote>
+
+<h3 id="catchfuncfinallyfunc">catchFunc/finallyFunc</h3>
+
+<blockquote>
+  <p><code>Function catchFunc/finallyFunc</code></p>
+  
+  <p>The functions for <code>CATCH/FINALLY</code> statements accordingly. </p>
+</blockquote>
+
+<h3 id="catchscopefinallyscope">catchScope/finallyScope</h3>
+
+<blockquote>
+  <p><code>Object catchScope/finallyScope</code></p>
+  
+  <p>The scopes for <code>CATCH/FINALLY</code> statements accordingly.</p>
+</blockquote>
+
+<h1 id="methods">METHODS</h1>
+
+<h3 id="try">TRY</h3>
+
+<blockquote>
+  <p><code>JooseX.CPS.Continuation TRY(Function func, Object scope?, Array args?)</code></p>
+  
+  <p>Add a statement to the current continuation. If continuation already contains <code>CATCH</code> or <code>FINALLY</code> statements - then delegate to <code>NEXT</code> and return a next continuation instance.
+  otherwise return current continuation.</p>
+</blockquote>
+
+<h3 id="then">THEN</h3>
+
+<blockquote>
+  <p><code>JooseX.CPS.Continuation THEN(Function func, Object scope?, Array args?)</code></p>
+  
+  <p>Alias for <code>TRY</code> with a single exception. If the type of the continuation is <code>Parallel</code> then delegate to <code>NEXT</code> and return a next continuation instance.</p>
+  
+  <p>Has a lower-case synonym : 'then'</p>
+</blockquote>
+
+<h3 id="catch">CATCH</h3>
+
+<blockquote>
+  <p><code>JooseX.CPS.Continuation CATCH(Function func, Object scope?)</code></p>
+  
+  <p>Add a <code>CATCH</code> statement to the current continuation. </p>
+  
+  <p>Has a lower-case synonym : 'except'</p>
+</blockquote>
+
+<h3 id="finally">FINALLY</h3>
+
+<blockquote>
+  <p><code>JooseX.CPS.Continuation FINALLY(Function func, Object scope?)</code></p>
+  
+  <p>Add a <code>FINALLY</code> statement to the current continuation. </p>
+  
+  <p>Has a lower-case synonym : 'ensure'</p>
+</blockquote>
+
+<h3 id="next">NEXT</h3>
+
+<blockquote>
+  <p><code>JooseX.CPS.Continuation NEXT(Function func, Object scope?, Array args?)</code></p>
+  
+  <p>Derive a sibling continuation, chaining it after itself. Return newly created continuation.</p>
+  
+  <p>Has a lower-case synonym : 'next'</p>
+</blockquote>
+
+<h3 id="and">AND</h3>
+
+<blockquote>
+  <p><code>JooseX.CPS.Continuation AND(Function func, Object scope?, Array args?)</code></p>
+  
+  <p>Alias for <code>TRY</code> that also switch a type of the continuation to <code>Parallel</code>.</p>
+  
+  <p>Has a lower-case synonym : 'and'</p>
+</blockquote>
+
+<h3 id="now">NOW</h3>
+
+<blockquote>
+  <p><code>JooseX.CPS.Continuation NOW()</code></p>
+  
+  <p>Activates current continuation graph by looking the 1st not yet entered continuation. After finding it, delegate to its <code>entry</code> method with the passed arguments.</p>
+  
+  <p>Has a lower-case synonym : 'now'</p>
+</blockquote>
+
+<h3 id="getcontinue">getCONTINUE</h3>
+
+<blockquote>
+  <p><code>Function getCONTINUE()</code></p>
+  
+  <p>Return a function, binded to the <code>CONTINUE</code> method of itself.</p>
+</blockquote>
+
+<h3 id="getreturn">getRETURN</h3>
+
+<blockquote>
+  <p><code>Function getRETURN()</code></p>
+  
+  <p>Return a function, binded to the <code>RETURN</code> method of itself.</p>
+</blockquote>
+
+<h3 id="getthrow">getTHROW</h3>
+
+<blockquote>
+  <p><code>Function getTHROW()</code></p>
+  
+  <p>Return a function, binded to the <code>THROW</code> method of itself.</p>
+</blockquote>
+
+<h1 id="gettinghelp">GETTING HELP</h1>
+
+<p>This extension is supported via github issues tracker: <a href="http://github.com/SamuraiJack/JooseX-CPS/issues">http://github.com/SamuraiJack/JooseX-CPS/issues</a></p>
+
+<p>For general Joose questions you can also visit the <a href="http://webchat.freenode.net/?randomnick=1&amp;channels=joose&amp;prompt=1">#joose</a> on irc.freenode.org, or the forum at <a href="http://joose.it/forum">http://joose.it/forum</a></p>
+
+<h1 id="seealso">SEE ALSO</h1>
+
+<p><a href="../CPS.html">Main documentation page</a></p>
+
+<p>General documentation for Joose: <a href="http://openjsan.org/go/?l=Joose">http://openjsan.org/go/?l=Joose</a></p>
+
+<h1 id="authors">AUTHORS</h1>
+
+<p>Nickolay Platonov <a href="mailto:nplatonov@cpan.org">nplatonov@cpan.org</a></p>
+
+<h1 id="copyrightandlicense">COPYRIGHT AND LICENSE</h1>
+
+<p>Copyright (c) 2009, Nickolay Platonov</p>
+
+<p>All rights reserved.</p>
+
+<p>Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:</p>
+
+<ul>
+<li>Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.</li>
+<li>Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.</li>
+<li>Neither the name of Nickolay Platonov nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission. </li>
+</ul>
+
+<p>THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. </p>
+</body>
+</html>
