@@ -1,5 +1,9 @@
 {{ $NEXT }}
 
+    - docs update
+    - bumped deps
+    - throw Errors instead of strings
+
 0.13      2010-11-01 13:38
 
     - re-release solely for `npm` platform, no functional changes

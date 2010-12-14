@@ -19,17 +19,14 @@ COMPONENTS = {
     ],
     
     
-    "WebTest" : [
+    "Test" : [
         "jsan:Task.Joose.Core",
-        "jsan:JooseX.SimpleRequest",
-        "jsan:Task.JooseX.Namespace.Depended.Web",
+        "jsan:Task.JooseX.Namespace.Depended.Auto",
         "+All"
     ],
     
     
-    "NodeJSTest" : [
-        "jsan:Task.Joose.Core",
-        "jsan:Task.JooseX.Namespace.Depended.NodeJS",
+    "Core" : [
         "+All"
     ]
 } 

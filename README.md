@@ -1,3 +1,5 @@
+If links in this document aren't work correctly, [try to open it from here](http://samuraijack.github.com/JooseX-CPS)
+
 Name
 ====
 
@@ -98,6 +100,27 @@ The same in OOP:
         
             UI.removeScreenMask()
         }).NOW()
+
+
+INSTALLATION
+============
+
+From `npm`:
+    
+    > [sudo] npm install joosex-cps
+
+
+SETUP
+=====
+
+Setup for NodeJS:
+
+            // this extension is bundled into the following package
+            require('task-joose-nodejs')
+    
+Setup for browsers (assuming you've completed the 3.1 item from this [document](http://joose.github.com/Joose/doc/html/Joose/Manual/Installation.html)):
+
+    <script type="text/javascript" src="/jsan/Task/JooseX/CPS/Core.js"></script>
 
 
 DESCRIPTION
@@ -754,7 +777,9 @@ GETTING HELP
 
 This extension is supported via github issues tracker: <http://github.com/SamuraiJack/JooseX-CPS/issues>
 
-For general Joose questions you can also visit the [#joose](http://webchat.freenode.net/?randomnick=1&channels=joose&prompt=1) on irc.freenode.org, or the forum at <http://joose.it/forum>
+You can also ask questions at IRC channel : [#joose](http://webchat.freenode.net/?randomnick=1&channels=joose&prompt=1)
+ 
+Or the mailing list: <http://groups.google.com/group/joose-js>
 
 
 SEE ALSO

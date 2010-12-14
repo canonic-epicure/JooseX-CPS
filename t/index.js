@@ -14,11 +14,8 @@ var INC = [ '../lib', '/jsan' ]
 Harness.configure({
 	title : 'JooseX.CPS Test Suite',
     
-	preload : Joose.is_NodeJS ? [
-        'Task.JooseX.CPS.NodeJSTest'
-        
-    ] : [
-        'Task.JooseX.CPS.WebTest'
+	preload : [
+        'Task.JooseX.CPS.Test'
     ]
 })
 
