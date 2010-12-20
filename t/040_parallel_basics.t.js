@@ -34,7 +34,7 @@ StartTest(function(t) {
             
             t.ok(p1 == 1 && p2 == 10, 'Correct parameters were passed')
             
-            CONT.THROW('error1')
+            CONT.CONTINUE('value1')
         }, 1000)
         
     }).AND(function (p1, p2) {
@@ -53,7 +53,7 @@ StartTest(function(t) {
             
             t.ok(p1 == 1 && p2 == 10, 'Correct parameters were passed')
             
-            CONT.THROW('error2')
+            CONT.CONTINUE('value2')
         }, 500)
         
     }).AND(function (p1, p2) {
@@ -75,26 +75,22 @@ StartTest(function(t) {
             CONT.CONTINUE('value3')
         }, 0)
         
-    }).CATCH(function (error) {
-        
-        t.fail("Reached 'CATCH' from parallel statement")
-        
-        this.CONT.CONTINUE()
-        
     }).THEN(function () {
         
         t.pass('THEN was reached')
         
+        thenReached = true
+        
         t.ok(branch1Reached, "Branch 1 was reached")
         t.ok(branch2Reached, "Branch 2 was reached")
         t.ok(branch3Reached, "Branch 3 was reached")
-        t.ok(!thenReached, "THEN wasn't reached yet")
+        t.ok(thenReached, "THEN was reached yet")
         
         
         t.ok(arguments.length == 3, 'Seems we have correct results')
         
-        t.ok(arguments[0][0] == 'error1', 'Indeed 1')
-        t.ok(arguments[1][0] == 'error2', 'Indeed 2')
+        t.ok(arguments[0][0] == 'value1', 'Indeed 1')
+        t.ok(arguments[1][0] == 'value2', 'Indeed 2')
         t.ok(arguments[2][0] == 'value3', 'Indeed 3')
         
         

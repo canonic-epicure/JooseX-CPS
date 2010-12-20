@@ -11,10 +11,9 @@ StartTest(function(t) {
             var CONT = this.CONT
             
             
-            CONT.AND(function () {
+            CONT.AND_NOEX().AND(function () {
                 throw 'error1'    
             })
-            
             
             CONT.NOW()
             

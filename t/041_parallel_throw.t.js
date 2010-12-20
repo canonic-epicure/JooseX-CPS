@@ -1,7 +1,5 @@
 StartTest(function(t) {
     
-    t.plan(28)
-    
     //======================================================================================================================================================================================================================================================
     t.diag('Sanity')
     
@@ -34,7 +32,7 @@ StartTest(function(t) {
             
             t.ok(p1 == 1 && p2 == 10, 'Correct parameters were passed')
             
-            CONT.CONTINUE('value1')
+            CONT.THROW('error1')
         }, 1000)
         
     }).AND(function (p1, p2) {
@@ -53,7 +51,7 @@ StartTest(function(t) {
             
             t.ok(p1 == 1 && p2 == 10, 'Correct parameters were passed')
             
-            CONT.CONTINUE('value2')
+            CONT.THROW('error2')
         }, 500)
         
     }).AND(function (p1, p2) {
@@ -75,24 +73,28 @@ StartTest(function(t) {
             CONT.CONTINUE('value3')
         }, 0)
         
+    }).CATCH(function (error1, error2, error3) {
+        
+        t.pass("Reached 'CATCH' after parallel statement")
+        
+        t.ok(error1 == 'error1', 'Correct exception caught #1')
+        t.ok(error2 == 'error2', 'Correct exception caught #2')
+        t.ok(error3 == undefined, 'No exceptions for 3rd branch')
+        
+        this.CONT.CONTINUE()
+        
     }).THEN(function () {
         
         t.pass('THEN was reached')
+        thenReached = true
         
         t.ok(branch1Reached, "Branch 1 was reached")
         t.ok(branch2Reached, "Branch 2 was reached")
         t.ok(branch3Reached, "Branch 3 was reached")
-        t.ok(!thenReached, "THEN wasn't reached yet")
-        
-        
-        t.ok(arguments.length == 3, 'Seems we have correct results')
-        
-        t.ok(arguments[0][0] == 'value1', 'Indeed 1')
-        t.ok(arguments[1][0] == 'value2', 'Indeed 2')
-        t.ok(arguments[2][0] == 'value3', 'Indeed 3')
-        
         
         t.endAsync(async1)
+        t.done()
+        
     }).NOW(1, 10)
     
 })    
