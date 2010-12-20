@@ -46,6 +46,6 @@ Harness.start(
     '050_double_leave_sequential.js',
     '051_finally_after_sequential.js',
     '052_now_on_empty_cont.js',
-//    '053_detach.js',
+    '053_detach.js',
     '054_cps_in_roles.js'
 )

@@ -5,6 +5,8 @@ StartTest(function(t) {
     
     var async0  = t.beginAsync()
     
+    var result   = []
+    
     
     Class('TestClass', {
         
@@ -13,19 +15,8 @@ StartTest(function(t) {
         methods     : {
             
             sync    : function (delay, num) {
-                var me = this
                 
-                this.TRY().THEN(function () {
-                    
-                    setTimeout(function () {
-                        
-                        me.async(num).andThen(function (res) {
-                            
-                            t.ok(res == num, 'Correct result [' + res + '] from `async` method')
-                        })                    
-                    }, delay)
-                    
-                }).NOW()
+                TRY(this).async(delay, num).now()               
             }
         },
         
@@ -34,16 +25,26 @@ StartTest(function(t) {
             
             methods : {
                 
-                async : function (num) {
-                    this.CONTINUE(num)
+                async : function (delay, num) {
+                    var CONT    = this.CONT
+                    
+                    setTimeout(function () {
+                        
+                        result.push(num)
+                        
+                        CONT.CONTINUE(num)
+                        
+                    }, delay)
                 },
                 
                 
                 process : function () {
-                    this.sync(1000, 1)
-                    this.sync(100,  2)
+                    this.sync(500, '3')
+                    this.sync(100, '2')
                     
-                    this.CONTINUE('process')
+                    this.async(10, '1')
+                    
+                    this.NOW()
                 }
             }
         }
@@ -52,16 +53,17 @@ StartTest(function(t) {
     
     var obj = new TestClass()
     
-    obj.process().andThen(function (res) {
-        
-        t.ok(res == 'process', 'Correct result from `process` method')
+    obj.process().andThen(function () {
+        t.is_deeply(result, [ '1' ], 'Correct order of events #1')
     })
 
     
     setTimeout(function () {
         
+        t.is_deeply(result, [ '1', '2', '3' ], 'Correct order of events #2')
+        
         t.endAsync(async0)
         t.done()
         
-    }, 1500)
+    }, 1000)
 })    
