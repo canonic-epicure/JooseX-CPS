@@ -45,6 +45,7 @@ Harness.start(
     '042_parallel_throw_no_ex.t.js',
     '045_statement_parallel_throw.t.js',
     '046_and_max.t.js',
+    '047_and_synchronous.t.js',
     '050_double_leave_sequential.js',
     '051_finally_after_sequential.js',
     '052_now_on_empty_cont.js',
