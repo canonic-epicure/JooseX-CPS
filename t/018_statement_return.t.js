@@ -1,6 +1,6 @@
 StartTest(function(t) {
     
-	t.plan(6)
+	t.plan(4)
     
     //======================================================================================================================================================================================================================================================
     t.diag('Sanity')
@@ -9,33 +9,28 @@ StartTest(function(t) {
     
     
     //======================================================================================================================================================================================================================================================            
-    //t.diag('Nesting with RETURN')
+    t.diag('Nesting with RETURN')
+
     
-    var async1  = t.beginAsync()
-    var cont1   = new JooseX.CPS.Continuation()
-    
-    cont1.TRY(function () {
-        
-        this.CONT.RETURN('return1')
-        
-    }).THEN(function () {
-        
-        t.fail("'THEN' reached after 'RETURN'")
-        
-        this.CONT.CONTINUE()
-        
-    }).NEXT(function (res) {
-        
-        t.pass("'NEXT' reached after 'RETURN'")
-        
-        t.ok(res == 'return1', "'NEXT' received correct result")
-        
+    TRY(function () {
         
         this.CONT.TRY(function () {
             
             t.pass("Nested 'TRY' reached")
             
             this.CONT.RETURN('return2')
+            
+        }).THEN(function () {
+            
+            t.fail("'THEN' reached after 'RETURN'")
+            
+            this.CONT.CONTINUE()
+            
+        }).NEXT(function (res) {
+        
+            t.fail("'NEXT' reached after 'RETURN'")
+            
+            this.CONT.CONTINUE()
             
         }).NOW()
         
@@ -45,6 +40,5 @@ StartTest(function(t) {
         
         t.ok(res == 'return2', "'THEN' received correct result")
         
-        t.endAsync(async1)
     }).NOW()
 })    

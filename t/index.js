@@ -51,5 +51,6 @@ Harness.start(
     '052_now_on_empty_cont.js',
     '053_detach.js',
     '054_cps_in_roles.js',
-    '055_delay.js'
+    '055_delay.js',
+    '056_return_from_except.js'
 )
