@@ -1,5 +1,7 @@
 {{ $NEXT }}
 
+0.15      2011-01-12 18:53
+
     - implemented `delay` method
     - implemented `andMax` and `andNoEx` methods
     - THROW now should throw only single value
