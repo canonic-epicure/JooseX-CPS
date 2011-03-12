@@ -105,6 +105,8 @@ The same in OOP:
 INSTALLATION
 ============
 
+The latest released tarball is available for downloading from <http://search.npmjs.org/#/joosex-cps>. 
+
 From `npm`:
     
     > [sudo] npm install joosex-cps
@@ -115,12 +117,14 @@ SETUP
 
 Setup for NodeJS:
 
-            // this extension is bundled into the following package
-            require('task-joose-nodejs')
+    // this extension is bundled into the following package
+    require('task-joose-nodejs')
     
 Setup for browsers (assuming you've completed the 3.1 item from this [document](http://joose.github.com/Joose/doc/html/Joose/Manual/Installation.html)):
 
     <script type="text/javascript" src="/jsan/Task/JooseX/CPS/Core.js"></script>
+    
+
 
 
 DESCRIPTION
