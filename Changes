@@ -1,5 +1,7 @@
 {{ $NEXT }}
 
+0.16      2011-03-12 13:12
+
     - bumped dependency from Joose
     - do not catch "usual" the exceptions if Joose.C.debug is enabled
     - removed `CONT` attribute from ControlFlow
