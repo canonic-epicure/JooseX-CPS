@@ -1,5 +1,9 @@
 {{ $NEXT }}
 
+    - bumped dependency from Joose
+    - do not catch "usual" the exceptions if Joose.C.debug is enabled
+    - removed `CONT` attribute from ControlFlow
+
 0.15      2011-01-12 18:53
 
     - implemented `delay` method
