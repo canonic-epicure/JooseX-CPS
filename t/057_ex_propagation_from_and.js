@@ -35,8 +35,6 @@ StartTest(function(t) {
         
         handle.process().then(function () {
             
-            debugger
-        
             throw "error";
             
         }).now();
