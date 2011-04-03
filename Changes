@@ -1,5 +1,7 @@
 {{ $NEXT }}
 
+0.17      2011-04-03 19:44
+
     - fixed bug, when the exception will not propagate from the code which follows the parallel branches
     - added `run` synonym for "now"
     - added `thenRun` synonym for "andThen"
