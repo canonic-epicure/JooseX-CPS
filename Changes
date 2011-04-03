@@ -1,5 +1,9 @@
 {{ $NEXT }}
 
+    - fixed bug, when the exception will not propagate from the code which follows the parallel branches
+    - added `run` synonym for "now"
+    - added `thenRun` synonym for "andThen"
+
 0.16      2011-03-12 13:12
 
     - bumped dependency from Joose
