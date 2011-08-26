@@ -15,7 +15,7 @@ Harness.configure({
 	title : 'JooseX.CPS Test Suite',
     
 	preload : [
-        'Task.JooseX.CPS.Test'
+        '../joosex-cps-test.js'
     ]
 })
 
