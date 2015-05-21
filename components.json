@@ -20,12 +20,12 @@
     
     
     Test : {
-        saveAs      : 'joosex-cps-test.js',
+        //saveAs      : 'joosex-cps-test.js',
         
         contains    :     [
-            'node_modules/joose/joose-all.js',
-            'node_modules/joosex-namespace-depended/joosex-namespace-depended-all.js',
-            '+All'
+            //'node_modules/joose/joose-all.js',
+            //'node_modules/joosex-namespace-depended/joosex-namespace-depended-all.js',
+            //'+All'
         ]
     },
     
